@@ -71,7 +71,7 @@ html,body{background:#173c2e!important}body{color:#f3f6e9;background-image:radia
 @media(max-width:380px){.rebrand-hero{height:474px}.hero-illustration{right:-27px;transform:scale(.85);transform-origin:top right}.health-metrics{gap:14px}.health-metrics strong{font-size:17px}.body-stage{height:520px}.body-silhouette{height:380px}}
 @media(prefers-reduced-motion:reduce){.bottle-tilt,.pulsing-dot{animation:none!important}}
 
-</style></head><body><div class="orb"></div><main class="app"><header class="top"><div class="brand"><span class="brandmark">✳</span> SODY<span style="font-size:9px;letter-spacing:0;color:#81957a;align-self:end;margin-bottom:5px">BETA</span></div><button class="icon-btn" title="Импорт" onclick="openImport()">⇧</button></header>
+</style></head><body><div class="orb"></div><main class="app"><header class="top"><div class="brand"><span class="brandmark">✳</span> SODY<span style="font-size:9px;letter-spacing:0;color:#c5d9c6;align-self:end;margin-bottom:5px">AURA · V4</span></div><button class="icon-btn" title="Импорт" onclick="openImport()">⇧</button></header>
 <section class="tab-page" id="page-home">
   <div class="rebrand-hero">
     <div class="home-kicker"><span class="pulsing-dot"></span><span id="todayCaption">МОЙ ПЛАН</span><span class="home-number">SODY / 001</span></div>
@@ -149,5 +149,19 @@ const lines=str.split(/\r?\n/).map(s=>s.trim()).filter(s=>s&& !/^#/.test(s));for
 function previewImport(){const txt=document.getElementById('importText').value;pendingImport=parseImported(txt);const root=document.getElementById('importPreview');if(!pendingImport.length){root.innerHTML='<div class="banner" style="margin-top:14px">Не удалось найти строки со временем. Попробуйте формат «08:00 Креатин — 5 г, после еды». Для сложных таблиц потребуется ручная проверка.</div>';return}root.innerHTML=`<div class="section-top"><h2>Найдено: ${pendingImport.length}</h2></div><div class="banner">Проверьте названия, время и дозировки. Неясные поля оставлены пустыми. Все строки добавятся с ежедневным повторением; затем можно изменить дни и даты.</div>${pendingImport.map((x,j)=>`<div class="parse-item"><label class="checkboxline"><input type="checkbox" checked data-import-index="${j}"><strong>${escapeHtml(x.time)} · ${escapeHtml(x.name)}</strong></label><small>${escapeHtml(x.dose?x.dose+' '+x.unit:'Дозировка не распознана')} ${escapeHtml(x.how?' · '+x.how:'')}</small></div>`).join('')}<button class="primary" onclick="confirmImport()">Добавить выбранные в расписание</button>`}
 function confirmImport(){let idx=[...document.querySelectorAll('[data-import-index]:checked')].map(c=>Number(c.dataset.importIndex));if(!idx.length){toast('Ничего не выбрано');return}for(const n of idx){const i=pendingImport[n];db.items.push({id:uid(),name:i.name,time:i.time,dose:i.dose||'',unit:i.unit||'',form:i.form||'Другое',purpose:i.purpose||'',description:i.description||'',norm:i.norm||'',how:i.how||'',days:[0,1,2,3,4,5,6],start:'',end:'',image:'',emoji:'◈',demo:false})}save();closeModal();setTab('library');toast('Импортировано: '+idx.length)}
 function exportData(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sody-backup-'+isoToday()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}async function restoreData(e){try{const data=JSON.parse(await e.target.files[0].text());if(!Array.isArray(data.items)||typeof data.checks!=='object')throw Error('Неверный формат');if(!confirm('Заменить текущие данные данными из резервной копии?'))return;db=data;save();render();toast('Резервная копия восстановлена')}catch{toast('Не удалось восстановить файл')}}function resetAll(){if(!confirm('Безвозвратно удалить все добавки и отметки?'))return;db={items:[],checks:{}};save();render();toast('Данные очищены')}
-render();if('serviceWorker'in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+render();
+if('serviceWorker' in navigator){
+ window.addEventListener('load',async()=>{
+  try{
+   const registration=await navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'});
+   await registration.update();
+   let refreshed=false;
+   navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    if(!refreshed&&!sessionStorage.getItem('sody-sw-refreshed-v4')){
+     refreshed=true;sessionStorage.setItem('sody-sw-refreshed-v4','1');location.reload();
+    }
+   });
+  }catch(error){console.warn('SODY offline update unavailable',error)}
+ });
+}
 </script></body></html>
