@@ -664,3 +664,138 @@ body.sody-modal-open .ref-dock,body.sody-modal-open #fab{pointer-events:none!imp
  #modalRoot .sheet{max-height:calc(100vh - 12px)!important}
  #modalRoot .sheet-scroll{max-height:calc(100vh - 46px)!important}
 }
+
+
+/* SODY V22 — cell division / liquid budding motion system. */
+:root{--sody-cell-ease:cubic-bezier(.20,.82,.24,1);--sody-cell-spring:cubic-bezier(.18,1.28,.35,1)}
+/* Soft, reversible compression for real interactive controls. */
+button,.tap,.sody-plan-card,.sody-body-glass{
+  -webkit-tap-highlight-color:transparent;
+}
+button,.dose-card,.lib-card,.summary-row,.product-visual,.dose-main{
+  transition:transform .34s var(--sody-cell-spring),filter .35s ease,box-shadow .35s ease;
+}
+button:active,.tap:active,.dose-card:active,.lib-card:active{
+  transform:scale(.965);
+}
+.sody-plan-actions button:active,.ref-center-nav:active,.sody-add-button:active{
+  transform:scale(.93);
+}
+.dose-card:active,.lib-card:active{filter:brightness(1.045)}
+/* A transient transparent bubble pinches apart into two tiny daughter cells.
+   Overlay is pointer-safe, no WebGL, no canvas, no click interception. */
+.sody-cell-split{
+  position:fixed;left:0;top:0;width:82px;height:82px;
+  transform:translate(-50%,-50%);
+  pointer-events:none!important;
+  isolation:isolate;z-index:1600;
+  contain:layout style paint;
+}
+.sody-cell-split .sody-cell-mother,
+.sody-cell-split .sody-cell-daughter{
+  position:absolute;display:block;
+  border-radius:50%;
+  border:1px solid rgba(247,255,237,.85);
+  background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.91) 0%,rgba(223,251,215,.64) 28%,rgba(133,206,154,.42) 60%,rgba(62,141,91,.13) 100%);
+  box-shadow:inset -3px -4px 8px rgba(37,102,62,.14),inset 3px 3px 7px rgba(255,255,255,.52),0 1px 9px rgba(100,210,143,.28);
+  will-change:transform,opacity;
+}
+.sody-cell-split .sody-cell-mother{
+  left:23px;top:23px;width:36px;height:36px;
+  animation:sodyMotherSplit .67s var(--sody-cell-ease) both;
+}
+.sody-cell-split .sody-cell-daughter{
+  left:34px;top:29px;width:21px;height:21px;
+  animation:sodyDaughterSplit .7s var(--sody-cell-ease) both;
+}
+.sody-cell-split .sody-cell-neck{
+  position:absolute;left:41px;top:35px;width:31px;height:12px;
+  border-radius:60% 40% 50% 50%;
+  background:linear-gradient(90deg,rgba(192,247,195,.48),rgba(137,214,154,.27));
+  filter:blur(.6px);
+  transform-origin:0 50%;
+  animation:sodyCellNeck .48s ease-out both;
+}
+@keyframes sodyMotherSplit{
+  0%{opacity:0;transform:scale(.12)}
+  23%{opacity:.86;transform:scale(1.04,.98)}
+  44%{opacity:.84;transform:scale(1.12,.92)}
+  70%{opacity:.55;transform:translate(-4px,3px) scale(.69)}
+  100%{opacity:0;transform:translate(-10px,9px) scale(.18)}
+}
+@keyframes sodyDaughterSplit{
+  0%,12%{opacity:0;transform:translate(0,0) scale(.08)}
+  34%{opacity:.8;transform:translate(7px,-4px) scale(.45,.58)}
+  57%{opacity:.86;transform:translate(21px,-13px) scale(.86,1.04)}
+  78%{opacity:.49;transform:translate(30px,-22px) scale(.7)}
+  100%{opacity:0;transform:translate(40px,-30px) scale(.27)}
+}
+@keyframes sodyCellNeck{
+  0%,15%{opacity:0;transform:scaleX(.05) scaleY(.15)}
+  35%{opacity:.63;transform:scaleX(.7) scaleY(.88)}
+  59%{opacity:.59;transform:scaleX(1.15) scaleY(.45)}
+  77%{opacity:.15;transform:scaleX(1.36) scaleY(.18)}
+  100%{opacity:0;transform:scaleX(1.4) scaleY(.04)}
+}
+/* In-page transitions: the new cell grows from the touch position.
+   Scaling is small enough not to distort the design or crop long lists. */
+.tab-page.sody-cell-reveal:not(.hide){
+  transform-origin:var(--sody-cell-x,50%) var(--sody-cell-y,25%);
+  animation:sodyPageBloom .52s var(--sody-cell-spring) both!important;
+}
+@keyframes sodyPageBloom{
+  0%{opacity:.25;transform:translateY(11px) scale(.975);filter:blur(3px)}
+  48%{opacity:1;transform:translateY(-2px) scale(1.007);filter:blur(0)}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+/* Window appears like a soft fluid daughter cell, with subtle overshoot. */
+#modalRoot .sheet-bg{
+  animation:sodyOverlayAppear .33s ease-out both!important;
+}
+#modalRoot .sheet{
+  transform-origin:50% 100%;
+  animation:sodySheetBud .54s var(--sody-cell-spring) both!important;
+}
+#modalRoot .sheet-scroll>.ref-product-panel,
+#modalRoot .sheet-scroll>form,
+#modalRoot .sheet-scroll>.sody-install-guide{
+  animation:sodyPanelMaterialize .48s .07s var(--sody-cell-ease) both;
+}
+#modalRoot .sheet-bg.sody-is-closing{
+  pointer-events:none!important;
+  animation:sodyOverlayExit .23s ease-in both!important;
+}
+#modalRoot .sheet-bg.sody-is-closing .sheet{
+  animation:sodySheetRetract .24s cubic-bezier(.55,0,.85,.45) both!important;
+}
+@keyframes sodyOverlayAppear{from{opacity:0}to{opacity:1}}
+@keyframes sodyOverlayExit{from{opacity:1}to{opacity:0}}
+@keyframes sodySheetBud{
+  0%{opacity:.3;transform:translateY(48px) scale(.84,.77);border-radius:60px 60px 0 0;filter:blur(4px)}
+  42%{opacity:1;transform:translateY(-7px) scale(1.018,1.02);border-radius:34px 34px 0 0;filter:blur(0)}
+  70%{transform:translateY(2px) scale(.997,.994);border-radius:27px 27px 0 0}
+  100%{opacity:1;transform:translateY(0) scale(1);border-radius:26px 26px 0 0;filter:blur(0)}
+}
+@keyframes sodySheetRetract{
+  from{opacity:1;transform:translateY(0) scale(1)}
+  to{opacity:0;transform:translateY(26px) scale(.91,.87);border-radius:45px 45px 0 0}
+}
+@keyframes sodyPanelMaterialize{
+  from{opacity:.35;transform:translateY(15px) scale(.98);filter:blur(2px)}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+/* Prevent animation flashes inside reduced-motion accessibility setting. */
+@media(prefers-reduced-motion:reduce){
+  .sody-cell-split{display:none!important}
+  .tab-page.sody-cell-reveal:not(.hide),
+  #modalRoot .sheet-bg,#modalRoot .sheet,
+  #modalRoot .sheet-scroll>.ref-product-panel,
+  #modalRoot .sheet-scroll>form,
+  #modalRoot .sheet-scroll>.sody-install-guide,
+  #modalRoot .sheet-bg.sody-is-closing,
+  #modalRoot .sheet-bg.sody-is-closing .sheet{
+    animation:none!important;transition:none!important;
+    opacity:1!important;filter:none!important;transform:none!important;
+  }
+  button,.tap,.dose-card,.lib-card{transition:none!important}
+}
