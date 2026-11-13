@@ -111,17 +111,95 @@ body:before{display:none}
 @keyframes refBottleFloat{to{transform:translateY(-11px) rotate(2deg)}}
 @media(prefers-reduced-motion:reduce){.ref-bottle,.ref-product-capsule{animation:none!important}}
 
+
+/* SODY — reference geometry pass 2026-11-13: true notched dock and layered scenery */
+:root{--ui-green:#547761}
+.app{background:linear-gradient(155deg,#8ea98b 0%,#6e8f76 18%,#456d56 62%,#28503e 100%)!important}
+.top.reference-top{background:transparent;height:75px;padding:12px 8px 0;gap:10px}
+.ref-brand{display:none!important}
+.ref-profile{gap:10px}
+.ref-profile strong{font-size:13px;letter-spacing:.005em}
+.ref-profile small{font-size:10px;opacity:.92}
+.ref-settings{width:39px!important;height:39px!important}
+.ref-main-scene{height:calc(100svh - 155px)!important;min-height:570px;max-height:835px;padding:30px 8px 0;overflow:visible!important;background:radial-gradient(ellipse at 89% 54%,#9bb49c50 0%,transparent 50%),linear-gradient(165deg,#7a997c55 0%,#4d765b14 54%,#24523c4d 100%)!important}
+.ref-main-scene:before{inset:0;z-index:-2;background:radial-gradient(ellipse at 10% 0%,#d9e5cd22,transparent 60%)}
+.ref-date{font-size:11px;margin-bottom:8px;color:#e0e9d9}
+.ref-main-title{font-size:clamp(32px,8.1vw,42px)!important;line-height:1.085!important;max-width:320px;font-weight:620!important;letter-spacing:-.055em!important;margin:0 0 22px!important}
+.ref-results{width:225px}
+.ref-results-label{font-size:11px;margin-bottom:7px}
+.ref-result-line{font-size:11px;height:20px;gap:8px;letter-spacing:.005em}
+.ref-result-line>span{min-width:70px}
+.ref-results-dots{gap:3px}
+.ref-results-dots i{width:8px;height:8px}
+.ref-bottle-composition{right:-7px!important;top:28%!important;width:62%!important;height:57%!important;z-index:7!important}
+.ref-bottle-aura{inset:-10% -25%;background:radial-gradient(ellipse,#a6bf92b5,#6b916e49 35%,transparent 70%)}
+.ref-bottle{width:180px!important;height:310px!important;right:12%!important;top:2%!important;transform:rotate(-9deg) scale(1.04);filter:drop-shadow(17px 21px 14px #062a2075)}
+.ref-bottle-case{width:157px;height:218px;left:12px;top:69px;border-radius:31px 31px 35px 35px}
+.ref-bottle-cap{left:37px;width:107px;height:56px;transform:perspective(150px) rotateX(4deg);background:repeating-linear-gradient(90deg,#14281e 0 3px,#335a40 4px 6px,#192e20 7px 10px)}
+.ref-bottle-neck{left:43px;top:51px;width:86px}
+.ref-bottle-brand{font-size:22px}
+.ref-bottle-case small{bottom:23px;font-size:8px}
+.ref-reflection{bottom:8%;right:9%}
+.ref-orbit{width:128%;left:-22%;top:35%;height:52px;transform:rotate(-10deg);opacity:.65;border-color:#e0f5da70}
+.ref-orbit.orbit-two{top:63%;left:-18%;transform:rotate(12deg);opacity:.48}
+.ref-pill{top:16%;left:-7%;width:18px;height:36px}
+.ref-pill.pill-two{top:72%;left:83%;transform:rotate(-31deg)}
+.ref-feature-card{top:auto;bottom:2.4%;left:0!important;right:0!important;height:36%;min-height:205px;max-height:278px;padding:16px 17px 18px!important;border-radius:27px!important;background:linear-gradient(138deg,#77988198 4%,#5479637a 58%,#3e695884)!important;border:1px solid #eef9df65!important;box-shadow:inset 0 1px #ffffff4d,0 9px 26px #13372930!important;backdrop-filter:blur(22px) saturate(1.1)!important;z-index:5!important;overflow:hidden}
+.ref-feature-card:before{content:"";position:absolute;inset:0;background:linear-gradient(95deg,#456e5778 0%,#4a775f58 54%,transparent 94%);pointer-events:none}
+.ref-feature-card>*{position:relative;z-index:1}
+.ref-duration{height:26px;padding:0 12px;font-size:9px;background:#d0e5ce28}
+.ref-feature-card h2{font-size:clamp(20px,5.1vw,25px)!important;line-height:1.08;letter-spacing:-.045em;margin:12px 0 7px}
+.ref-feature-card p{font-size:11px;line-height:1.45;margin-bottom:17px;max-width:205px}
+.ref-actions{position:absolute;left:17px;right:17px;bottom:16px;gap:12px;display:flex}
+.ref-actions button{flex:none;min-width:auto;width:44%;height:43px;padding:11px 14px;font-size:11px;white-space:nowrap;border-radius:24px}
+.ref-actions .ref-ghost{width:43%;background:#ffffff08}
+.ref-feature-card .ref-actions button span{margin-left:7px}
+.ref-dock{height:100px;min-height:100px!important;padding:0 20px max(10px,env(safe-area-inset-bottom))!important;border:0!important;background:transparent!important;box-shadow:none!important;overflow:visible!important;border-radius:0!important;grid-template-columns:1fr 90px 1fr!important}
+.ref-dock:before{display:none!important}
+.dock-shape{display:block;position:absolute;inset:0;width:100%;height:100%;z-index:0;filter:drop-shadow(0 -9px 15px #183e2e48);pointer-events:none}
+.ref-dock .nav-btn{position:relative;z-index:1;align-self:end;min-height:58px;padding:7px 4px 12px!important;font-size:10px!important;background:transparent!important;color:#626f64!important}
+.ref-dock .nav-btn b{font-size:23px}
+.ref-center-nav{position:relative;z-index:2;top:-13px;margin-top:0!important;width:59px!important;height:59px!important;background:#fff!important;border:6px solid #659475!important;box-shadow:0 5px 16px #1236273e!important;color:#456c51!important}
+.ref-center-nav.active{border-color:#2f6348!important;background:#eff6e9!important}
+.add-floating{position:fixed;z-index:9;right:max(13px,calc(50% - 244px));bottom:115px!important;width:48px!important;height:48px!important}
+#page-home .section-top{margin-top:27px}
+#page-body{padding-top:8px!important}
+#page-body .body-head{padding:13px 7px 4px}
+#page-body .body-head .greet{font-size:clamp(33px,8vw,43px);line-height:1.08;margin:9px 0}
+#page-body .body-stage{height:calc(100svh - 245px)!important;min-height:500px;max-height:690px;position:relative}
+.body-stage .body-silhouette{height:75%!important;max-height:480px;top:2%!important}
+.body-stage .body-bottom-card{bottom:17px!important;left:14px;right:14px;height:185px;min-height:0;background:#658771a3!important}
+.ref-product-panel{padding:15px 17px 20px;border-radius:29px}
+.ref-detail-title{font-size:25px!important}
+.ref-product-image{height:210px}
+.ref-product-capsule{transform:rotate(-18deg);width:170px;scale:1.05}
+.ref-detail-tags span{background:#f5f6f1}
+@media (max-height:740px){
+.ref-main-scene{min-height:535px!important}
+.ref-feature-card{height:37%;min-height:199px}
+.ref-bottle-composition{top:26%!important}
+.ref-bottle{transform:rotate(-9deg) scale(.92)}
+.ref-feature-card h2{font-size:20px!important}
+}
+@media (max-width:360px){
+.ref-main-title{font-size:31px!important}
+.ref-bottle-composition{right:-30px!important;top:29%!important}
+.ref-feature-card{padding:13px 14px!important}
+.ref-actions{left:14px;right:14px}
+.ref-actions button{width:46%;font-size:10px;padding:9px}
+}
+
 </style></head><body><div class="orb"></div><main class="app">
 <header class="top reference-top">
   <div class="ref-profile"><div class="ref-avatar" aria-hidden="true">S</div><div><strong id="headerProgress">Мой прогресс</strong><small>твой личный ритм</small></div></div>
-  <div class="ref-brand">SODY</div>
+  <div class="ref-brand" aria-hidden="true">SODY</div>
   <button class="icon-btn ref-settings" aria-label="Настройки" onclick="setTab('settings')">⚙</button>
 </header>
 <section class="tab-page" id="page-home">
   <div class="ref-main-scene">
     <div class="ref-date" id="todayCaption">СЕГОДНЯ</div>
-    <h1 class="ref-main-title">Твой ежедневный<br>план готов.</h1>
-    <div class="ref-results"><div class="ref-results-label">Прогресс на сегодня</div><div class="ref-result-line"><span>Приёмы</span><div class="ref-results-dots" id="homeDots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><small id="heroPercent">0%</small></div><div class="ref-result-line"><span>Выполнено</span><strong id="heroCount">0 из 0</strong></div></div>
+    <h1 class="ref-main-title">Твой план<br>на сегодня готов.</h1>
+    <div class="ref-results"><div class="ref-results-label">Ожидаемый результат:</div><div class="ref-result-line"><span>Ритм</span><div class="ref-results-dots" id="homeDots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><small id="heroPercent">0%</small></div><div class="ref-result-line"><span>Завершено</span><strong id="heroCount">0 из 0</strong></div></div>
     <div class="ref-bottle-composition" aria-hidden="true">
       <div class="ref-bottle-aura"></div><div class="ref-orbit orbit-one"></div><div class="ref-orbit orbit-two"></div>
       <div class="ref-pill pill-one"></div><div class="ref-pill pill-two"></div>
@@ -133,10 +211,10 @@ body:before{display:none}
       <div class="ref-reflection"></div>
     </div>
     <div class="ref-feature-card">
-      <span class="ref-duration">МОЙ ПЛАН</span>
-      <h2>Ритм и<br>восстановление</h2>
-      <p>Твой персональный график,<br>состав и время приёма.</p>
-      <div class="ref-actions"><button onclick="setTab('calendar')">Посмотреть план <span>›</span></button><button class="ref-ghost" onclick="openImport()">Импортировать <span>›</span></button></div>
+      <span class="ref-duration">60 ДНЕЙ · МОЙ РИТМ</span>
+      <h2>Энергия и<br>баланс</h2>
+      <p>Под твоё расписание,<br>цели и ежедневные привычки.</p>
+      <div class="ref-actions"><button onclick="setTab('calendar')">Мой план <span>↗</span></button><button class="ref-ghost" onclick="openImport()">Начать <span>›</span></button></div>
     </div>
     <span id="heroDesc" class="hide"></span><svg class="hide" aria-hidden="true"><circle id="ringProgress" r="44"></circle></svg>
   </div>
@@ -173,7 +251,7 @@ body:before{display:none}
   <div class="section-top"><h2>В фокусе</h2></div>
   <div class="body-insight-list"><div><span class="insight-glyph">◷</span><div><b>Режим</b><p>Следи за временем и отметками приёма</p></div></div><div><span class="insight-glyph">✳</span><div><b>Состав</b><p>Все добавки и формы выпуска в одном месте</p></div></div><div><span class="insight-glyph">◎</span><div><b>План</b><p>График на день, неделю или месяц</p></div></div></div>
 </section><section class="tab-page hide" id="page-settings"><div class="eyebrow">НАСТРОЙКИ</div><h1 class="greet">Всё под контролем.</h1><p class="subtitle">Управляйте данными и переносите свой план между устройствами.</p><div class="glass" style="padding:17px"><button class="primary" onclick="openImport()">⇧ Импортировать план</button><button class="primary secondary" onclick="exportData()">↓ Скачать резервную копию JSON</button><label class="filelabel" style="margin-top:12px">Восстановить резервную копию<input type="file" accept=".json,application/json" onchange="restoreData(event)"></label><button class="primary danger" onclick="resetAll()">Сбросить данные</button></div><p class="footer-note">Информация хранится локально в этом браузере. Для переноса используйте резервную копию. Уведомления и синхронизация между устройствами пока не реализованы.</p></section></main>
-<button class="add-floating" id="fab" title="Добавить" aria-label="Добавить добавку" onclick="openEdit()">+</button><nav class="dock ref-dock" aria-label="Навигация">
+<button class="add-floating" id="fab" title="Добавить" aria-label="Добавить добавку" onclick="openEdit()">+</button><nav class="dock ref-dock" aria-label="Навигация"><svg class="dock-shape" viewBox="0 0 520 112" preserveAspectRatio="none" aria-hidden="true"><path d="M0 28 Q0 5 30 5 H177 C203 5 206 18 216 35 C225 51 237 57 260 57 C283 57 295 51 304 35 C314 18 317 5 343 5 H490 Q520 5 520 28 V112 H0 Z" fill="#fff"/></svg>
 <button class="nav-btn active" data-tab="home" onclick="setTab('home')"><b>⌂</b><span>главная</span></button>
 <button class="ref-center-nav" data-tab="body" aria-label="Мой баланс" onclick="setTab('body')"><span>◉</span></button>
 <button class="nav-btn" data-tab="calendar" onclick="setTab('calendar')"><b>▤</b><span>план</span></button>
