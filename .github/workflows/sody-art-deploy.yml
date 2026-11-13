@@ -1,4 +1,4 @@
-name: Prepare SODY artwork
+name: Build SODY artwork
 on:
   push:
     paths:
@@ -10,52 +10,75 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download approved image source files
+      - name: Prepare SODY images from provided reference photos
         env:
-          IMG_BOTTLE: 'https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2F1e3ba02d-b382-4b43-998f-0dcf54467080/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAACdxD7YVrCOyPOesPWCNtkYucsaWjh7wcmk5e07SdmFr&exp=1794577564&osig=AAAAAAAAAAAAAAAAAAAAAN7XRbQ6fHWKqucp5c7vlDObiaXpU-ThdC6kSuHPa5PN&signer=media-rpc&token=AAIAAU0AJDFlM2JhMDJkLWIzODItNGI0My05OThmLTBkY2Y1NDQ2NzA4MAAAAAABodUogWAAGGqdL6k3T3kzkDfwN56PaX1xXIl9sRqbtwrr7dpwOg&x-canva-quality=thumbnail'
-          IMG_WOMAN: 'https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2F4d02f5c3-53d8-455e-9087-c79258d1981a/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAADyyLIx3tZUqY2LM_NVLe5H1fKuPvUJhE-6JnmrrHV4E&exp=1794578716&osig=AAAAAAAAAAAAAAAAAAAAAKD8LqJrkY8-jGGLjzMLnssaUsQx7aNoFVqSgt9gTmld&signer=media-rpc&token=AAIAAU0AJDRkMDJmNWMzLTUzZDgtNDU1ZS05MDg3LWM3OTI1OGQxOTgxYQAAAAABodU6FWBr_mjZ3rM1lIzSvQ36QDPOlqHbYiwd0r057FmlPvZFOg&x-canva-quality=thumbnail'
+          BOTTLE_URL: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JSxcOirL4mYOchZOe1eqkneCaW/38fe1317-b79f-4943-a61d-350a76d928fb.jpg"
+          WOMAN_URL: "https://d2ol7oe51mr4n9.cloudfront.net/user_3JSxcOirL4mYOchZOe1eqkneCaW/479d3e67-790f-478f-a174-8572eb2c8902.jpg"
         run: |
           set -e
           python -m pip install --quiet pillow
-          python - <<'PY'
-          import os,urllib.request
-          for name,var in [('bottle','IMG_BOTTLE'),('woman','IMG_WOMAN')]:
-              url=os.environ[var]
-              large=url.replace('/height:200/','/height:1672/').replace('/width:112','/width:941')
-              try:
-                  urllib.request.urlretrieve(large,'/tmp/'+name+'.png')
-                  from PIL import Image
-                  with Image.open('/tmp/'+name+'.png') as image:
-                      if image.width < 400: raise ValueError('Large variant unavailable')
-                  print('HIGH RES downloaded',name)
-              except Exception as e:
-                  print('Large variant unavailable, using signed source thumbnail:',str(e)[:150])
-                  urllib.request.urlretrieve(url,'/tmp/'+name+'.png')
-          PY
-      - name: Create transparent presentation art
-        run: |
           mkdir -p assets
           python - <<'PY'
-          from PIL import Image,ImageDraw,ImageFilter
-          def build(kind,out,rect,poly):
-              im=Image.open('/tmp/'+kind+'.png').convert('RGBA')
-              sx=im.width/941;sy=im.height/1672
-              r=tuple(round(v*(sx if i%2==0 else sy)) for i,v in enumerate(rect))
-              m=Image.new('L',im.size,0)
-              d=ImageDraw.Draw(m)
-              d.polygon([(round(x*sx),round(y*sy)) for x,y in poly],fill=255)
-              m=m.filter(ImageFilter.GaussianBlur(max(.6,im.width/450)))
-              im.putalpha(m)
-              im=im.crop(r)
-              if im.width > 480: im.thumbnail((480,950),Image.Resampling.LANCZOS)
-              im.save('assets/'+out,'WEBP',quality=88,method=6)
-              print(out,im.size)
-          build('bottle','sody-bottle.webp',(455,380,910,982),[(510,457),(532,429),(571,411),(691,397),(731,411),(751,447),(750,493),(773,516),(807,565),(845,667),(869,831),(862,891),(831,933),(761,957),(653,970),(593,950),(567,912),(542,814),(516,702),(498,616),(504,537)])
-          build('woman','sody-molecular-woman.webp',(395,60,932,1250),[(559,155),(587,110),(642,73),(711,64),(783,84),(822,132),(842,215),(823,269),(802,303),(821,336),(858,378),(888,487),(918,734),(923,960),(893,1141),(865,1202),(837,1210),(822,997),(802,933),(775,894),(745,896),(737,1035),(708,1149),(669,1214),(617,1238),(561,1202),(523,1086),(495,958),(473,804),(445,680),(416,564),(422,471),(453,413),(504,376),(544,333),(555,279),(526,252),(520,213)])
+          import os,urllib.request,io
+          from PIL import Image,ImageDraw,ImageFilter,ImageOps,ImageFont
+          def load(key):
+              req=urllib.request.Request(os.environ[key],headers={'User-Agent':'Mozilla/5.0'})
+              with urllib.request.urlopen(req,timeout=35) as res: return Image.open(io.BytesIO(res.read())).convert('RGB')
+          def mask_polygon(size,coords):
+              mask=Image.new('L',size,0);ImageDraw.Draw(mask).polygon(coords,fill=255)
+              return mask.filter(ImageFilter.GaussianBlur(1.3))
+          src=load('WOMAN_URL')
+          im=src.crop((300,10,720,1270))
+          mono=ImageOps.grayscale(im)
+          green=ImageOps.colorize(mono,black='#123c2d',white='#d6ffe1',mid='#57c88e',blackpoint=1,whitepoint=249,midpoint=123).convert('RGBA')
+          ip=im.load();gp=green.load()
+          for y in range(im.height):
+              limit=(395 if y<460 else 338 if y<900 else 307)-300
+              for x in range(im.width):
+                  r,g,b=ip[x,y];score=max(0,max(b,g)-22)
+                  a=int(min(242,max(0,(score-4)*2.15)))
+                  if b<r*1.12 or b<g*.84: a=int(a*.22)
+                  if x<limit: a=0
+                  elif x<limit+32: a=int(a*(x-limit)/32)
+                  if y>im.height-110:a=int(a*(im.height-y)/110)
+                  gp[x,y]=(*gp[x,y][:3],max(0,a))
+          green.resize((310,930),Image.Resampling.LANCZOS).save('assets/sody-molecular-woman.webp','WEBP',quality=86,method=6)
+          src=load('BOTTLE_URL')
+          jar=src.crop((188,553,561,1126))
+          poly=[(166,17),(242,10),(294,34),(318,77),(346,142),(353,259),(348,371),(318,492),(292,526),(218,558),(126,558),(77,531),(36,496),(23,450),(23,313),(42,189),(66,108),(117,45)]
+          base=jar.convert('RGBA')
+          shaded=ImageOps.colorize(ImageOps.grayscale(jar),black='#071b11',white='#81a486',mid='#215c38',blackpoint=10,whitepoint=232,midpoint=113).convert('RGBA')
+          base=Image.blend(base,shaded,.84);base.putalpha(mask_polygon(jar.size,poly))
+          overlay=Image.new('RGBA',jar.size,(0,0,0,0))
+          ImageDraw.Draw(overlay).polygon([(78,131),(284,121),(311,424),(57,430)],fill=(13,62,41,236))
+          base=Image.alpha_composite(base,overlay.filter(ImageFilter.GaussianBlur(1)))
+          try:
+              face='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+              title=ImageFont.truetype(face,39);small=ImageFont.truetype(face,16)
+          except OSError:title=small=ImageFont.load_default()
+          label=Image.new('RGBA',(250,210),(0,0,0,0));d=ImageDraw.Draw(label)
+          d.text((12,22),'Daily',font=title,fill='#f6fbee')
+          d.text((12,69),'vitamin',font=title,fill='#f6fbee')
+          d.text((93,134),'✳',font=title,fill='#f0fae9')
+          d.text((69,174),'S O D Y',font=small,fill='#f0fae9')
+          label=label.rotate(5,Image.Resampling.BICUBIC,expand=True)
+          base.alpha_composite(label,(57,152))
+          cap=src.crop((210,105,462,303)).convert('RGBA')
+          cp=cap.load()
+          for y in range(cap.height):
+              for x in range(cap.width):
+                  r,g,b,a=cp[x,y]
+                  a=int(min(255,max(0,(255-max(r,g,b)-65)*3.3)))
+                  cp[x,y]=(int(r*.72),int(g*.77),int(b*.72),a)
+          cap=cap.resize((249,159),Image.Resampling.LANCZOS)
+          canvas=Image.new('RGBA',(420,685),(0,0,0,0))
+          canvas.alpha_composite(base,(21,110));canvas.alpha_composite(cap,(73,8))
+          canvas.resize((270,441),Image.Resampling.LANCZOS).save('assets/sody-bottle.webp','WEBP',quality=86,method=6)
+          print('SODY artwork generated successfully')
           PY
-      - name: Publish artwork to main
+      - name: Commit assets to main
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add assets/sody-bottle.webp assets/sody-molecular-woman.webp
-          if git diff --cached --quiet; then echo 'Assets unchanged'; else git commit -m 'Add approved SODY bottle and molecular woman assets'; git push; fi
+          if ! git diff --cached --quiet; then git commit -m 'Publish SODY green bottle and molecular female artwork'; git push; fi
