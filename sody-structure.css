@@ -326,3 +326,80 @@ html{scroll-padding-bottom:105px}
   #page-body .sody-body-glass{padding:14px!important}
   #page-body .sody-woman-stage{right:-15%!important}
 }
+
+
+/* SODY V17 — the actual home screen (previous release largely touched other tabs) */
+#page-home .sody-home-canvas{
+  height:calc(100dvh - 77px)!important;
+  min-height:690px!important;
+  max-height:none!important;
+  margin:0 0 18px!important;
+  border-radius:30px!important;
+  background:
+    radial-gradient(ellipse 67% 53% at 82% 43%,rgba(163,200,157,.50),transparent 74%),
+    radial-gradient(ellipse 69% 45% at 8% 2%,rgba(208,232,204,.19),transparent 81%),
+    linear-gradient(152deg,#739a7c 0%,#547d62 42%,#2e654b 100%)!important;
+  box-shadow:inset 0 1px 0 #e0f9d51a,0 18px 36px #163c2a21!important
+}
+#page-home .sody-home-content{top:4.5%!important;left:5%!important;right:5%!important;z-index:7!important}
+#page-home .sody-home-content h1{
+  font-size:clamp(35px,9.5vw,50px)!important;
+  line-height:1.045!important;
+  letter-spacing:-.061em!important;
+  max-width:320px!important
+}
+#page-home .sody-small-caption{font-size:10px!important;letter-spacing:.12em!important;color:#e1f0dc!important}
+#page-home .sody-health-stats{margin-top:20px!important}
+#page-home .sody-health-stats p{margin-bottom:9px!important}
+#page-home .sody-bottle-stage{
+  top:26%!important;right:-5%!important;width:68%!important;height:49%!important;
+  z-index:6!important;overflow:visible!important
+}
+#page-home .sody-bottle-img{
+  top:0!important;right:3%!important;width:85%!important;height:100%!important;
+  object-fit:contain!important;transform:rotate(-4deg)!important;
+  filter:drop-shadow(12px 19px 15px rgba(9,44,25,.36))!important;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0%,#000 6%,#000 94%,transparent 100%)
+}
+/* One restrained orbital line, not several strokes cutting through the artwork. */
+#page-home .sody-bottle-orbits ellipse:first-child{
+  stroke:#effce96e!important;stroke-width:1!important;opacity:.67!important
+}
+#page-home .sody-bottle-orbits ellipse:last-child{display:none!important}
+#page-home .sody-bottle-orbits{opacity:.7!important;transform:translateY(2%) scale(.92)!important}
+#page-home .sody-plan-card{
+  left:3%!important;right:3%!important;bottom:88px!important;z-index:5!important;
+  min-height:228px!important;padding:17px 19px 18px!important;
+  border-radius:31px!important;
+  background:linear-gradient(140deg,rgba(132,180,143,.83),rgba(55,110,79,.86))!important;
+  border:1.3px solid rgba(238,255,230,.71)!important;
+  backdrop-filter:blur(29px) saturate(1.2)!important;
+  -webkit-backdrop-filter:blur(29px) saturate(1.2)!important;
+  box-shadow:inset 0 1px 0 #f5ffeb7d,0 11px 26px #153e2930!important
+}
+#page-home .sody-plan-card h2{margin:12px 0 7px!important;font-size:clamp(25px,6.5vw,31px)!important;line-height:1.07!important}
+#page-home .sody-plan-card p{max-width:236px!important;font-size:12px!important;line-height:1.46!important}
+#page-home .sody-plan-actions{margin-top:18px!important;gap:8px!important}
+#page-home .sody-plan-actions button{height:44px!important;border-radius:23px!important}
+#page-home .sody-add-button{width:45px!important}
+#page-home .sody-below-fold{padding-top:14px!important;padding-bottom:160px!important}
+#page-home .sody-below-fold .section-top{margin-top:23px!important}
+#page-home .sody-below-fold .date-strip{scroll-margin-bottom:110px}
+/* Keep the nav button above its notch, without an extra ring or duplicated white layer. */
+.ref-dock{height:68px!important;min-height:68px!important;z-index:35!important}
+.ref-dock .dock-shape{filter:drop-shadow(0 -4px 9px rgba(16,57,36,.18))!important}
+.ref-dock .ref-center-nav{top:-18px!important;box-shadow:0 5px 12px rgba(19,68,41,.23)!important}
+@media(max-width:390px){
+ #page-home .sody-home-canvas{min-height:650px!important}
+ #page-home .sody-bottle-stage{top:28%!important;right:-7%!important;width:69%!important;height:47%!important}
+ #page-home .sody-plan-card{bottom:84px!important;min-height:216px!important;padding:15px 15px 16px!important}
+ #page-home .sody-plan-card h2{font-size:25px!important}
+ #page-home .sody-plan-actions{margin-top:15px!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 41px!important}
+ #page-home .sody-plan-actions button{height:42px!important}
+}
+@media(max-height:760px){
+ #page-home .sody-home-canvas{min-height:650px!important;height:calc(100dvh - 77px)!important}
+ #page-home .sody-bottle-stage{top:27%!important;height:48%!important}
+ #page-home .sody-plan-card{min-height:213px!important}
+}
