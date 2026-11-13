@@ -1,0 +1,61 @@
+name: Prepare SODY artwork
+on:
+  push:
+    paths:
+      - '.github/workflows/sody-art-deploy.yml'
+permissions:
+  contents: write
+jobs:
+  assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download approved image source files
+        env:
+          IMG_BOTTLE: 'https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2F1e3ba02d-b382-4b43-998f-0dcf54467080/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAACdxD7YVrCOyPOesPWCNtkYucsaWjh7wcmk5e07SdmFr&exp=1794577564&osig=AAAAAAAAAAAAAAAAAAAAAN7XRbQ6fHWKqucp5c7vlDObiaXpU-ThdC6kSuHPa5PN&signer=media-rpc&token=AAIAAU0AJDFlM2JhMDJkLWIzODItNGI0My05OThmLTBkY2Y1NDQ2NzA4MAAAAAABodUogWAAGGqdL6k3T3kzkDfwN56PaX1xXIl9sRqbtwrr7dpwOg&x-canva-quality=thumbnail'
+          IMG_WOMAN: 'https://media.canva.com/v2/image-resize/format:PNG/height:200/quality:100/uri:ifs%3A%2F%2FM%2F4d02f5c3-53d8-455e-9087-c79258d1981a/watermark:F/width:112?csig=AAAAAAAAAAAAAAAAAAAAADyyLIx3tZUqY2LM_NVLe5H1fKuPvUJhE-6JnmrrHV4E&exp=1794578716&osig=AAAAAAAAAAAAAAAAAAAAAKD8LqJrkY8-jGGLjzMLnssaUsQx7aNoFVqSgt9gTmld&signer=media-rpc&token=AAIAAU0AJDRkMDJmNWMzLTUzZDgtNDU1ZS05MDg3LWM3OTI1OGQxOTgxYQAAAAABodU6FWBr_mjZ3rM1lIzSvQ36QDPOlqHbYiwd0r057FmlPvZFOg&x-canva-quality=thumbnail'
+        run: |
+          set -e
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          import os,urllib.request
+          for name,var in [('bottle','IMG_BOTTLE'),('woman','IMG_WOMAN')]:
+              url=os.environ[var]
+              large=url.replace('/height:200/','/height:1672/').replace('/width:112','/width:941')
+              try:
+                  urllib.request.urlretrieve(large,'/tmp/'+name+'.png')
+                  from PIL import Image
+                  with Image.open('/tmp/'+name+'.png') as image:
+                      if image.width < 400: raise ValueError('Large variant unavailable')
+                  print('HIGH RES downloaded',name)
+              except Exception as e:
+                  print('Large variant unavailable, using signed source thumbnail:',str(e)[:150])
+                  urllib.request.urlretrieve(url,'/tmp/'+name+'.png')
+          PY
+      - name: Create transparent presentation art
+        run: |
+          mkdir -p assets
+          python - <<'PY'
+          from PIL import Image,ImageDraw,ImageFilter
+          def build(kind,out,rect,poly):
+              im=Image.open('/tmp/'+kind+'.png').convert('RGBA')
+              sx=im.width/941;sy=im.height/1672
+              r=tuple(round(v*(sx if i%2==0 else sy)) for i,v in enumerate(rect))
+              m=Image.new('L',im.size,0)
+              d=ImageDraw.Draw(m)
+              d.polygon([(round(x*sx),round(y*sy)) for x,y in poly],fill=255)
+              m=m.filter(ImageFilter.GaussianBlur(max(.6,im.width/450)))
+              im.putalpha(m)
+              im=im.crop(r)
+              if im.width > 480: im.thumbnail((480,950),Image.Resampling.LANCZOS)
+              im.save('assets/'+out,'WEBP',quality=88,method=6)
+              print(out,im.size)
+          build('bottle','sody-bottle.webp',(455,380,910,982),[(510,457),(532,429),(571,411),(691,397),(731,411),(751,447),(750,493),(773,516),(807,565),(845,667),(869,831),(862,891),(831,933),(761,957),(653,970),(593,950),(567,912),(542,814),(516,702),(498,616),(504,537)])
+          build('woman','sody-molecular-woman.webp',(395,60,932,1250),[(559,155),(587,110),(642,73),(711,64),(783,84),(822,132),(842,215),(823,269),(802,303),(821,336),(858,378),(888,487),(918,734),(923,960),(893,1141),(865,1202),(837,1210),(822,997),(802,933),(775,894),(745,896),(737,1035),(708,1149),(669,1214),(617,1238),(561,1202),(523,1086),(495,958),(473,804),(445,680),(416,564),(422,471),(453,413),(504,376),(544,333),(555,279),(526,252),(520,213)])
+          PY
+      - name: Publish artwork to main
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add assets/sody-bottle.webp assets/sody-molecular-woman.webp
+          if git diff --cached --quiet; then echo 'Assets unchanged'; else git commit -m 'Add approved SODY bottle and molecular woman assets'; git push; fi
