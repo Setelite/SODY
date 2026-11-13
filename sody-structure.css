@@ -403,3 +403,122 @@ html{scroll-padding-bottom:105px}
  #page-home .sody-bottle-stage{top:27%!important;height:48%!important}
  #page-home .sody-plan-card{min-height:213px!important}
 }
+
+
+/* SODY V19 — exact five requested corrections, 13 Nov 2026 */
+#page-home .sody-bottle-stage{
+  top:27%!important;
+  right:5%!important;
+  width:65%!important;
+  height:48%!important;
+  overflow:visible!important;
+}
+#page-home .sody-bottle-img{
+  top:0!important;right:3%!important;
+  width:82%!important;height:98%!important;
+  object-fit:contain!important;
+  transform:rotate(-3deg)!important;
+  /* The new WebP already contains true alpha. No old rectangular masking. */
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  filter:drop-shadow(5px 12px 10px rgba(12,42,26,.23))!important;
+}
+#page-home .sody-bottle-stage:before,
+#page-home .sody-bottle-stage:after{display:none!important;content:none!important}
+#page-home .sody-bottle-orbits{opacity:.46!important;filter:none!important}
+#page-home .sody-bottle-orbits ellipse{stroke-width:.9!important}
+/* Seamless molecular woman, centered instead of drifting off-screen. */
+#page-body .sody-body-canvas{
+  min-height:max(685px,calc(100dvh - 77px))!important;
+  height:auto!important;
+  padding-bottom:84px!important;
+  border-radius:27px 27px 0 0!important;
+  box-shadow:none!important;
+  background:
+    radial-gradient(ellipse 72% 63% at 68% 32%,rgba(150,202,158,.42),transparent 73%),
+    linear-gradient(160deg,#6b9c7a 0%,#4a8264 48%,#356b50 100%)!important;
+}
+#page-body .sody-woman-stage{
+  right:2%!important;
+  left:auto!important;
+  top:0!important;
+  width:86%!important;
+  height:82%!important;
+  max-height:none!important;
+  z-index:2!important;
+  overflow:visible!important;
+  opacity:1!important;
+}
+#page-body .sody-woman-stage>img{
+  display:block!important;
+  right:0!important;top:0!important;
+  width:100%!important;height:100%!important;
+  object-fit:contain!important;
+  object-position:right top!important;
+  opacity:1!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  filter:drop-shadow(0 0 8px rgba(196,249,201,.16))!important;
+}
+#page-body .sody-woman-orbits{
+  opacity:.17!important;
+  filter:none!important;
+}
+#page-body .sody-body-glass{
+  background:linear-gradient(142deg,rgba(112,166,128,.91),rgba(56,109,80,.94))!important;
+  backdrop-filter:blur(22px) saturate(1.12)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(1.12)!important;
+  border:1px solid rgba(240,255,235,.6)!important;
+  box-shadow:inset 0 1px 0 rgba(253,255,241,.36)!important;
+}
+/* A single white navigation surface. Remove extra backgrounds and dark slabs. */
+body .ref-dock{
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  isolation:isolate!important;
+  overflow:visible!important;
+}
+body .ref-dock:before,body .ref-dock:after{
+  display:none!important;content:none!important;background:none!important;
+  box-shadow:none!important;
+}
+body .ref-dock .dock-shape{
+  filter:none!important;
+  box-shadow:none!important;
+  background:transparent!important;
+}
+body .ref-dock .ref-center-nav{
+  border:3px solid #8caf96!important;
+  box-shadow:0 2px 5px rgba(17,48,31,.11)!important;
+  top:-16px!important;
+  width:54px!important;height:54px!important;
+}
+body .app{box-shadow:none!important}
+#page-home .sody-home-canvas{
+  box-shadow:none!important;
+  border-radius:28px 28px 0 0!important;
+}
+#page-home .sody-plan-card{z-index:7!important}
+@media(max-width:390px){
+  #page-home .sody-bottle-stage{
+    top:28%!important;right:3%!important;
+    width:67%!important;height:47%!important;
+  }
+  #page-home .sody-bottle-img{width:83%!important;right:3%!important}
+  #page-body .sody-woman-stage{
+    top:0!important;right:0!important;width:88%!important;height:83%!important;
+  }
+  #page-body .sody-body-canvas{
+    min-height:max(690px,calc(100dvh - 77px))!important;
+    padding-bottom:82px!important;
+  }
+}
+@media(max-height:740px){
+  #page-body .sody-body-canvas{
+    min-height:690px!important;padding-bottom:82px!important;
+  }
+  #page-body .sody-woman-stage{height:80%!important}
+}
