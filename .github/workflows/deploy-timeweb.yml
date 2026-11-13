@@ -56,6 +56,23 @@ jobs:
             -e 'ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -p 22' \
             ./ cx74614@vh454.timeweb.ru:/home/c/cx74614/public_html/sody/
 
+      - name: Probe public SODY directory mapping
+        run: |
+          set -euo pipefail
+          PROBE="sody-directory-check-${GITHUB_SHA:0:12}.txt"
+          CONTENT="sody-path-check-${GITHUB_SHA}"
+          ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -p 22 cx74614@vh454.timeweb.ru \
+            "printf '%s\\n' '$CONTENT' > '/home/c/cx74614/public_html/sody/$PROBE'"
+          trap 'ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -p 22 cx74614@vh454.timeweb.ru "rm -f /home/c/cx74614/public_html/sody/$PROBE" || true' EXIT
+          curl -LsS --max-time 15 -o /tmp/sody-probe-response -w 'Public probe HTTP %{http_code} bytes %{size_download}\n' \
+            "https://gornostaevmarketing.ru/sody/$PROBE?bust=${GITHUB_SHA}"
+          if grep -Fxq "$CONTENT" /tmp/sody-probe-response; then
+            echo "VERIFIED: remote SSH SODY directory maps to public URL"
+          else
+            echo "::error::SSH deployment directory does not match public /sody/ directory (or a rewrite/cache intercepts the request)"
+            exit 1
+          fi
+
       - name: Diagnose and verify published SODY version
         run: |
           set -euo pipefail
