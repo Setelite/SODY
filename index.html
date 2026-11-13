@@ -324,7 +324,7 @@ body.approved-art-mode .orb{display:none!important}
 @media(max-height:650px){.approved-screen{min-height:560px}.body-truth-overlay{height:24%;bottom:11%}.body-truth-overlay h2{margin:6px 0}}
 @media(min-width:521px){body.approved-art-mode .app{box-shadow:0 0 100px rgba(5,31,16,.2)}}
 
-</style><link rel="stylesheet" href="sody-structure.css?v=18"></head><body><div class="orb"></div><main class="app">
+</style><link rel="stylesheet" href="sody-structure.css?v=19"></head><body><div class="orb"></div><main class="app">
 <header class="top reference-top">
   <div class="ref-profile"><div class="ref-avatar" aria-hidden="true">S</div><div><strong id="headerProgress">Мой прогресс</strong><small>твой личный ритм</small></div></div>
   <div class="ref-brand" aria-hidden="true">SODY</div>
@@ -344,7 +344,7 @@ body.approved-art-mode .orb{display:none!important}
     <div class="sody-bottle-stage" aria-label="Реалистичная баночка SODY">
       <svg class="sody-bottle-orbits" viewBox="0 0 540 470" aria-hidden="true" preserveAspectRatio="none"><ellipse cx="271" cy="233" rx="263" ry="43" transform="rotate(-12 271 233)" /><ellipse cx="270" cy="326" rx="270" ry="49" transform="rotate(11 270 326)" /></svg>
       
-      <img src="assets/sody-bottle-cut.webp?art=18" alt="Зелёная баночка Daily vitamin SODY" class="sody-bottle-img" width="390" height="595" onerror="this.src='assets/sody-bottle.webp'"/>
+      <img src="assets/sody-bottle-cut.webp?art=19" alt="Зелёная баночка Daily vitamin SODY" class="sody-bottle-img" width="390" height="595" onerror="this.src='assets/sody-bottle.webp'"/>
     </div>
     <div class="sody-plan-card">
       <span class="sody-chip">60 ДНЕЙ · МОЙ РИТМ</span>
@@ -383,7 +383,7 @@ body.approved-art-mode .orb{display:none!important}
     <div class="sody-knowledge-row"><span class="sody-knowledge-svg"><svg viewBox="0 0 40 40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 20 15-13 15 13"/><path d="M10 18v16h20V18M17 34V23h6v11"/></svg></span><span><strong>Белок</strong><small>основа твоего баланса</small></span></div>
   </div>
   <div class="sody-woman-stage">
-     <img src="assets/sody-woman-cut.webp" width="623" height="1315" alt="Полупрозрачная молекулярная фигура женщины" onerror="this.src='assets/sody-molecular-woman.webp'"/>
+     <img src="assets/sody-woman-cut.webp?art=19" width="623" height="1315" alt="Полупрозрачная молекулярная фигура женщины" onerror="this.src='assets/sody-molecular-woman.webp'"/>
      <svg viewBox="0 0 500 700" preserveAspectRatio="none" aria-hidden="true" class="sody-woman-orbits"><ellipse cx="280" cy="330" rx="210" ry="46" transform="rotate(-8 280 330)"/><ellipse cx="282" cy="492" rx="243" ry="40" transform="rotate(-20 282 492)"/></svg>
   </div>
   <div class="sody-body-glass">
@@ -443,7 +443,7 @@ function confirmImport(){let idx=[...document.querySelectorAll('[data-import-ind
 function exportData(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='sody-backup-'+isoToday()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}async function restoreData(e){try{const data=JSON.parse(await e.target.files[0].text());if(!Array.isArray(data.items)||typeof data.checks!=='object')throw Error('Неверный формат');if(!confirm('Заменить текущие данные данными из резервной копии?'))return;db=data;save();render();toast('Резервная копия восстановлена')}catch{toast('Не удалось восстановить файл')}}function resetAll(){if(!confirm('Безвозвратно удалить все добавки и отметки?'))return;db={items:[],checks:{}};save();render();toast('Данные очищены')}
 document.body.classList.remove('approved-art-mode');document.body.dataset.sodyTab='home';document.getElementById('fab').classList.add('hide');render();
 if('serviceWorker' in navigator){
- const release='v18';
+ const release='v19';
  const reloadKey='sody-refreshed-'+release;
  window.addEventListener('load',async()=>{
   try{
