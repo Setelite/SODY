@@ -1,34 +1,26 @@
-name: Publish exact approved SODY screens
+name: Build editable SODY artwork layers
 on:
   push:
     paths:
+      - 'tools/build_sody_cutouts.py'
       - '.github/workflows/sody-art-deploy.yml'
 permissions:
   contents: write
 jobs:
-  assets:
+  cutouts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download exact approved SODY reference images
+      - name: Extract approved bottle and molecule figure into transparent layers
         run: |
-          set -euo pipefail
-          mkdir -p assets
-          curl -fL --retry 3 --connect-timeout 12 --max-time 75 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JSxcOirL4mYOchZOe1eqkneCaW/30e0cbaf-4849-4bfd-a06a-41f7505ed91f.png' -o /tmp/sody-home.png
-          curl -fL --retry 3 --connect-timeout 12 --max-time 75 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JSxcOirL4mYOchZOe1eqkneCaW/dad833c2-b0e3-454e-9b63-33adabfe94b3.png' -o /tmp/sody-body.png
-          python -m pip install --quiet pillow
-          python - <<'PY'
-          from PIL import Image
-          for name in ('home','body'):
-              image=Image.open('/tmp/sody-'+name+'.png').convert('RGB')
-              assert image.size==(941,1672), f'Unexpected size for {name}: {image.size}'
-              image=image.crop((0,0,941,1600))
-              image.save('assets/sody-approved-'+name+'.webp','WEBP',quality=95,method=6)
-              print('exact approved screen',name,image.size)
-          PY
-      - name: Commit reference screen assets
+          python -m pip install --quiet Pillow numpy opencv-python-headless
+          python tools/build_sody_cutouts.py
+      - name: Publish image layers
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/sody-approved-home.webp assets/sody-approved-body.webp
-          if ! git diff --cached --quiet; then git commit -m 'Publish exact approved SODY home and balance design artwork'; git push; fi
+          git add assets/sody-bottle-cut.webp assets/sody-woman-cut.webp
+          if ! git diff --cached --quiet; then
+            git commit -m 'Publish independent SODY bottle and woman artwork layers'
+            git push
+          fi
