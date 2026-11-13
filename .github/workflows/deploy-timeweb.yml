@@ -55,3 +55,19 @@ jobs:
             --exclude='node_modules/' \
             -e 'ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -p 22' \
             ./ cx74614@vh454.timeweb.ru:/home/c/cx74614/public_html/sody/
+
+      - name: Verify live site uses the new design
+        run: |
+          set -e
+          for attempt in 1 2 3 4 5; do
+            if curl -fLsS --retry 2 --connect-timeout 8 --max-time 18 \
+              -H 'Cache-Control: no-cache' \
+              "https://gornostaevmarketing.ru/sody/index.html?deployment=${GITHUB_SHA}" \
+              | grep -q 'SODY / FOREST EDITION'; then
+              echo "SODY Forest Edition is live at https://gornostaevmarketing.ru/sody/"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "::error::Site still does not serve SODY Forest Edition after deployment"
+          exit 1
