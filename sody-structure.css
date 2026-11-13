@@ -689,7 +689,7 @@ button:active,.tap:active,.dose-card:active,.lib-card:active{
   transform:translate(-50%,-50%);
   pointer-events:none!important;
   isolation:isolate;z-index:1600;
-  contain:layout style paint;
+  contain:layout style;
 }
 .sody-cell-split .sody-cell-mother,
 .sody-cell-split .sody-cell-daughter{
