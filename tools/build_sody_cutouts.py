@@ -1,73 +1,73 @@
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image
 from pathlib import Path
 import numpy as np
 import cv2
 
-ROOT=Path("assets")
+ROOT = Path("assets")
 ROOT.mkdir(exist_ok=True)
 
-def rounded_mask(im, polygon, sigma):
-    m=Image.new("L", im.size, 0)
-    ImageDraw.Draw(m).polygon(polygon,fill=255)
-    return m.filter(ImageFilter.GaussianBlur(sigma))
+def save_image(image, name):
+    path = ROOT / name
+    image.save(path, "WEBP", quality=92, method=6)
+    print("Published", name, image.size, path.stat().st_size)
 
-home=Image.open(ROOT/"sody-approved-home.webp").convert("RGB").crop((475,390,875,990))
-rgb=np.asarray(home, dtype=np.float32)
-h,w=rgb.shape[:2]
-# True shaped silhouette derived from the approved product render,
-# without preserving the original screenshot's rectangular green background.
-outline=[(42,92),(44,76),(57,61),(75,47),(100,38),(145,31),
-(204,24),(238,26),(259,33),(273,45),(279,60),(281,86),
-(272,105),(257,120),(258,130),(286,143),(310,159),
-(321,184),(330,205),(342,250),(350,297),(362,347),
-(373,413),(383,465),(390,512),(390,533),(376,552),
-(345,568),(310,575),(248,584),(182,592),(145,589),
-(121,580),(105,568),(95,542),(89,509),(80,461),(70,413),
-(57,343),(48,294),(38,249),(34,225),(34,196),(39,175),
-(49,151),(59,136),(61,123),(51,111)]
-mask=np.zeros((h,w),np.uint8)
-cv2.fillPoly(mask,[np.asarray(outline,np.int32)],255)
-dist=cv2.distanceTransform(mask,cv2.DIST_L2,3)
-left=np.median(rgb[:,:20,:],axis=1)
-right=np.median(rgb[:,-20:,:],axis=1)
-x=np.linspace(0,1,w,dtype=np.float32)[None,:,None]
-background=left[:,None,:]*(1-x)+right[:,None,:]*x
-color_delta=np.linalg.norm(rgb-background,axis=2)
-edge_opacity=np.clip((color_delta-13)/32,0,1)
-interior=np.clip((dist-5)/16,0,1)
-alpha=(mask/255)*(edge_opacity*(1-interior)+interior)
-alpha=cv2.GaussianBlur(np.uint8(np.clip(alpha*255,0,255)),(5,5),1.1)
-bottle=home.convert("RGBA")
-bottle.putalpha(Image.fromarray(alpha,"L"))
-bottle.save(ROOT/"sody-bottle-cut.webp","WEBP",quality=92,method=6)
+# The approved bottle: a clean GrabCut silhouette eliminates the old
+# rectangular patch of green screenshot background around the cap and base.
+bottle_src = np.asarray(Image.open(ROOT / "sody-approved-home.webp").convert("RGB").crop((475,390,875,990)))
+h,w=bottle_src.shape[:2]
+outline=[(42,92),(44,76),(57,61),(75,47),(100,38),(145,31),(204,24),
+(238,26),(259,33),(273,45),(279,60),(281,86),(272,105),(257,120),
+(258,130),(286,143),(310,159),(321,184),(330,205),(342,250),(350,297),
+(362,347),(373,413),(383,465),(390,512),(390,533),(376,552),(345,568),
+(310,575),(248,584),(182,592),(145,589),(121,580),(105,568),(95,542),
+(89,509),(80,461),(70,413),(57,343),(48,294),(38,249),(34,225),
+(34,196),(39,175),(49,151),(59,136),(61,123),(51,111)]
+shape=np.zeros((h,w),dtype=np.uint8)
+cv2.fillPoly(shape,[np.asarray(outline,np.int32)],255)
+inner=cv2.erode(shape,np.ones((27,27),np.uint8),iterations=1)
+labels=np.where(shape==0,cv2.GC_BGD,cv2.GC_PR_FGD).astype(np.uint8)
+labels[inner>0]=cv2.GC_FGD
+b_model=np.zeros((1,65),np.float64)
+f_model=np.zeros((1,65),np.float64)
+cv2.grabCut(cv2.cvtColor(bottle_src,cv2.COLOR_RGB2BGR),labels,None,b_model,f_model,6,cv2.GC_INIT_WITH_MASK)
+alpha=np.uint8((labels==cv2.GC_FGD)|(labels==cv2.GC_PR_FGD))*255
+alpha=cv2.GaussianBlur(alpha,(3,3),.75)
+bottle=Image.fromarray(np.dstack((bottle_src,alpha)),"RGBA")
+save_image(bottle,"sody-bottle-cut.webp")
 
-im=Image.open(ROOT/"sody-approved-body.webp").convert("RGBA")
-arr=np.array(im).astype(np.float32)
+# Molecular figure, with its own alpha rather than the green screenshot rectangle.
+# The cutout now stops at the reference's actual illustrated lower thighs, where
+# the glass card naturally overlaps: no artificial fading halfway up the body.
+woman_img=Image.open(ROOT / "sody-approved-body.webp").convert("RGB")
+arr=np.asarray(woman_img).astype(np.float32)
 height,width=arr.shape[:2]
-rgb=arr[:,:,:3]
-lum=rgb[:,:,1]*.62+rgb[:,:,0]*.2+rgb[:,:,2]*.18
-smooth=cv2.GaussianBlur(lum,(0,0),sigmaX=85,sigmaY=85)
-polygon=[(620,64),(731,61),(809,80),(854,119),(872,187),(873,252),
-(828,329),(809,373),(856,393),(893,457),(911,525),(923,802),(908,1090),
-(867,1220),(839,1267),(799,1248),(791,1127),(756,1052),(724,1014),
-(699,1127),(650,1282),(592,1366),(497,1337),(446,1254),(402,1153),
-(353,1071),(316,1007),(351,906),(400,786),(411,668),(410,553),
-(421,472),(464,418),(526,382),(544,331),(505,282),(517,226),
-(528,177),(565,125)]
-mask=rounded_mask(im,polygon,17)
-sp=np.asarray(mask,dtype=np.float32)/255.0
-bright=np.maximum(rgb[:,:,1]-rgb[:,:,0]*.95,0)*.4+np.maximum(lum-smooth,0)
-alpha=np.clip((bright-3)*5.5,0,242)*sp
-ys=np.arange(height,dtype=np.float32)[:,None]
-alpha*=np.clip((1240-ys)/140,0,1)
-xs=np.arange(width,dtype=np.float32)[None,:]
-# Remove lettering on the far left of the original approved screenshot
-alpha*=np.where(ys>840,np.clip((xs-400)/65,0,1),1)
-arr[:,:,3]=np.clip(alpha,0,255)
-woman=Image.fromarray(np.uint8(arr),"RGBA").crop((310,65,933,1380))
-woman.save(ROOT/"sody-woman-cut.webp","WEBP",quality=90,method=6)
-
-for path in [ROOT/"sody-bottle-cut.webp",ROOT/"sody-woman-cut.webp"]:
-    check=Image.open(path)
-    assert check.mode=="RGBA" and check.getbbox()
-    print(path, check.size, path.stat().st_size)
+yy,xx=np.mgrid[:height,:width]
+outline=[(617,65),(657,70),(714,64),(759,78),(806,103),(834,140),
+(858,183),(865,230),(839,276),(812,301),(813,334),(846,360),
+(885,404),(906,454),(914,520),(929,629),(927,797),(917,893),
+(906,986),(887,1084),(856,1104),(838,1097),(828,1009),(812,948),
+(789,887),(763,844),(743,868),(710,921),(680,998),(639,1097),
+(597,1120),(544,1108),(509,1054),(477,1013),(448,948),(436,880),
+(410,800),(415,706),(439,628),(452,551),(453,489),(476,432),
+(518,402),(550,363),(565,317),(538,286),(532,255),(536,217),
+(547,178),(573,134)]
+mask=np.zeros((height,width),np.uint8)
+cv2.fillPoly(mask,[np.asarray(outline,np.int32)],255)
+mask=cv2.GaussianBlur(mask,(0,0),4)
+lum=arr[:,:,1]*.65+arr[:,:,0]*.20+arr[:,:,2]*.15
+local=cv2.GaussianBlur(lum,(0,0),18)
+ambient=cv2.GaussianBlur(lum,(0,0),65)
+bright=np.maximum(lum-local,0)
+chroma=np.maximum(arr[:,:,1]-arr[:,:,0]*.96,0)
+opacity=18+bright*12+np.maximum(lum-ambient,0)*4+chroma*.85
+face=np.zeros((height,width),np.uint8)
+cv2.ellipse(face,(688,188),(140,124),-20,10,310,220,-1)
+opacity=np.maximum(opacity,cv2.GaussianBlur(face,(0,0),10)/255*115)
+opacity=np.clip(opacity*mask/255,0,235)
+# Discard only the section hidden by the original screenshot's panel.
+# Preserve the entire visible torso, hips and upper thighs above it.
+opacity*=np.clip((1110-yy)/115,0,1)
+woman_rgba=np.dstack((arr,opacity))
+woman=Image.fromarray(np.uint8(np.clip(woman_rgba,0,255)),"RGBA")
+woman=woman.crop((385,70,935,1120))
+save_image(woman,"sody-woman-cut.webp")
