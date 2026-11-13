@@ -324,7 +324,7 @@ body.approved-art-mode .orb{display:none!important}
 @media(max-height:650px){.approved-screen{min-height:560px}.body-truth-overlay{height:24%;bottom:11%}.body-truth-overlay h2{margin:6px 0}}
 @media(min-width:521px){body.approved-art-mode .app{box-shadow:0 0 100px rgba(5,31,16,.2)}}
 
-</style><link rel="stylesheet" href="sody-structure.css?v=22"></head><body><div class="orb"></div><main class="app">
+</style><link rel="stylesheet" href="sody-structure.css?v=23"></head><body><div class="orb"></div><main class="app">
 <header class="top reference-top">
   <div class="ref-profile"><div class="ref-avatar" aria-hidden="true">S</div><div><strong id="headerProgress">Мой прогресс</strong><small>твой личный ритм</small></div></div>
   <div class="ref-brand" aria-hidden="true">SODY</div>
@@ -455,7 +455,7 @@ function sodyRevealPage(page){
     if(event.target===page)page.classList.remove('sody-cell-reveal');
   },{once:true});
 }
-function setTab(t){const previous=tab;tab=t;document.body.dataset.sodyTab=t;document.body.classList.remove('approved-art-mode');document.querySelectorAll('.tab-page').forEach(e=>e.classList.toggle('hide',e.id!=='page-'+t));document.querySelectorAll('.nav-btn,.ref-center-nav').forEach(e=>e.classList.toggle('active',e.dataset.tab===t));document.getElementById('fab').classList.toggle('hide',t==='settings'||t==='home'||t==='body');window.scrollTo({top:0,behavior:'instant'});render();if(previous!==t)sodyRevealPage(document.getElementById('page-'+t))}function setMode(m){mode=m;renderCalendar()}function pickDate(s){selectedDate=parseDay(s);displayMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);render()}function toggleDose(id,dateString){const k=dateString+'|'+id;db.checks[k]?delete db.checks[k]:db.checks[k]=true;save();render()}
+function setTab(t){const previous=tab;tab=t;document.body.dataset.sodyTab=t;document.body.classList.remove('approved-art-mode');document.querySelectorAll('.tab-page').forEach(e=>e.classList.toggle('hide',e.id!=='page-'+t));document.querySelectorAll('.nav-btn,.ref-center-nav').forEach(e=>e.classList.toggle('active',e.dataset.tab===t));document.getElementById('fab').classList.toggle('hide',t==='settings'||t==='home'||t==='body');window.scrollTo({top:0,behavior:'instant'});render();/* No full-screen fade or blur during tab switches: transitions stay on tapped controls. */}function setMode(m){mode=m;renderCalendar()}function pickDate(s){selectedDate=parseDay(s);displayMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1);render()}function toggleDose(id,dateString){const k=dateString+'|'+id;db.checks[k]?delete db.checks[k]:db.checks[k]=true;save();render()}
 function visual(item){
   if(item.image)return `<img alt="" src="${escapeHtml(item.image)}">`;
   const name=String(item.name||'').toLocaleLowerCase('ru');
@@ -506,7 +506,7 @@ window.addEventListener('appinstalled',()=>{deferredSodyInstall=null;refreshSody
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.querySelector('#modalRoot .sheet-bg'))closeModal()});
 document.body.classList.remove('approved-art-mode');document.body.dataset.sodyTab='home';document.getElementById('fab').classList.add('hide');render();refreshSodyInstall();
 if('serviceWorker' in navigator){
- const release='v22';
+ const release='v23';
  const reloadKey='sody-refreshed-'+release;
  window.addEventListener('load',async()=>{
   try{
