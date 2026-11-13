@@ -799,3 +799,114 @@ button:active,.tap:active,.dose-card:active,.lib-card:active{
   }
   button,.tap,.dose-card,.lib-card{transition:none!important}
 }
+
+
+/* SODY V23 — iPhone form layout, bottom navigation and flicker-free organic motion */
+*,*::before,*::after{box-sizing:border-box}
+#modalRoot .sheet .two{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  width:100%!important;
+  max-width:100%!important;
+  align-items:start!important;
+}
+#modalRoot .sheet .two>.field{
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  margin:12px 0!important;
+}
+#modalRoot .sheet .field input,
+#modalRoot .sheet .field select,
+#modalRoot .sheet .field textarea{
+  display:block!important;box-sizing:border-box!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  margin:0!important;
+  font-size:16px!important; /* prevents iOS form-focus zoom */
+}
+#modalRoot .sheet .field input[type="time"]{
+  width:100%!important;min-width:0!important;
+  padding-inline:9px!important;
+  -webkit-appearance:none;
+  appearance:none;
+}
+#modalRoot .sheet .sheet-scroll{
+  padding-inline:16px!important;
+  padding-bottom:max(42px,calc(env(safe-area-inset-bottom) + 32px))!important;
+}
+@media(max-width:350px){
+  #modalRoot .sheet .two{gap:9px!important}
+  #modalRoot .sheet .field input,
+  #modalRoot .sheet .field select{padding-inline:8px!important}
+}
+/* Fill all available browser viewport down to the actual bottom edge.
+   Browser-owned iOS toolbar itself cannot be styled by a website. */
+html,body{min-height:100%;margin:0}
+body .dock.ref-dock{
+  position:fixed!important;
+  left:50%!important;
+  bottom:0!important;
+  width:min(100%,520px)!important;
+  height:calc(65px + env(safe-area-inset-bottom,0px))!important;
+  min-height:65px!important;
+  padding:0 15px max(4px,env(safe-area-inset-bottom,0px))!important;
+  background:transparent!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  transform:translateX(-50%)!important;
+}
+body .dock.ref-dock .dock-shape{
+  position:absolute!important;
+  left:0!important;right:0!important;top:0!important;bottom:0!important;
+  display:block!important;
+  width:100%!important;height:100%!important;
+  overflow:visible!important;
+  filter:none!important;
+}
+body .ref-dock .ref-center-nav{
+  position:relative!important;
+  top:-10px!important;
+  margin:0!important;
+}
+body.sody-modal-open .dock.ref-dock{visibility:hidden!important}
+/* No whole-screen opacity/blur: keep cell division confined to the tiny droplet.
+   Keep a short, stable button press and a small bottom-sheet translation. */
+.tab-page:not(.hide),.tab-page.sody-cell-reveal:not(.hide){
+  animation:none!important;
+  filter:none!important;
+  opacity:1!important;
+  transform:none!important;
+}
+#modalRoot .sheet-bg{
+  animation:none!important;
+  opacity:1!important;
+}
+#modalRoot .sheet{
+  animation:sodySheetStableEnter .26s cubic-bezier(.22,.74,.26,1) both!important;
+  filter:none!important;
+}
+#modalRoot .sheet-bg.sody-is-closing{animation:none!important;opacity:1!important}
+#modalRoot .sheet-bg.sody-is-closing .sheet{
+  animation:sodySheetStableExit .17s ease-in both!important;
+}
+#modalRoot .sheet-scroll>.ref-product-panel,
+#modalRoot .sheet-scroll>form,
+#modalRoot .sheet-scroll>.sody-install-guide{
+  animation:none!important;
+  opacity:1!important;filter:none!important;transform:none!important;
+}
+@keyframes sodySheetStableEnter{
+  from{transform:translateY(30px) scale(.985)}
+  to{transform:translateY(0) scale(1)}
+}
+@keyframes sodySheetStableExit{
+  from{transform:translateY(0) scale(1)}
+  to{transform:translateY(18px) scale(.995)}
+}
+.sody-cell-split{z-index:1400!important;opacity:.48!important;will-change:opacity}
+.sody-cell-split .sody-cell-mother,.sody-cell-split .sody-cell-daughter{
+  box-shadow:inset 0 1px 4px rgba(255,255,255,.35),0 1px 4px rgba(85,154,105,.12)!important;
+  border-color:rgba(226,255,223,.58)!important;
+}
+@media(prefers-reduced-motion:reduce){
+  #modalRoot .sheet,#modalRoot .sheet-bg.sody-is-closing .sheet{animation:none!important;transform:none!important}
+}
