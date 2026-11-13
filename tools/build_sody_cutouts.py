@@ -35,9 +35,8 @@ alpha=cv2.GaussianBlur(alpha,(3,3),.75)
 bottle=Image.fromarray(np.dstack((bottle_src,alpha)),"RGBA")
 save_image(bottle,"sody-bottle-cut.webp")
 
-# Molecular figure, with its own alpha rather than the green screenshot rectangle.
-# The cutout now stops at the reference's actual illustrated lower thighs, where
-# the glass card naturally overlaps: no artificial fading halfway up the body.
+# Clean SODY molecular woman: preserve luminous nodes and facial silhouette,
+# remove the flat original screenshot background (which appears as a dark shadow).
 woman_img=Image.open(ROOT / "sody-approved-body.webp").convert("RGB")
 arr=np.asarray(woman_img).astype(np.float32)
 height,width=arr.shape[:2]
@@ -53,21 +52,19 @@ outline=[(617,65),(657,70),(714,64),(759,78),(806,103),(834,140),
 (547,178),(573,134)]
 mask=np.zeros((height,width),np.uint8)
 cv2.fillPoly(mask,[np.asarray(outline,np.int32)],255)
-mask=cv2.GaussianBlur(mask,(0,0),4)
-lum=arr[:,:,1]*.65+arr[:,:,0]*.20+arr[:,:,2]*.15
-local=cv2.GaussianBlur(lum,(0,0),18)
-ambient=cv2.GaussianBlur(lum,(0,0),65)
-bright=np.maximum(lum-local,0)
-chroma=np.maximum(arr[:,:,1]-arr[:,:,0]*.96,0)
-opacity=18+bright*12+np.maximum(lum-ambient,0)*4+chroma*.85
+mask=cv2.GaussianBlur(mask,(0,0),7)
+brightness=arr[:,:,0]*.20+arr[:,:,1]*.65+arr[:,:,2]*.15
+local=cv2.GaussianBlur(brightness,(0,0),26)
+positive=np.maximum(0,brightness-local)
+green=np.maximum(0,arr[:,:,1]-arr[:,:,0]*.96)
+alpha=np.clip(-34+positive*11+green*.63+np.maximum(brightness-115,0)*.8,0,228)
+# Retain smooth subtle facial features without reintroducing rectangular backplates.
 face=np.zeros((height,width),np.uint8)
-cv2.ellipse(face,(688,188),(140,124),-20,10,310,220,-1)
-opacity=np.maximum(opacity,cv2.GaussianBlur(face,(0,0),10)/255*115)
-opacity=np.clip(opacity*mask/255,0,235)
-# Discard only the section hidden by the original screenshot's panel.
-# Preserve the entire visible torso, hips and upper thighs above it.
-opacity*=np.clip((1110-yy)/115,0,1)
-woman_rgba=np.dstack((arr,opacity))
-woman=Image.fromarray(np.uint8(np.clip(woman_rgba,0,255)),"RGBA")
-woman=woman.crop((385,70,935,1120))
+cv2.ellipse(face,(691,195),(137,112),-20,0,360,220,-1)
+face=cv2.GaussianBlur(face,(0,0),13)
+alpha=np.maximum(alpha,face*.52)
+# Lower cropped portion is covered by SODY's actual HTML glass card.
+alpha*=np.clip((1145-yy)/60,0,1)
+alpha=np.uint8(np.clip(alpha*mask/255,0,255))
+woman=Image.fromarray(np.dstack((arr,alpha)),"RGBA").crop((385,65,935,1120))
 save_image(woman,"sody-woman-cut.webp")
