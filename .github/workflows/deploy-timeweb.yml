@@ -56,18 +56,29 @@ jobs:
             -e 'ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -p 22' \
             ./ cx74614@vh454.timeweb.ru:/home/c/cx74614/public_html/sody/
 
-      - name: Verify live site uses the new design
+      - name: Diagnose and verify published SODY version
         run: |
-          set -e
-          for attempt in 1 2 3 4 5; do
-            if curl -fLsS --retry 2 --connect-timeout 8 --max-time 18 \
-              -H 'Cache-Control: no-cache' \
-              "https://gornostaevmarketing.ru/sody/index.html?deployment=${GITHUB_SHA}" \
-              | grep -q 'SODY / FOREST EDITION'; then
-              echo "SODY Forest Edition is live at https://gornostaevmarketing.ru/sody/"
-              exit 0
-            fi
-            sleep 3
-          done
-          echo "::error::Site still does not serve SODY Forest Edition after deployment"
-          exit 1
+          set -euo pipefail
+          echo "Expected git SHA: ${GITHUB_SHA}"
+          echo "Local HTML sha256:"
+          sha256sum index.html
+          echo "Remote HTML sha256:"
+          ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -p 22 cx74614@vh454.timeweb.ru \
+            'sha256sum /home/c/cx74614/public_html/sody/index.html; grep -o "SODY / FOREST EDITION" /home/c/cx74614/public_html/sody/index.html | head -1 || true'
+          echo "Checking public response..."
+          curl -LsS --retry 2 --connect-timeout 8 --max-time 20 \
+            -H 'Cache-Control: no-cache' \
+            -D /tmp/sody-headers \
+            -o /tmp/sody-live.html \
+            -w 'HTTP %{http_code}; final_url %{url_effective}; bytes %{size_download}\n' \
+            "https://gornostaevmarketing.ru/sody/index.html?deployment=${GITHUB_SHA}"
+          echo "Response headers (non-sensitive):"
+          grep -iE '^(HTTP/|content-type:|cache-control:|age:|server:|location:|etag:|last-modified:|x-cache:)' /tmp/sody-headers || true
+          echo "Live HTML sha256:"
+          sha256sum /tmp/sody-live.html
+          if grep -Fq 'SODY / FOREST EDITION' /tmp/sody-live.html; then
+            echo "Verified: SODY Forest Edition is live"
+          else
+            echo "::error::Public SODY does not match the latest version; compare the hashes and HTTP status above"
+            exit 1
+          fi
