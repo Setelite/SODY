@@ -246,6 +246,47 @@ body:before{display:none}
 @media(max-width:390px){.molecular-woman-art>img{width:82%;right:-8%}.ref-dock{height:75px!important;min-height:75px!important}.ref-main-scene{min-height:515px!important}.body-bottom-card h2{font-size:24px}}
 @media(prefers-reduced-motion:reduce){.art-bottle-photo{animation:none!important}}
 
+
+/* SODY V10 corrective layout: transparent approved imagery, no crop, safe overlap */
+.ref-main-scene{overflow:hidden!important;background:radial-gradient(ellipse at 67% 48%,#9dbb9578 0%,transparent 48%),linear-gradient(160deg,#789c7c6a 0%,#3d6b5366 100%)!important;border-radius:26px 26px 28px 28px!important}
+.ref-main-scene:before{border-radius:inherit!important;background:radial-gradient(ellipse at 10% 5%,#e5f4d41c,transparent 64%)!important}
+.ref-bottle-composition{right:1%!important;top:32%!important;width:51%!important;height:45%!important;overflow:visible!important;z-index:5!important}
+.ref-art-layer{position:absolute;inset:0;overflow:visible!important}
+.art-bottle-photo{position:absolute!important;right:0!important;top:-4px!important;width:min(100%,220px)!important;height:auto!important;max-height:300px!important;object-fit:contain!important;filter:drop-shadow(8px 15px 16px rgba(2,29,16,.28))!important;transform:none!important;animation:none!important;image-rendering:auto}
+.ref-art-layer.photo-loaded>.ref-bottle-real{display:none!important}
+.ref-bottle-aura{inset:4% -22%;filter:blur(25px);opacity:.7}
+.ref-pill{opacity:.8!important;transform:rotate(-25deg) scale(.85)!important}
+.ref-orbit{opacity:.34!important}
+.ref-feature-card{z-index:6!important;bottom:2%!important;min-height:198px!important;height:34%!important;border-radius:30px!important;background:linear-gradient(132deg,#81aa89ab,#4a735ba6)!important;backdrop-filter:blur(24px)!important}
+.ref-feature-card>*{z-index:1}
+.ref-feature-card:before{opacity:.36}
+#page-body{position:relative!important;padding-top:0!important;margin-top:7px!important}
+#page-body .body-head{position:absolute!important;left:16px!important;top:15px!important;right:16px!important;z-index:5!important;margin:0!important;padding:0!important;pointer-events:none}
+#page-body .body-head .greet{font-size:clamp(35px,8.5vw,45px)!important;margin:9px 0 8px!important}
+#page-body .body-head .subtitle{font-size:12px!important;line-height:1.4!important;max-width:180px!important;color:#e1f0df!important}
+#page-body .body-stage{height:calc(100dvh - 175px)!important;min-height:555px!important;max-height:760px!important;margin-top:0!important;border-radius:31px!important;background:radial-gradient(ellipse at 75% 43%,#82b68e73,transparent 60%),linear-gradient(155deg,#6a9376,#28523e)!important}
+#page-body .body-stage-label{display:none!important}
+.molecular-woman-art{left:auto!important;right:-2%!important;top:5%!important;width:75%!important;height:69%!important;z-index:2!important;overflow:visible}
+.molecular-woman-art>img{position:absolute!important;right:0!important;top:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:100% 0!important;opacity:.96!important;filter:drop-shadow(0 0 11px #bdf3b64d)!important}
+#page-body .body-bottom-card{z-index:6!important;bottom:16px!important;left:15px!important;right:15px!important;min-height:0!important;max-height:none!important;padding:17px 19px!important;border-radius:29px!important;background:linear-gradient(135deg,#83ad8daa,#3c6d52bb)!important}
+#page-body .body-bottom-card h2{font-size:23px!important;margin:9px 0 12px!important}
+#page-body .body-insight-list{padding-bottom:18px}
+.ref-dock{height:77px!important;min-height:77px!important;z-index:30!important}
+.add-floating{z-index:12!important}
+@media(max-height:760px){
+#page-body .body-stage{height:calc(100dvh - 145px)!important;min-height:485px!important}
+.molecular-woman-art{height:66%!important;top:7%!important}
+#page-body .body-bottom-card{padding:14px 16px!important}
+#page-body .body-bottom-card h2{font-size:21px!important}
+.ref-bottle-composition{top:32%!important}
+}
+@media(max-width:390px){
+.art-bottle-photo{max-height:270px!important}
+.ref-bottle-composition{right:-2%!important;width:54%!important}
+#page-body .body-head .subtitle{max-width:160px!important}
+.molecular-woman-art{right:-4%!important;width:79%!important}
+}
+
 </style></head><body><div class="orb"></div><main class="app">
 <header class="top reference-top">
   <div class="ref-profile"><div class="ref-avatar" aria-hidden="true">S</div><div><strong id="headerProgress">Мой прогресс</strong><small>твой личный ритм</small></div></div>
