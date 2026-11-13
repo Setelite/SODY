@@ -1,0 +1,112 @@
+/* SODY V13 — Two real, editable HTML screens built from the approved references */
+html{background:#315e47}
+body{background:linear-gradient(110deg,#6b9677 0%,#315d47 73%,#1d4b38 100%)!important}
+body .app{max-width:520px!important;padding:0 17px 117px!important;background:linear-gradient(150deg,#87a78948 0%,#4978593c 53%,transparent 100%)!important;overflow:visible}
+body .app>.top.reference-top{display:flex!important;position:relative;z-index:15;height:77px!important;margin:0!important;padding:14px 7px 7px!important;background:transparent!important;align-items:center}
+.reference-top .ref-profile strong{font-size:clamp(12px,3.2vw,14px)}
+.reference-top .ref-profile small{font-size:10px}
+.reference-top .ref-avatar{box-shadow:0 6px 15px #173b2c61}
+.reference-top .ref-settings{width:41px!important;height:41px!important;display:grid;place-items:center;border-radius:50%!important}
+.reference-top .ref-settings .tab-icon{height:22px;width:22px}
+#page-home,#page-body{padding:0!important;margin:0!important;position:relative!important}
+.sody-home-canvas,.sody-body-canvas{position:relative;isolation:isolate;width:100%;height:calc(100dvh - 152px);min-height:560px;max-height:860px;overflow:hidden;border-radius:26px 26px 28px 28px;background:radial-gradient(ellipse 64% 44% at 83% 42%,#a7c19b64 0%,transparent 100%),linear-gradient(145deg,#77a08045 0%,#577e6450 54%,#295a45a1 100%)}
+.sody-home-canvas:before,.sody-body-canvas:before{content:"";pointer-events:none;position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 8% 5%,#e2f5d526,transparent 43%)}
+.sody-home-content{position:absolute;z-index:6;top:6%;left:3.2%;right:3.2%;color:#fff;pointer-events:none}
+.sody-small-caption{display:block;margin:0 0 13px;font-size:10px;letter-spacing:.1em;font-weight:700;color:#deebd9;text-transform:uppercase}
+.sody-home-content h1,.sody-body-titles h1{font-size:clamp(36px,9.3vw,53px);font-weight:750;letter-spacing:-.065em;line-height:1.065;color:#fff;margin:0;text-shadow:0 1px 1px #ffffff15}
+.sody-health-stats{margin-top:26px;font-size:11px;color:#ecf5e9}
+.sody-health-stats p{font-size:12px;margin:0 0 12px}
+.sody-metric-line{display:flex;align-items:center;min-height:24px;gap:12px;font-size:12px}
+.sody-metric-line>span:first-child{min-width:76px}
+.sody-metric-line strong,.sody-metric-line b{font-weight:800;color:#fff}
+.sody-metric-dots{display:flex;align-items:center;gap:4px}
+.sody-metric-dots i{display:block;width:8px;height:8px;border:1px solid #f1fbe6a0;border-radius:50%;background:#d8e8cf50;transition:background .3s}
+.sody-metric-dots i.active{background:#fff;box-shadow:0 0 6px #fff8}
+.sody-bottle-stage{position:absolute;z-index:5;top:29%;right:-4%;width:64%;height:49%;pointer-events:none}
+.sody-bottle-orbits{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:-1}
+.sody-bottle-orbits ellipse{fill:none;stroke:#e6f8e38c;stroke-width:1.5;vector-effect:non-scaling-stroke}
+.sody-bottle-img{display:block;position:absolute;right:6%;top:-5%;width:79%;height:100%;object-fit:contain;filter:drop-shadow(12px 19px 18px #0c38235c);transform:rotate(-2deg);transition:transform .4s ease;image-rendering:auto}
+.sody-floating-pill{position:absolute;z-index:6;width:15px;height:32px;border:1px solid #fbfff289;border-radius:14px;background:linear-gradient(105deg,#f3ffe7,#7da781 48%,#406a4b);box-shadow:inset 3px 2px 6px #ffffff82,0 8px 13px #1437256b}
+.sody-floating-pill.pill-top{top:25%;left:8%;transform:rotate(-35deg)}
+.sody-floating-pill.pill-bottom{right:13%;bottom:13%;transform:rotate(34deg)}
+.sody-plan-card,.sody-body-glass{position:absolute;z-index:4;left:1.6%;right:1.6%;bottom:2.3%;border-radius:30px;background:linear-gradient(130deg,#8ab296a1 0%,#658c7291 36%,#345e49a6 100%);border:1.4px solid #eaffdd8c;box-shadow:inset 0 1px 0 #ffffff82,inset 0 -1px 0 #edffdf2b,0 14px 32px #1136224f;backdrop-filter:blur(24px) saturate(1.2);-webkit-backdrop-filter:blur(24px) saturate(1.2);color:#fff}
+.sody-plan-card:before,.sody-body-glass:before{content:"";pointer-events:none;position:absolute;inset:0 0 auto;height:38%;border-radius:inherit;background:linear-gradient(180deg,#ffffff16,transparent)}
+.sody-plan-card{min-height:240px;padding:17px 20px 19px}
+.sody-chip{display:inline-flex;position:relative;align-items:center;border-radius:40px;padding:8px 13px;border:1px solid #e5f6df4a;background:#ffffff21;color:#f0f9e9;font-size:10px;letter-spacing:.035em;line-height:1;font-weight:650}
+.sody-plan-card h2,.sody-body-glass h2{position:relative;font-size:clamp(24px,6.8vw,32px);font-weight:750;line-height:1.03;letter-spacing:-.055em;margin:15px 0 9px;color:white}
+.sody-plan-card p{position:relative;font-size:12px;line-height:1.55;margin:0;max-width:210px;color:#eff5e9}
+.sody-plan-actions{position:relative;display:grid;grid-template-columns:1fr 1fr 47px;gap:9px;align-items:center;margin-top:25px}
+.sody-plan-actions button{height:43px;border-radius:28px;border:1px solid #e3f4de84;display:flex;align-items:center;justify-content:center;gap:12px;padding:0 10px;font-size:11px;font-weight:800;white-space:nowrap}
+.sody-plan-actions button span{font-size:22px;font-weight:500}
+.sody-white-button{background:#fff;color:#2a5138;border:0!important;box-shadow:0 7px 17px #173f252b}
+.sody-outline-button{background:#ffffff0e;color:#fff}
+.sody-add-button{width:47px;padding:0!important;background:#fff;border:0!important;color:#2b533f}
+.sody-add-button svg{width:22px;height:22px}
+.sody-below-fold{padding:2px 3px 42px;color:#fff}
+.sody-below-fold .section-top{margin-top:24px}
+.sody-below-fold .glass{background:#eaf3df15}
+.sody-below-fold .section-top h2{color:#fff}
+.sody-extra-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.sody-extra-actions button{background:#f1f6eb;border:0;border-radius:15px;padding:12px;font-weight:700;color:#284d39;font-size:11px;flex:1}
+.sody-body-canvas{background:radial-gradient(ellipse 80% 65% at 73% 40%,#91c19a69,transparent),linear-gradient(145deg,#659c79 0%,#2a6446 100%)}
+.sody-body-titles{position:absolute;top:5.3%;left:4.3%;right:5%;z-index:7;pointer-events:none}
+.sody-body-titles h1{font-size:clamp(37px,9.8vw,55px);line-height:1.02}
+.sody-body-titles p{max-width:200px;font-size:clamp(12px,3.2vw,15px);line-height:1.5;color:#e8f4e6;margin:17px 0 0}
+.sody-knowledge-list{position:absolute;top:40%;left:4%;width:52%;z-index:7;display:flex;flex-direction:column;gap:0;color:#fff}
+.sody-knowledge-row{display:flex;align-items:center;gap:11px;border-bottom:1px solid #dcf3d55e;padding:12px 1px 13px;min-height:76px}
+.sody-knowledge-row:last-child{border-bottom:0}
+.sody-knowledge-row>span:last-child{display:flex;flex-direction:column;min-width:0}
+.sody-knowledge-row strong{font-size:clamp(12px,3.3vw,17px);font-weight:750;line-height:1.2;letter-spacing:-.035em}
+.sody-knowledge-row small{font-size:clamp(9px,2.5vw,12px);color:#dcefdc;margin-top:4px;line-height:1.32}
+.sody-knowledge-svg{display:flex;align-items:center;justify-content:center;flex:0 0 34px;height:39px;color:#c7f5c4}
+.sody-knowledge-svg svg{width:33px;height:33px}
+.sody-woman-stage{position:absolute;top:0;right:-6%;width:80%;height:78%;z-index:3;pointer-events:none;overflow:visible}
+.sody-woman-stage>img{position:absolute;top:-1%;right:0;width:100%;height:100%;object-fit:contain;object-position:right center;filter:drop-shadow(0 0 20px #b4ffac3a);opacity:.96}
+.sody-woman-orbits{position:absolute;inset:0;width:100%;height:100%;z-index:-1;overflow:visible}
+.sody-woman-orbits ellipse{fill:none;stroke:#d7f9d98c;stroke-width:1.7;vector-effect:non-scaling-stroke}
+.sody-body-glass{bottom:2%;padding:17px 17px 16px;z-index:5}
+.sody-body-glass h2{font-size:clamp(23px,6.5vw,30px);margin:11px 0 12px}
+.sody-balance-line{display:flex;align-items:center;gap:11px;padding:9px 0 10px;border-bottom:1px solid #e1f7dc62}
+.sody-balance-line:last-child{border-bottom:0;padding-bottom:1px}
+.sody-balance-icon{width:40px;height:40px;border:1px solid #edffdb73;border-radius:14px;background:#ccf8c53a;display:grid;place-items:center;flex:0 0 40px}
+.sody-balance-icon svg{width:25px;height:25px}
+.sody-balance-text{display:flex;flex-direction:column;flex:1;min-width:0}
+.sody-balance-text b{font-size:clamp(12px,3.3vw,15px)}
+.sody-balance-text small{font-size:clamp(9px,2.3vw,11px);line-height:1.28;color:#e0f2dc;margin-top:3px}
+.sody-balance-line>strong{font-size:20px}
+.sody-bar-track{height:8px;border:1px solid #edffe588;border-radius:30px;background:#e8f9df33;overflow:hidden;margin:0 0 2px 52px}
+.sody-bar-track i{display:block;width:0%;height:100%;border-radius:30px;background:linear-gradient(90deg,#d2f3be,#ffffff);transition:width .4s ease}
+.sody-balance-line button{width:39px;height:39px;border:1px solid #f4ffea88;border-radius:50%;background:#fff;color:#2f6042;font-size:20px}
+.ref-dock{display:grid!important;height:77px!important;min-height:77px!important;background:transparent!important;border:0!important;padding:0 17px max(6px,env(safe-area-inset-bottom))!important;z-index:24!important}
+.ref-dock:before,.ref-dock:after{display:none!important}
+.ref-dock .dock-shape{display:block;position:absolute;width:100%;height:100%;inset:0;filter:drop-shadow(0 -6px 11px #153e2835)}
+.ref-dock .nav-btn{min-height:50px!important;align-self:end!important;padding:4px 2px 5px!important;gap:1px!important;font-size:10px!important}
+.ref-dock .tab-icon-outline{width:41px!important;height:37px!important;border-radius:15px!important}
+.ref-dock .ref-center-nav{width:58px!important;height:58px!important;top:-12px!important;border:5px solid #80a78a!important;z-index:3!important}
+#fab{bottom:90px!important;z-index:12!important}
+@media(max-width:385px){
+.sody-home-content h1{font-size:clamp(34px,9.2vw,39px)}
+.sody-home-canvas,.sody-body-canvas{min-height:540px}
+.sody-plan-card{min-height:222px;padding:15px 15px 16px}
+.sody-plan-card h2{font-size:24px}
+.sody-plan-actions{gap:6px;grid-template-columns:1fr 1fr 41px;margin-top:19px}
+.sody-plan-actions button{height:41px;font-size:10px}
+.sody-add-button{width:41px}
+.sody-bottle-stage{right:-7%;width:67%}
+.sody-knowledge-list{top:39%;width:56%}
+.sody-woman-stage{right:-9%;width:82%}
+.sody-body-glass{padding:14px}
+.sody-knowledge-row{min-height:67px;padding:9px 0}
+}
+@media(max-height:700px){
+.sody-home-canvas,.sody-body-canvas{height:calc(100dvh - 145px);min-height:530px}
+.sody-home-content{top:4%}
+.sody-health-stats{margin-top:18px}
+.sody-bottle-stage{top:28%;height:46%}
+.sody-plan-card{bottom:1.5%;padding-top:13px;min-height:218px}
+.sody-plan-card h2{margin-top:10px}
+.sody-knowledge-list{top:38%}
+.sody-body-titles{top:3%}
+}
+@media(prefers-reduced-motion:no-preference){.sody-bottle-img{animation:sody-float 7s ease-in-out infinite alternate}@keyframes sody-float{to{transform:translateY(-7px) rotate(1deg)}}}
+@media(prefers-reduced-motion:reduce){.sody-bottle-img{animation:none!important}}
