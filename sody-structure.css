@@ -1215,3 +1215,78 @@ body .dock.ref-dock .ref-center-nav{
   width:54px!important;height:54px!important;
   border:4px solid #86ae91!important;
 }
+
+
+/* SODY V28 — balanced navigation geometry, replacing over-compressed v27 */
+body .dock.ref-dock{
+  height:calc(74px + env(safe-area-inset-bottom,0px))!important;
+  min-height:74px!important;
+  padding:0 16px max(6px,env(safe-area-inset-bottom,0px))!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 82px minmax(0,1fr)!important;
+  align-items:stretch!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  overflow:visible!important;
+}
+body .dock.ref-dock .dock-shape{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  height:100%!important;
+  width:100%!important;
+  overflow:visible!important;
+  filter:none!important;
+  pointer-events:none!important;
+}
+body .dock.ref-dock .nav-btn{
+  position:relative!important;
+  align-self:end!important;
+  z-index:2!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:2px!important;
+  width:100%!important;
+  min-height:54px!important;
+  padding:3px 4px 7px!important;
+  font-size:10px!important;
+  color:#506d59!important;
+}
+body .dock.ref-dock .tab-icon-outline{
+  width:40px!important;
+  height:37px!important;
+  border-radius:17px!important;
+  border:1px solid #d2e1d4!important;
+  box-shadow:0 3px 8px rgba(23,62,39,.10)!important;
+}
+body .dock.ref-dock .nav-btn .tab-icon{
+  width:23px!important;height:23px!important;
+}
+body .dock.ref-dock .ref-center-nav{
+  position:relative!important;
+  top:-9px!important;
+  margin:0!important;
+  align-self:start!important;
+  justify-self:center!important;
+  z-index:3!important;
+  width:58px!important;
+  height:58px!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  border:4px solid #86a991!important;
+  box-shadow:0 4px 11px rgba(17,62,38,.17)!important;
+  display:grid!important;
+  place-items:center!important;
+}
+body .dock.ref-dock .ref-center-nav .tab-icon{
+  width:25px!important;height:25px!important;
+}
+body .dock.ref-dock .ref-center-nav.active{
+  background:#f0f7ee!important;
+  border-color:#699d7a!important;
+}
