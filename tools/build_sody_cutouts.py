@@ -12,13 +12,24 @@ def rounded_mask(im, polygon, sigma):
     return m.filter(ImageFilter.GaussianBlur(sigma))
 
 home=Image.open(ROOT/"sody-approved-home.webp").convert("RGBA")
-bottle_coords=[(521,433),(556,415),(646,400),(689,401),(728,424),(749,459),
-(746,508),(729,526),(747,534),(785,552),(800,584),(819,654),(841,777),
-(854,864),(841,917),(818,943),(790,956),(739,975),(652,979),(594,966),
-(550,939),(523,898),(503,817),(496,744),(487,640),(494,585),(511,547),
-(533,533),(505,508),(496,470)]
-home.putalpha(rounded_mask(home,bottle_coords,3.2))
-home=home.crop((485,390,875,985))
+rgb=np.asarray(home.convert("RGB"), dtype=np.float32)
+height,width=rgb.shape[:2]
+# A precise silhouette + per-row background subtraction. The old polygon alone
+# kept the green screenshot behind the bottle as a rectangular-looking halo.
+bottle_coords=[(530,449),(545,430),(558,422),(621,409),(682,400),(711,418),
+(734,449),(744,488),(743,513),(724,524),(733,531),(771,542),(798,573),
+(816,632),(834,745),(850,842),(852,889),(839,925),(813,949),(755,971),
+(649,978),(590,957),(553,943),(537,914),(526,874),(519,803),(504,708),
+(500,638),(509,590),(528,555),(541,537),(520,520),(506,490)]
+mask=np.asarray(rounded_mask(home,bottle_coords,2.8), dtype=np.float32)
+left=np.median(rgb[:,414:465,:],axis=1)
+right=np.median(rgb[:,900:937,:],axis=1)
+interp=np.clip((np.arange(width,dtype=np.float32)-440)/475,0,1)
+background=left[:,None,:]*(1-interp[None,:,None])+right[:,None,:]*interp[None,:,None]
+delta=np.linalg.norm(rgb-background,axis=2)
+alpha=np.uint8(np.clip(mask*np.clip((delta-14)/37,0,1),0,255))
+home.putalpha(Image.fromarray(alpha,"L"))
+home=home.crop((475,390,875,990))
 home.save(ROOT/"sody-bottle-cut.webp","WEBP",quality=92,method=6)
 
 im=Image.open(ROOT/"sody-approved-body.webp").convert("RGBA")
