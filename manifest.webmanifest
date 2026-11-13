@@ -1,12 +1,12 @@
 {
   "name": "SODY — БАДы и спортпит",
   "short_name": "SODY",
-  "description": "Персональный график приёма добавок",
+  "description": "Твой ритм приёма добавок и спортивного питания",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#eeeee6",
-  "theme_color": "#eeeee6",
+  "background_color": "#102b24",
+  "theme_color": "#102b24",
   "icons": [
     {
       "src": "icons/icon-192.png",
