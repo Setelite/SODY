@@ -993,3 +993,104 @@ body .ref-dock .ref-center-nav{
 body .ref-dock .nav-btn .tab-icon-outline{
   border-radius:17px!important;
 }
+
+
+/* SODY V25 — strict modal width, native iOS widgets and rounded side wings */
+#modalRoot,
+#modalRoot .sheet-bg{
+  width:100%!important;max-width:100vw!important;
+  overflow-x:clip!important;
+}
+#modalRoot .sheet{
+  box-sizing:border-box!important;
+  width:min(100%,520px)!important;
+  max-width:100vw!important;
+  min-width:0!important;
+  overflow:hidden!important;
+}
+#modalRoot .sheet-scroll{
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;max-width:100%!important;
+  padding-left:max(16px,env(safe-area-inset-left))!important;
+  padding-right:max(16px,env(safe-area-inset-right))!important;
+  overflow-x:hidden!important;
+}
+#modalRoot .sheet-scroll form,
+#modalRoot .sheet-scroll form > *,
+#modalRoot .sheet-scroll .field,
+#modalRoot .sheet-scroll .field input,
+#modalRoot .sheet-scroll .field select,
+#modalRoot .sheet-scroll .field textarea{
+  min-width:0!important;
+  max-width:100%!important;
+  box-sizing:border-box!important;
+}
+#modalRoot .sheet-scroll form{width:100%!important;margin:0!important}
+#modalRoot .sheet-scroll .field{
+  display:block!important;
+  width:100%!important;
+}
+#modalRoot .sheet-scroll .field input,
+#modalRoot .sheet-scroll .field textarea,
+#modalRoot .sheet-scroll .field select{
+  width:100%!important;
+  padding-left:15px!important;
+  padding-right:15px!important;
+}
+#modalRoot .sheet-scroll .field input[type="file"]{
+  width:100%!important;
+  max-width:100%!important;
+  overflow:hidden!important;
+  padding:13px 10px!important;
+  font-size:13px!important;
+  white-space:nowrap;
+}
+#modalRoot .sheet-scroll input[type="file"]::file-selector-button{
+  max-width:48%!important;
+  padding:7px 11px!important;
+  margin-right:8px!important;
+  border:0;border-radius:12px;
+  background:#edf1ed;color:#24432f;
+  font-size:13px!important;
+}
+#modalRoot .sheet-scroll .two{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  width:100%!important;gap:0!important;
+}
+#modalRoot .sheet-scroll .two > .field{margin:10px 0!important;min-width:0!important}
+@media(min-width:600px){
+  #modalRoot .sheet-scroll .two{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:12px!important;
+  }
+}
+/* Side wings curve at a radius close to the central 56px circle;
+   all whitespace behind the central notch is transparent. */
+body .dock.ref-dock{
+  height:calc(84px + env(safe-area-inset-bottom,0px))!important;
+  min-height:84px!important;
+  padding:0 15px max(6px,env(safe-area-inset-bottom,0px))!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+body .dock.ref-dock .dock-shape{
+  inset:0!important;
+  width:100%!important;height:100%!important;
+  overflow:visible!important;
+  pointer-events:none!important;
+}
+body .dock.ref-dock .ref-center-nav{
+  top:-12px!important;
+  width:56px!important;height:56px!important;
+  border:4px solid #84a98b!important;
+  border-radius:50%!important;
+  align-self:start!important;
+}
+body .dock.ref-dock .nav-btn{
+  align-self:end!important;
+  padding-bottom:7px!important;
+  min-height:56px!important;
+}
