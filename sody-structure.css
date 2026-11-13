@@ -593,3 +593,74 @@ body[data-sody-tab="home"] .app{
   mask-image:none!important;
   object-fit:contain!important;
 }
+
+
+/* SODY V21 — accessible installation controls & fully scrollable product sheets */
+#modalRoot {position:relative;z-index:1200}
+#modalRoot .sheet-bg{
+  position:fixed!important;inset:0!important;z-index:1200!important;
+  display:flex!important;align-items:flex-end!important;justify-content:center!important;
+  overflow:hidden!important;
+  overscroll-behavior:contain;
+  background:rgba(9,29,19,.74)!important;
+}
+#modalRoot .sheet{
+  display:flex!important;flex-direction:column!important;
+  flex:0 1 auto!important;min-height:0!important;
+  width:min(100%,540px)!important;
+  height:auto!important;max-height:calc(100dvh - max(12px,env(safe-area-inset-top)))!important;
+  padding:12px 0 0!important;
+  overflow:hidden!important;
+  border-radius:26px 26px 0 0!important;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
+  background:linear-gradient(160deg,#477255,#294d3d)!important;
+}
+#modalRoot .sheet .handle{
+  flex:0 0 5px!important;
+  width:42px!important;margin:0 auto 13px!important;
+  background:rgba(229,247,223,.68)!important;
+}
+#modalRoot .sheet-scroll{
+  display:block!important;flex:1 1 auto!important;min-height:0!important;
+  width:100%!important;max-height:calc(100dvh - 46px)!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+  padding:0 18px max(38px,calc(env(safe-area-inset-bottom) + 25px))!important;
+  overscroll-behavior-y:contain;
+  -webkit-overflow-scrolling:touch;
+  touch-action:pan-y;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(232,250,227,.56) transparent;
+}
+#modalRoot .sheet-scroll:focus{outline:none}
+#modalRoot .ref-product-panel{min-height:0!important;overflow:visible!important}
+#modalRoot .ref-product-cta{margin:14px 0 0!important}
+body.sody-modal-open .ref-dock,body.sody-modal-open #fab{pointer-events:none!important}
+.sody-install-card{
+  margin:20px 0 14px;padding:18px;
+  border:1px solid rgba(232,251,225,.44);border-radius:25px;
+  background:linear-gradient(140deg,rgba(167,208,166,.31),rgba(80,135,94,.36));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14);
+}
+.sody-install-card h2{margin:0 0 7px!important;font-size:20px!important;color:#fff;letter-spacing:-.035em}
+.sody-install-card p{font-size:12px;line-height:1.55;margin:0 0 14px;color:#dcebdd}
+.sody-install-head{display:flex;gap:13px;align-items:center;margin-bottom:12px}
+.sody-install-icon{width:58px;height:58px;flex:0 0 58px;object-fit:cover;border-radius:15px;box-shadow:0 5px 17px rgba(0,0,0,.17);background:#e9f3e3}
+.sody-install-card button{
+  display:flex;justify-content:center;align-items:center;gap:8px;
+  width:100%;min-height:49px;padding:12px;
+  border-radius:17px;border:1px solid rgba(241,255,232,.6);
+  background:#f3f9eb;color:#234833;font-size:14px;font-weight:800;
+}
+.sody-install-card button:disabled{opacity:.75;cursor:default}
+.sody-install-status{margin:10px 0 0!important;color:#e0f0dc!important;font-size:11px!important}
+.sody-install-guide{color:#f7fff5}
+.sody-install-guide h2{color:#fff;font-size:24px;margin:5px 0 12px}
+.sody-install-guide p{color:#e8f1e4;line-height:1.6;font-size:14px}
+.sody-install-guide ol{padding-left:23px;line-height:1.75;font-size:14px;color:#f0f8ec}
+.sody-install-guide li{margin:8px 0}
+.sody-install-guide .install-close{width:100%;border:0;border-radius:18px;background:#fff;color:#234632;font-weight:800;padding:14px;margin-top:20px}
+@supports not (height:100dvh){
+ #modalRoot .sheet{max-height:calc(100vh - 12px)!important}
+ #modalRoot .sheet-scroll{max-height:calc(100vh - 46px)!important}
+}
