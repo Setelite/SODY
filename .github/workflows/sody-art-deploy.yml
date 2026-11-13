@@ -1,4 +1,4 @@
-name: Publish approved SODY artwork
+name: Publish exact approved SODY screens
 on:
   push:
     paths:
@@ -10,21 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download approved transparent artwork
+      - name: Download exact approved SODY reference images
         run: |
           set -euo pipefail
           mkdir -p assets
-          curl -fL --retry 3 --connect-timeout 12 --max-time 55 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JSxcOirL4mYOchZOe1eqkneCaW/8caaaeba-6357-4eec-9b01-9192f62e174d.webp' -o assets/sody-bottle.webp
-          curl -fL --retry 3 --connect-timeout 12 --max-time 55 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JSxcOirL4mYOchZOe1eqkneCaW/0830ee4d-ea47-4de7-addc-429b4e108462.webp' -o assets/sody-molecular-woman.webp
-          file assets/sody-bottle.webp assets/sody-molecular-woman.webp
-          test $(stat -c%s assets/sody-bottle.webp) -gt 5000
-          test $(stat -c%s assets/sody-molecular-woman.webp) -gt 7000
-      - name: Commit approved artwork
+          curl -fL --retry 3 --connect-timeout 12 --max-time 75 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JSxcOirL4mYOchZOe1eqkneCaW/30e0cbaf-4849-4bfd-a06a-41f7505ed91f.png' -o /tmp/sody-home.png
+          curl -fL --retry 3 --connect-timeout 12 --max-time 75 'https://d2ol7oe51mr4n9.cloudfront.net/user_3JSxcOirL4mYOchZOe1eqkneCaW/dad833c2-b0e3-454e-9b63-33adabfe94b3.png' -o /tmp/sody-body.png
+          python -m pip install --quiet pillow
+          python - <<'PY'
+          from PIL import Image
+          for name in ('home','body'):
+              image=Image.open('/tmp/sody-'+name+'.png').convert('RGB')
+              assert image.size==(941,1672), f'Unexpected size for {name}: {image.size}'
+              image=image.crop((0,0,941,1600))
+              image.save('assets/sody-approved-'+name+'.webp','WEBP',quality=95,method=6)
+              print('exact approved screen',name,image.size)
+          PY
+      - name: Commit reference screen assets
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/sody-bottle.webp assets/sody-molecular-woman.webp
-          if ! git diff --cached --quiet; then
-            git commit -m 'Restore approved transparent SODY visuals'
-            git push
-          fi
+          git add assets/sody-approved-home.webp assets/sody-approved-body.webp
+          if ! git diff --cached --quiet; then git commit -m 'Publish exact approved SODY home and balance design artwork'; git push; fi
