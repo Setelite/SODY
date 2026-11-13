@@ -910,3 +910,86 @@ body.sody-modal-open .dock.ref-dock{visibility:hidden!important}
 @media(prefers-reduced-motion:reduce){
   #modalRoot .sheet,#modalRoot .sheet-bg.sody-is-closing .sheet{animation:none!important;transform:none!important}
 }
+
+
+/* SODY V24 — high-contrast modal labels and safe iPhone input layout */
+#modalRoot .sheet-scroll .field > span,
+#modalRoot .sheet-scroll .field > label,
+#modalRoot .sheet-scroll form > .field > span{
+  display:block!important;
+  color:#f4fff0!important;
+  opacity:1!important;
+  font-weight:750!important;
+  font-size:14px!important;
+  line-height:1.4!important;
+  margin:0 0 8px!important;
+  text-shadow:none!important;
+}
+#modalRoot .sheet-scroll .hint{
+  color:#e2f2e0!important;
+  opacity:1!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+}
+#modalRoot .sheet-scroll .two{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;
+  width:100%!important;max-width:100%!important;
+  gap:12px!important;
+  align-items:start!important;
+}
+#modalRoot .sheet-scroll .two > .field{
+  width:auto!important;
+  min-width:0!important;
+  max-width:100%!important;
+  margin:12px 0!important;
+  overflow:hidden!important;
+}
+#modalRoot .sheet-scroll .field input,
+#modalRoot .sheet-scroll .field select,
+#modalRoot .sheet-scroll .field textarea{
+  box-sizing:border-box!important;
+  display:block!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  color:#203b2b!important;
+  background:#fff!important;
+  border:1px solid #dce9d8!important;
+  border-radius:17px!important;
+}
+#modalRoot .sheet-scroll .field input::placeholder,
+#modalRoot .sheet-scroll .field textarea::placeholder{color:#87918a!important;opacity:1!important}
+#modalRoot .sheet-scroll .field input[type=time]{
+  min-width:0!important;
+  padding:12px 8px!important;
+  appearance:auto!important;
+  -webkit-appearance:auto!important;
+}
+/* Native iOS time controls require a wider intrinsic size. Stack the paired
+   fields on phones instead of allowing the neighboring input to overlap. */
+@media(max-width:520px){
+  #modalRoot .sheet-scroll .two{
+    grid-template-columns:minmax(0,1fr)!important;
+    gap:0!important;
+  }
+  #modalRoot .sheet-scroll .two > .field{
+    width:100%!important;
+    overflow:visible!important;
+    margin:11px 0!important;
+  }
+}
+/* Bottom panel has a single fluid concave rim sized to the 54px middle button. */
+body .ref-dock .dock-shape{
+  height:100%!important;
+  border-radius:0!important;
+  filter:none!important;
+}
+body .ref-dock .ref-center-nav{
+  width:54px!important;height:54px!important;
+  border-radius:50%!important;
+  border:4px solid #84a98b!important;
+  top:-14px!important;
+  box-shadow:0 3px 8px rgba(20,69,39,.18)!important;
+}
+body .ref-dock .nav-btn .tab-icon-outline{
+  border-radius:17px!important;
+}
