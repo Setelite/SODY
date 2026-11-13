@@ -56,23 +56,32 @@ jobs:
             -e 'ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -p 22' \
             ./ cx74614@vh454.timeweb.ru:/home/c/cx74614/public_html/sody/
 
-      - name: Probe public SODY directory mapping
+      - name: Diagnose site root and accessible directories
         run: |
           set -euo pipefail
-          PROBE="sody-directory-check-${GITHUB_SHA:0:12}.txt"
-          CONTENT="sody-path-check-${GITHUB_SHA}"
-          ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -p 22 cx74614@vh454.timeweb.ru \
-            "printf '%s\\n' '$CONTENT' > '/home/c/cx74614/public_html/sody/$PROBE'"
-          trap 'ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes -p 22 cx74614@vh454.timeweb.ru "rm -f /home/c/cx74614/public_html/sody/$PROBE" || true' EXIT
-          curl -LsS --max-time 15 -o /tmp/sody-probe-response -w 'Public probe HTTP %{http_code} bytes %{size_download}\n' \
-            "https://gornostaevmarketing.ru/sody/$PROBE?bust=${GITHUB_SHA}"
-          if grep -Fxq "$CONTENT" /tmp/sody-probe-response; then
-            echo "VERIFIED: remote SSH SODY directory maps to public URL"
-          else
-            echo "::error::SSH deployment directory does not match public /sody/ directory (or a rewrite/cache intercepts the request)"
-            exit 1
-          fi
-
+          echo "Remote directory identities:"
+          ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes cx74614@vh454.timeweb.ru \
+            'printf "HOME=%s\n" "$HOME"; for d in "$HOME/public_html" "$HOME/GM" /home/c/cx74614/public_html /home/c/cx74614/GM; do if test -d "$d"; then ls -ld "$d"; fi; done; for f in "$HOME/public_html/sody-check.txt" "$HOME/GM/sody-test.txt"; do if test -f "$f"; then echo "EXISTS: $f"; else echo "MISSING: $f"; fi; done'
+          echo "Public root test:"
+          curl -LsS --max-time 15 -w '\nHTTP %{http_code} bytes %{size_download}\n' \
+            'https://gornostaevmarketing.ru/sody-check.txt?diagnostic=1' | head -c 280
+          echo
+          echo "Probe each known SODY candidate..."
+          for folder in public_html GM; do
+            marker="sody-root-probe-${GITHUB_SHA:0:12}.txt"
+            token="SODY-ROOT-${folder}-${GITHUB_SHA:0:12}"
+            ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes cx74614@vh454.timeweb.ru \
+              "if test -d \"\$HOME/$folder/sody\"; then printf '%s\\n' '$token' > \"\$HOME/$folder/sody/$marker\"; fi"
+            http=$(curl -LsS --max-time 15 -o /tmp/rootprobe -w '%{http_code}' \
+              "https://gornostaevmarketing.ru/sody/$marker?folder=$folder" || true)
+            if grep -Fxq "$token" /tmp/rootprobe; then
+              echo "VERIFIED_SITE_DIRECTORY=$folder/sody ; HTTP=$http"
+            else
+              echo "NOT_PUBLIC=$folder/sody ; HTTP=$http"
+            fi
+            ssh -i ~/.ssh/sody_deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes cx74614@vh454.timeweb.ru \
+              "rm -f \"\$HOME/$folder/sody/$marker\""
+          done
       - name: Diagnose and verify published SODY version
         run: |
           set -euo pipefail
