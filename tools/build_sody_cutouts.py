@@ -66,5 +66,5 @@ alpha=np.maximum(alpha,face*.52)
 # Lower cropped portion is covered by SODY's actual HTML glass card.
 alpha*=np.clip((1145-yy)/60,0,1)
 alpha=np.uint8(np.clip(alpha*mask/255,0,255))
-woman=Image.fromarray(np.dstack((arr,alpha)),"RGBA").crop((385,65,935,1120))
+woman=Image.fromarray(np.uint8(np.clip(np.dstack((arr,alpha)),0,255)),"RGBA").crop((385,65,935,1120))
 save_image(woman,"sody-woman-cut.webp")
