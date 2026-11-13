@@ -522,3 +522,74 @@ body .app{box-shadow:none!important}
   }
   #page-body .sody-woman-stage{height:80%!important}
 }
+
+
+/* SODY V20 — remove the actual source of the rectangular tab-bar backplate.
+   The legacy .dock has a 35px backdrop-filter despite its transparent background. */
+body .dock.ref-dock {
+  background:transparent!important;
+  background-image:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  filter:none!important;
+  box-shadow:none!important;
+  border:0!important;
+  border-radius:0!important;
+  isolation:isolate!important;
+  overflow:visible!important;
+}
+body .dock.ref-dock::before,body .dock.ref-dock::after{
+  content:none!important;display:none!important;
+  background:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  filter:none!important;
+  box-shadow:none!important;
+}
+body .dock.ref-dock .dock-shape{
+  display:block!important;
+  background:none!important;
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  filter:none!important;
+  box-shadow:none!important;
+}
+/* Make the bottom of the main canvas flush with the background beneath the dock. */
+body[data-sody-tab="body"] {
+  background:#356b50!important;
+}
+body[data-sody-tab="body"] .app{
+  background:#356b50!important;
+  box-shadow:none!important;
+}
+body[data-sody-tab="home"] .app{
+  background:linear-gradient(180deg,#6d9576 0%,#2e654b 100%)!important;
+  box-shadow:none!important;
+}
+#page-body .sody-body-canvas{
+  border-bottom:0!important;
+  box-shadow:none!important;
+  background:
+    radial-gradient(ellipse 70% 55% at 70% 26%,rgba(150,203,159,.27),transparent 72%),
+    linear-gradient(180deg,#6b9c7a 0%,#4c8364 52%,#356b50 100%)!important;
+}
+/* The approved female layer now contains its own alpha: no artificial shadow or
+   blur around a transparent image and no luminous rectangular backplate. */
+#page-body .sody-woman-stage,
+#page-body .sody-woman-stage > img {
+  filter:none!important;
+  -webkit-filter:none!important;
+  box-shadow:none!important;
+  text-shadow:none!important;
+}
+#page-body .sody-woman-stage::before,
+#page-body .sody-woman-stage::after{
+  content:none!important;display:none!important;
+  filter:none!important;box-shadow:none!important;
+}
+#page-body .sody-woman-stage > img{
+  opacity:1!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  object-fit:contain!important;
+}
