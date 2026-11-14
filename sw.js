@@ -1,4 +1,4 @@
-const CACHE='sody-v34';const ASSETS=['./index.html','./manifest.webmanifest?v=21','./icons/icon-192.png','./icons/icon-512.png','./assets/sody-bottle.webp','./assets/sody-molecular-woman.webp','./sody-structure.css?v=34','./assets/sody-glass-capsules-v32.webp?art=32','./assets/sody-woman-cut.webp?art=20'];
+const CACHE='sody-v35';const ASSETS=['./index.html','./manifest.webmanifest?v=21','./icons/icon-192.png','./icons/icon-512.png','./assets/sody-bottle.webp','./assets/sody-molecular-woman.webp','./sody-structure.css?v=35','./assets/sody-glass-capsules-v32.webp?art=32','./assets/sody-woman-cut.webp?art=20'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',event=>{event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('sody-')&&key!==CACHE).map(key=>caches.delete(key)))),self.clients.claim()]))});
 self.addEventListener('fetch',event=>{
