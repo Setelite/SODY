@@ -1942,3 +1942,86 @@ body[data-sody-tab="home"] #fab,body[data-sody-tab="library"] #fab,body[data-sod
  #page-home .premium-hero-bottle .sody-bottle-product{animation:none!important;transform:rotate(-16deg)!important}
  #page-home .premium-capsule{animation:none!important}
 }
+
+
+/* SODY V33: matching plan, catalog and product-detail polish */
+.premium-page-top{
+ display:grid;grid-template-columns:42px minmax(0,1fr) 42px;align-items:center;gap:12px;
+ margin:2px 0 28px;color:#fff;
+}
+.premium-page-top strong{text-align:center;font-size:18px;letter-spacing:-.04em}
+.premium-back{
+ display:grid;place-items:center;width:41px;height:41px;padding:0!important;
+ border:1px solid #cdfdca87!important;background:linear-gradient(135deg,#88e49b42,#096f4a70)!important;
+ color:#fff!important;border-radius:14px!important;font-size:30px!important;line-height:1!important;
+ box-shadow:inset 0 1px 0 #ffffff45,0 4px 10px #00362657!important;
+}
+.premium-back.premium-gear{font-size:23px!important}
+.premium-plan-status{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+ padding:16px;margin:16px 0;border-radius:20px;
+ border:1px solid #afffbc88;background:linear-gradient(140deg,#66db8a62,#08673f8a);
+ color:#e6ffe8;box-shadow:inset 0 1px #ffffff40,0 7px 16px #00351d40;
+}
+.premium-plan-status span{font-size:12px;letter-spacing:.06em;font-weight:700}
+.premium-plan-status strong{font-size:23px;color:#c6ffc1}
+.premium-library-add,.premium-detail-action{
+ width:100%;min-height:52px;padding:13px 20px;margin:21px 0 0;
+ border-radius:19px;border:1px solid #e7ffbf!important;
+ background:linear-gradient(160deg,#8dff8a,#10ba56)!important;
+ color:#063f28!important;font-size:16px;font-weight:800;
+ box-shadow:0 0 21px #92ff806e,inset 0 2px 2px #ffffff82!important;
+}
+#page-library .premium-library-add{margin-bottom:95px}
+#modalRoot .premium-detail{display:flex;flex-direction:column;gap:14px;padding:0 0 10px}
+#modalRoot .premium-detail-head{
+ display:grid;grid-template-columns:40px 1fr 40px;align-items:center;gap:9px;
+ margin-bottom:4px;color:#fff;
+}
+#modalRoot .premium-detail-head strong{text-align:center;font-size:19px}
+#modalRoot .premium-detail-visual{
+ display:grid;grid-template-columns:40% 1fr;align-items:center;gap:13px;
+ min-height:150px;overflow:hidden;border-radius:22px;
+ background:radial-gradient(ellipse at 25% 45%,#5de78155,#0b6b4e29 64%,transparent);
+}
+#modalRoot .premium-detail-product{
+ display:grid;place-items:center;
+ width:100%;min-width:0;height:155px;
+ filter:drop-shadow(0 8px 13px #001d1870);
+}
+#modalRoot .premium-detail-product img{max-width:100%;max-height:135px;object-fit:contain}
+#modalRoot .premium-detail-product svg{width:88px;height:88px;color:#b6ffb2}
+#modalRoot .premium-detail-headline{min-width:0;color:#fff}
+#modalRoot .premium-detail-headline small{font-size:10px;letter-spacing:.08em;color:#b6ffc6}
+#modalRoot .premium-detail-headline h2{font-size:clamp(22px,6vw,29px);line-height:1.05;letter-spacing:-.06em;margin:8px 0!important;color:#fff}
+#modalRoot .premium-detail-headline p{color:#d9f8e1;font-size:12px;line-height:1.45;margin:0}
+#modalRoot .premium-detail-info{
+ display:flex;flex-direction:column;
+ padding:15px 16px;border-radius:22px;
+ border:1px solid #bcffc382;
+ background:linear-gradient(135deg,#54ce8296,#006a43b4);
+ box-shadow:inset 0 1px 0 #efffe56b,0 6px 15px #00261c59;
+}
+#modalRoot .premium-info-line{
+ display:grid;grid-template-columns:30px minmax(0,1fr) auto;
+ align-items:center;gap:9px;min-height:45px;
+ border-bottom:1px solid #b1ffb33d;color:#fff;
+}
+#modalRoot .premium-info-line:last-child{border-bottom:0}
+#modalRoot .premium-info-line>span{
+ display:grid;place-items:center;
+ width:28px;height:28px;border-radius:11px;
+ border:1px solid #afffb980;background:#caffad26;font-size:19px;
+}
+#modalRoot .premium-info-line>strong{font-size:13px;line-height:1.3}
+#modalRoot .premium-info-line>b{font-size:13px;text-align:right;max-width:130px;overflow-wrap:anywhere;color:#e4ffdf}
+#modalRoot .premium-detail-copy h3{font-size:17px;letter-spacing:-.03em;margin:0 0 9px;color:#fff}
+#modalRoot .premium-detail-copy p{margin:0;color:#def6e1;font-size:13px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
+#modalRoot .premium-detail-action{margin-top:3px}
+#modalRoot .premium-detail-action span{margin-left:14px}
+@media(max-width:365px){
+ #modalRoot .premium-detail-visual{grid-template-columns:36% 1fr;gap:8px}
+ #modalRoot .premium-detail-info{padding:12px}
+ #modalRoot .premium-info-line{grid-template-columns:27px minmax(0,1fr) auto;gap:6px}
+ #modalRoot .premium-info-line>strong,#modalRoot .premium-info-line>b{font-size:11px}
+}
