@@ -1465,3 +1465,61 @@ body.sody-modal-open #fab{display:none!important}
 @media(prefers-reduced-motion:reduce){
   #modalRoot .sheet.sody-sheet-dragging{animation:none!important}
 }
+
+
+/* SODY V30 — straighten and fully reveal the product bottle */
+#page-home .sody-bottle-stage{
+  top:27%!important;
+  right:4%!important;
+  width:53%!important;
+  height:35%!important;
+  max-height:300px!important;
+  z-index:11!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+}
+#page-home .sody-bottle-img{
+  display:block!important;
+  top:0!important;
+  right:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  transform:rotate(12deg)!important;
+  animation:none!important;
+  transition:none!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  filter:drop-shadow(3px 11px 11px rgba(14,48,30,.24))!important;
+}
+#page-home .sody-bottle-orbits{
+  opacity:.25!important;
+  transform:translateY(-3%) scale(.8)!important;
+  transform-origin:center!important;
+}
+#page-home .sody-plan-card{
+  z-index:7!important;
+}
+#page-home .sody-plan-card .sody-chip,
+#page-home .sody-plan-card h2,
+#page-home .sody-plan-card p,
+#page-home .sody-plan-card .sody-plan-actions{
+  position:relative!important;
+  z-index:12!important;
+}
+@media(max-width:390px){
+  #page-home .sody-bottle-stage{
+    top:27%!important;
+    right:2%!important;
+    width:52%!important;
+    height:34%!important;
+  }
+}
+@media(max-height:740px){
+  #page-home .sody-bottle-stage{
+    top:25%!important;
+    height:33%!important;
+  }
+}
