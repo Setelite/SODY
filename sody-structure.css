@@ -1290,3 +1290,178 @@ body .dock.ref-dock .ref-center-nav.active{
   background:#f0f7ee!important;
   border-color:#699d7a!important;
 }
+
+
+/* SODY V29 — consolidated mobile containment, centered compact dock & swipe-to-dismiss */
+html,body{max-width:100%!important;overflow-x:clip!important}
+body .app,
+body .app .tab-page,
+body .app .library,
+body .app .lib-card,
+body .app .product-visual,
+body .app .timeline,
+body .app .dose-card{
+  box-sizing:border-box!important;
+  min-width:0!important;
+  max-width:100%!important;
+}
+#page-library{
+  width:100%!important;
+  overflow-x:clip!important;
+  padding-bottom:calc(135px + env(safe-area-inset-bottom,0px))!important;
+}
+#page-library .library{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  width:100%!important;
+  max-width:100%!important;
+  overflow:visible!important;
+}
+#page-library .lib-card{
+  width:auto!important;min-width:0!important;max-width:100%!important;
+  margin:0!important;padding:12px!important;
+  overflow:hidden!important;border-radius:25px!important;
+}
+#page-library .lib-card .product-visual{
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  object-fit:contain!important;overflow:hidden!important;
+}
+#page-library .lib-card h3,
+#page-library .lib-card p,
+#page-library .lib-card .pill{
+  max-width:100%!important;overflow-wrap:anywhere!important;
+  word-break:normal!important;
+}
+#page-library .lib-card .pill{
+  display:inline-block!important;white-space:normal!important;
+}
+#page-library .lib-card .product-visual img{
+  display:block!important;width:100%!important;height:100%!important;object-fit:contain!important;
+}
+#page-library .lib-card .supplement-icon{max-width:100%!important}
+@media(max-width:340px){
+  #page-library .library{gap:8px!important}
+  #page-library .lib-card{padding:9px!important}
+  #page-library .lib-card .product-visual{height:110px!important}
+}
+/* Prevent all native iOS inputs and calendar controls exceeding the sheet width. */
+#modalRoot .sheet-bg{overflow-x:hidden!important}
+#modalRoot .sheet{
+  width:min(100%,520px)!important;max-width:100vw!important;min-width:0!important;
+  overflow:hidden!important;
+}
+#modalRoot .sheet-scroll{
+  display:block!important;
+  box-sizing:border-box!important;
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  overflow-x:hidden!important;overflow-y:auto!important;
+  padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))!important;
+}
+#modalRoot .sheet-scroll *,
+#modalRoot .sheet-scroll *::before,
+#modalRoot .sheet-scroll *::after{box-sizing:border-box}
+#modalRoot .sheet-scroll form,
+#modalRoot .sheet-scroll .two,
+#modalRoot .sheet-scroll .field,
+#modalRoot .sheet-scroll .field input,
+#modalRoot .sheet-scroll .field select,
+#modalRoot .sheet-scroll .field textarea{
+  max-width:100%!important;min-width:0!important;
+}
+#modalRoot .sheet-scroll form{width:100%!important}
+#modalRoot .sheet-scroll .two{
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  gap:0!important;width:100%!important;
+}
+#modalRoot .sheet-scroll .two > .field{width:100%!important;margin:10px 0!important}
+#modalRoot .sheet-scroll .field input,
+#modalRoot .sheet-scroll .field select,
+#modalRoot .sheet-scroll .field textarea{
+  display:block!important;width:100%!important;
+  padding-left:13px!important;padding-right:13px!important;
+  font-size:16px!important;
+}
+#modalRoot .sheet-scroll .field input[type=time],
+#modalRoot .sheet-scroll .field input[type=date]{
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  padding-inline:12px!important;
+  box-sizing:border-box!important;
+}
+#modalRoot .sheet-scroll .field input[type=file]{
+  max-width:100%!important;font-size:13px!important;overflow:hidden!important;
+}
+/* Native 7-column weekday selectors must shrink with the viewport. */
+#modalRoot .sheet-scroll .week-toggles{
+  display:grid!important;grid-template-columns:repeat(7,minmax(0,1fr))!important;
+  min-width:0!important;width:100%!important;gap:5px!important;
+}
+#modalRoot .sheet-scroll .week-toggles .wday{
+  width:100%!important;min-width:0!important;
+  padding:11px 0!important;font-size:12px!important;
+}
+/* Compact single-surface tab-bar, with icons centered in the white wings. */
+body .dock.ref-dock{
+  height:calc(63px + env(safe-area-inset-bottom,0px))!important;
+  min-height:63px!important;
+  padding:0 13px max(3px,env(safe-area-inset-bottom,0px))!important;
+  grid-template-columns:minmax(0,1fr) 76px minmax(0,1fr)!important;
+  bottom:0!important;
+  overflow:visible!important;
+}
+body .dock.ref-dock .dock-shape{height:100%!important;width:100%!important}
+body .dock.ref-dock .nav-btn{
+  display:flex!important;
+  align-self:stretch!important;justify-self:stretch!important;
+  align-items:center!important;justify-content:center!important;
+  flex-direction:column!important;gap:1px!important;
+  width:100%!important;height:100%!important;
+  min-height:0!important;padding:10px 2px 1px!important;
+  font-size:9px!important;line-height:1.12!important;
+}
+body .dock.ref-dock .tab-icon-outline{
+  width:35px!important;height:34px!important;border-radius:15px!important;
+}
+body .dock.ref-dock .nav-btn .tab-icon{width:21px!important;height:21px!important}
+body .dock.ref-dock .ref-center-nav{
+  align-self:start!important;justify-self:center!important;
+  top:-12px!important;width:54px!important;height:54px!important;
+  border-radius:50%!important;border-width:4px!important;
+}
+/* Keep the floating add button completely above the dock / its central cradle. */
+body[data-sody-tab="library"] #fab,
+body[data-sody-tab="calendar"] #fab{
+  position:fixed!important;z-index:25!important;
+  right:max(16px,calc((100vw - 520px)/2 + 16px))!important;
+  bottom:calc(86px + env(safe-area-inset-bottom,0px))!important;
+  width:46px!important;height:46px!important;
+  border-radius:50%!important;
+}
+body[data-sody-tab="library"] #fab.hide,
+body[data-sody-tab="calendar"] #fab.hide{display:none!important}
+body.sody-modal-open #fab{display:none!important}
+/* Touch handle with an obvious interaction zone without making it visually thick. */
+#modalRoot .sheet .handle.sody-sheet-drag-hint{
+  width:45px!important;height:5px!important;
+  flex:0 0 5px!important;
+  margin:0 auto 16px!important;
+  border-radius:9px!important;
+  background:#d9ecdfb3!important;
+  cursor:grab;
+  touch-action:none!important;
+  position:relative;
+}
+#modalRoot .sheet .handle.sody-sheet-drag-hint::before{
+  content:"";position:absolute;left:-24px;right:-24px;
+  top:-15px;bottom:-17px;
+}
+#modalRoot .sheet.sody-sheet-dragging{
+  animation:none!important;
+  -webkit-animation:none!important;
+  transition:none!important;
+  will-change:transform;
+}
+#modalRoot .sheet-scroll{overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+@media(prefers-reduced-motion:reduce){
+  #modalRoot .sheet.sody-sheet-dragging{animation:none!important}
+}
