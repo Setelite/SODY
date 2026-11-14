@@ -324,7 +324,7 @@ body.approved-art-mode .orb{display:none!important}
 @media(max-height:650px){.approved-screen{min-height:560px}.body-truth-overlay{height:24%;bottom:11%}.body-truth-overlay h2{margin:6px 0}}
 @media(min-width:521px){body.approved-art-mode .app{box-shadow:0 0 100px rgba(5,31,16,.2)}}
 
-</style><link rel="stylesheet" href="sody-structure.css?v=28"></head><body><div class="orb"></div><main class="app">
+</style><link rel="stylesheet" href="sody-structure.css?v=29"></head><body><div class="orb"></div><main class="app">
 <header class="top reference-top">
   <div class="ref-profile"><div class="ref-avatar" aria-hidden="true">S</div><div><strong id="headerProgress">Мой прогресс</strong><small>твой личный ритм</small></div></div>
   <div class="ref-brand" aria-hidden="true">SODY</div>
@@ -476,7 +476,84 @@ function renderHome(){const a=byDate(selectedDate),done=a.filter(i=>isDone(selec
 function renderLibrary(){document.getElementById('libraryGrid').innerHTML=db.items.length?db.items.map(i=>`<div class="glass lib-card tap" onclick="openDetail('${i.id}')"><div class="product-visual">${visual(i)}</div><h3>${escapeHtml(i.name)}</h3><p>${escapeHtml(i.purpose||'Назначение не указано')}</p><span class="pill">${escapeHtml(i.form||'Форма не указана')}</span></div>`).join(''):'<div class="glass empty" style="grid-column:1/-1">Каталог пуст. Добавьте первую добавку.</div>'}
 function renderCalendar(){document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('selected',b.dataset.mode===mode));document.getElementById('segIndicator').style.transform=`translateX(${['day','week','month'].indexOf(mode)*100}%)`;const root=document.getElementById('calBody');if(mode==='day'){root.innerHTML=`<div class="section-top"><h2>${fmtLong(selectedDate)}</h2><button class="small-action" onclick="pickDate('${isoToday()}')">Сегодня ↗</button></div><div class="date-strip">${Array.from({length:7},(_,n)=>{let d=addDays(selectedDate,-getWeekday(selectedDate)+n);return `<button class="date-pill ${same(d,selectedDate)?'active':''}" onclick="pickDate('${ymd(d)}')"><span>${weekdays[n]}</span><b>${d.getDate()}</b></button>`}).join('')}</div><div class="timeline">${byDate(selectedDate).map(i=>card(i,selectedDate)).join('')||'<div class="glass empty">Нет запланированных приёмов</div>'}</div>`}else if(mode==='week'){let begin=addDays(selectedDate,-getWeekday(selectedDate));root.innerHTML=Array.from({length:7},(_,k)=>{const d=addDays(begin,k),items=byDate(d),done=items.filter(i=>isDone(d,i.id)).length;return `<div class="summary-row tap" onclick="pickDate('${ymd(d)}');setMode('day')"><div><strong>${weekdays[k]}, ${fmtLong(d)}</strong><br><small>${items.length?items.map(i=>escapeHtml(i.name)).join(', '):'Нет приёмов'}</small></div><strong>${done}/${items.length} ›</strong></div>`}).join('')}else{const start=new Date(displayMonth.getFullYear(),displayMonth.getMonth(),1),shift=getWeekday(start),last=new Date(start.getFullYear(),start.getMonth()+1,0).getDate(),cells=Math.ceil((shift+last)/7)*7;root.innerHTML=`<div class="monthbar section-top"><button onclick="moveMonth(-1)">‹</button><strong>${fmtMonth(start)}</strong><button onclick="moveMonth(1)">›</button></div><div class="calendar">${weekdays.map(s=>`<div class="mini-date" style="text-align:center">${s}</div>`).join('')}${Array.from({length:cells},(_,k)=>{let d=addDays(start,k-shift),a=byDate(d),done=a.filter(i=>isDone(d,i.id)).length;return `<button class="calday ${same(d,selectedDate)?'active':''} ${d.getMonth()!==start.getMonth()?'out':''}" onclick="pickDate('${ymd(d)}');setMode('day')">${d.getDate()}<small>${a.length?done+'/'+a.length:'—'}</small></button>`}).join('')}</div><div class="banner">На каждом дне показано количество отмеченных приёмов / всех запланированных.</div>`}}
 function moveMonth(n){displayMonth=new Date(displayMonth.getFullYear(),displayMonth.getMonth()+n,1);renderCalendar()}function render(){renderHome();renderLibrary();renderCalendar()}
-function modal(inner){const root=document.getElementById('modalRoot');root.innerHTML=`<div class="sheet-bg" onclick="if(event.target===this)closeModal()"><div class="sheet" role="dialog" aria-modal="true" aria-label="Карточка SODY"><div class="handle"></div><div class="sheet-scroll" tabindex="0">${inner}</div></div></div>`;document.body.classList.add('sody-modal-open');const pane=root.querySelector('.sheet-scroll');if(pane)pane.scrollTop=0}function closeModal(){const root=document.getElementById('modalRoot'),overlay=root.querySelector('.sheet-bg');if(!overlay){document.body.classList.remove('sody-modal-open');return}if(sodyMotionReduced()){root.innerHTML='';document.body.classList.remove('sody-modal-open');return}if(overlay.classList.contains('sody-is-closing'))return;overlay.classList.add('sody-is-closing');const finish=()=>{if(root.contains(overlay)){root.innerHTML='';document.body.classList.remove('sody-modal-open')}};overlay.addEventListener('animationend',event=>{if(event.target===overlay)finish()},{once:true});window.setTimeout(finish,300)}function dayOptions(days){return weekdays.map((w,i)=>`<button type="button" class="wday ${days.includes(i)?'on':''}" data-day="${i}" onclick="this.classList.toggle('on')">${w}</button>`).join('')}
+function setupSodySheetSwipe(sheet){
+  const scroll=sheet.querySelector('.sheet-scroll');
+  const handle=sheet.querySelector('.handle');
+  if(!scroll||!handle)return;
+  let initialY=0,initialX=0,offset=0,started=false,dragging=false,fromHandle=false,startedAt=0;
+  const reset=()=>{
+    started=false;dragging=false;offset=0;
+    sheet.classList.remove('sody-sheet-dragging');
+    sheet.style.removeProperty('transform');
+    sheet.style.removeProperty('transition');
+  };
+  sheet.addEventListener('touchstart',event=>{
+    if(event.touches.length!==1)return;
+    const target=event.target;
+    if(!(target instanceof Element))return;
+    fromHandle=Boolean(target.closest('.handle,.sody-sheet-drag-hint'));
+    if(!fromHandle&&(target.closest('button,input,select,textarea,[contenteditable="true"]')||scroll.scrollTop>2))return;
+    const finger=event.touches[0];
+    initialY=finger.clientY;
+    initialX=finger.clientX;
+    startedAt=performance.now();
+    offset=0;started=true;dragging=false;
+  },{passive:true});
+  sheet.addEventListener('touchmove',event=>{
+    if(!started||event.touches.length!==1)return;
+    const finger=event.touches[0];
+    const dy=finger.clientY-initialY;
+    const dx=finger.clientX-initialX;
+    if(dy<0||Math.abs(dx)>Math.max(30,Math.abs(dy)*1.2)){
+      if(!dragging)started=false;
+      return;
+    }
+    if(!fromHandle&&scroll.scrollTop>2){if(!dragging)started=false;return}
+    if(dy<8&&!dragging)return;
+    dragging=true;
+    if(event.cancelable)event.preventDefault();
+    offset=Math.min(dy,window.innerHeight*.82);
+    sheet.classList.add('sody-sheet-dragging');
+    sheet.style.setProperty('transform','translate3d(0,'+offset+'px,0)','important');
+    sheet.style.setProperty('transition','none','important');
+  },{passive:false});
+  sheet.addEventListener('touchend',()=>{
+    if(!started)return;
+    const distance=offset;
+    const elapsed=performance.now()-startedAt;
+    const shouldClose=dragging&&(distance>115||(distance>65&&elapsed<280));
+    if(shouldClose){
+      reset();
+      closeModal();
+    }else if(dragging){
+      sheet.style.setProperty('transition','transform 230ms cubic-bezier(.22,.8,.26,1)','important');
+      sheet.style.setProperty('transform','translate3d(0,0,0)','important');
+      window.setTimeout(()=>{if(sheet.isConnected)reset()},250);
+      started=false;
+    }else{reset()}
+  },{passive:true});
+  sheet.addEventListener('touchcancel',reset,{passive:true});
+}
+function modal(inner){
+  const root=document.getElementById('modalRoot');
+  root.innerHTML=`<div class="sheet-bg" onclick="if(event.target===this)closeModal()"><div class="sheet" role="dialog" aria-modal="true" aria-label="Карточка SODY"><div class="handle sody-sheet-drag-hint" aria-label="Смахните вниз, чтобы закрыть"></div><div class="sheet-scroll" tabindex="0">${inner}</div></div></div>`;
+  document.body.classList.add('sody-modal-open');
+  const pane=root.querySelector('.sheet-scroll');
+  if(pane)pane.scrollTop=0;
+  const sheet=root.querySelector('.sheet');
+  if(sheet)setupSodySheetSwipe(sheet);
+}
+function closeModal(){
+  const root=document.getElementById('modalRoot'),overlay=root.querySelector('.sheet-bg');
+  if(!overlay){document.body.classList.remove('sody-modal-open');return}
+  if(sodyMotionReduced()){root.innerHTML='';document.body.classList.remove('sody-modal-open');return}
+  if(overlay.classList.contains('sody-is-closing'))return;
+  overlay.classList.add('sody-is-closing');
+  const finish=()=>{if(root.contains(overlay)){root.innerHTML='';document.body.classList.remove('sody-modal-open')}};
+  overlay.addEventListener('animationend',event=>{if(event.target===overlay)finish()},{once:true});
+  window.setTimeout(finish,300);
+}
+function dayOptions(days){return weekdays.map((w,i)=>`<button type="button" class="wday ${days.includes(i)?'on':''}" data-day="${i}" onclick="this.classList.toggle('on')">${w}</button>`).join('')}
 function openEdit(id){const i=db.items.find(e=>e.id===id)||{};modal(`<h2 class="sheet-title">${id?'Изменить добавку':'Новая добавка'}</h2><p class="hint">Добавляйте только свою схему. Приложение не подбирает дозировку автоматически.</p><form onsubmit="saveEdit(event,'${id||''}')"><label class="field"><span>Название *</span><input name="name" required maxlength="100" placeholder="Например, креатин" value="${escapeHtml(i.name||'')}"></label><div class="two"><label class="field"><span>Время *</span><input name="time" type="time" required value="${escapeHtml(i.time||'08:00')}"></label><label class="field"><span>Дозировка</span><input name="dose" placeholder="Напр. 5" value="${escapeHtml(i.dose||'')}"></label></div><div class="two"><label class="field"><span>Единицы</span><select name="unit">${['г','мг','мкг','мл','капс.','табл.','порц.','шт.','МЕ',''].map(u=>`<option ${u===(i.unit||'г')?'selected':''}>${u}</option>`).join('')}</select></label><label class="field"><span>Форма</span><select name="form">${['Капсулы','Таблетки','Порошок','Жидкость','Пастилки','Другое'].map(u=>`<option ${u===(i.form||'Капсулы')?'selected':''}>${u}</option>`).join('')}</select></label></div><label class="field"><span>Для чего / категория</span><input name="purpose" maxlength="200" placeholder="Своё назначение" value="${escapeHtml(i.purpose||'')}"></label><label class="field"><span>Описание</span><textarea name="description" placeholder="Информация из инструкции или источника">${escapeHtml(i.description||'')}</textarea></label><label class="field"><span>Нормы / ограничения (из проверенного источника)</span><textarea name="norm" placeholder="Не заполняется автоматически">${escapeHtml(i.norm||'')}</textarea></label><label class="field"><span>Как принимать</span><textarea name="how" placeholder="Например, после еды — по вашему плану">${escapeHtml(i.how||'')}</textarea></label><div class="field"><span>Дни недели</span><div class="week-toggles" id="editDays">${dayOptions(i.days||[0,1,2,3,4,5,6])}</div></div><div class="two"><label class="field"><span>С даты (необязательно)</span><input name="start" type="date" value="${escapeHtml(i.start||'')}"></label><label class="field"><span>До даты (необязательно)</span><input name="end" type="date" value="${escapeHtml(i.end||'')}"></label></div><label class="field"><span>Фото упаковки</span><input type="file" name="image" accept="image/*" onchange="previewImage(event)"><small style="color:#84917e;font-size:10px">До 500 КБ; хранится на устройстве.</small></label><input type="hidden" name="keepImage" value="${escapeHtml(i.image||'')}"><button class="primary" type="submit">${id?'Сохранить изменения':'Добавить в расписание'}</button>${id?`<button class="primary danger" type="button" onclick="deleteItem('${id}')">Удалить добавку</button>`:''}</form>`)}
 function previewImage(event){const f=event.target.files[0];if(!f)return;if(f.size>500000){toast('Размер фото должен быть до 500 КБ');event.target.value='';return}const r=new FileReader();r.onload=()=>event.target.form.elements.keepImage.value=String(r.result);r.readAsDataURL(f)}function saveEdit(e,id){e.preventDefault();const form=e.target,f=form.elements;const days=[...document.querySelectorAll('#editDays .wday.on')].map(b=>Number(b.dataset.day));if(!days.length){toast('Выберите хотя бы один день');return}if(f.start.value&&f.end.value&&f.start.value>f.end.value){toast('Дата окончания раньше начала');return}const item={id:id||uid(),name:f.name.value.trim(),time:f.time.value,dose:f.dose.value.trim(),unit:f.unit.value,form:f.form.value,purpose:f.purpose.value.trim(),description:f.description.value.trim(),norm:f.norm.value.trim(),how:f.how.value.trim(),days,start:f.start.value,end:f.end.value,image:f.keepImage.value,emoji:'◈',demo:false};if(!item.name)return;if(id){db.items=db.items.map(old=>old.id===id?item:old)}else db.items.push(item);save();closeModal();render();toast(id?'Карточка обновлена':'Добавлено в расписание')}
 function deleteItem(id){if(!confirm('Удалить эту добавку и её расписание?'))return;db.items=db.items.filter(i=>i.id!==id);Object.keys(db.checks).forEach(k=>{if(k.endsWith('|'+id))delete db.checks[k]});save();closeModal();render();toast('Удалено')}
@@ -506,7 +583,7 @@ window.addEventListener('appinstalled',()=>{deferredSodyInstall=null;refreshSody
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.querySelector('#modalRoot .sheet-bg'))closeModal()});
 document.body.classList.remove('approved-art-mode');document.body.dataset.sodyTab='home';document.getElementById('fab').classList.add('hide');render();refreshSodyInstall();
 if('serviceWorker' in navigator){
- const release='v28';
+ const release='v29';
  const reloadKey='sody-refreshed-'+release;
  window.addEventListener('load',async()=>{
   try{
