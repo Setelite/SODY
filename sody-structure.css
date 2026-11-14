@@ -1523,3 +1523,100 @@ body.sody-modal-open #fab{display:none!important}
     height:33%!important;
   }
 }
+
+
+/* SODY V31 — standalone photographic bottle with live parallax and layered lighting */
+#page-home .sody-bottle-stage.sody-bottle-parallax{
+  position:absolute!important;
+  z-index:9!important;
+  top:31%!important;
+  right:0%!important;
+  width:67%!important;
+  height:43%!important;
+  max-height:370px!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+  isolation:isolate!important;
+  transform:translate3d(var(--bottle-move-x,0px),var(--bottle-move-y,0px),0)!important;
+  transition:transform .24s cubic-bezier(.22,.7,.31,1)!important;
+  will-change:transform;
+}
+#page-home .sody-bottle-parallax .sody-bottle-product{
+  position:absolute!important;
+  display:block!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  opacity:1!important;
+  transform:rotate(0deg)!important;
+  animation:sodyBottleSuspension 6s ease-in-out infinite alternate!important;
+  filter:drop-shadow(9px 15px 11px rgba(9,38,22,.32))
+    drop-shadow(0 3px 4px rgba(0,0,0,.08))!important;
+  -webkit-mask-image:none!important;
+  mask-image:none!important;
+  backface-visibility:hidden;
+}
+#page-home .sody-bottle-parallax .sody-bottle-aura{
+  position:absolute;
+  z-index:-2;
+  width:86%;
+  height:70%;
+  top:12%;
+  right:1%;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(170,234,170,.16) 0%,rgba(111,186,117,.08) 50%,transparent 75%);
+  filter:blur(16px);
+  pointer-events:none;
+}
+#page-home .sody-bottle-parallax .sody-bottle-groundshadow{
+  position:absolute;
+  z-index:-1;
+  left:22%;
+  right:8%;
+  bottom:0%;
+  height:16%;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(10,46,23,.35),rgba(12,46,28,.12) 46%,transparent 74%);
+  filter:blur(10px);
+  transform:translateY(15px) scaleX(.83);
+  pointer-events:none;
+}
+#page-home .sody-bottle-parallax .sody-bottle-orbits{
+  opacity:.22!important;
+  transform:translate(-2%,13%) scale(.82)!important;
+  z-index:-3!important;
+}
+@keyframes sodyBottleSuspension{
+  from{transform:translate3d(0,2px,0) rotate(-1deg)}
+  to{transform:translate3d(0,-5px,0) rotate(.7deg)}
+}
+#page-home .sody-plan-card{z-index:7!important}
+#page-home .sody-plan-card .sody-chip,
+#page-home .sody-plan-card h2,
+#page-home .sody-plan-card p,
+#page-home .sody-plan-card .sody-plan-actions{z-index:12!important}
+@media(max-width:390px){
+  #page-home .sody-bottle-stage.sody-bottle-parallax{
+    top:31%!important;
+    right:-1%!important;
+    width:68%!important;
+    height:41%!important;
+  }
+}
+@media(max-height:750px){
+  #page-home .sody-bottle-stage.sody-bottle-parallax{
+    top:29%!important;
+    height:39%!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  #page-home .sody-bottle-stage.sody-bottle-parallax{
+    transform:none!important;transition:none!important;will-change:auto!important;
+  }
+  #page-home .sody-bottle-parallax .sody-bottle-product{
+    animation:none!important;transform:none!important;
+  }
+}
