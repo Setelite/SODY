@@ -324,7 +324,7 @@ body.approved-art-mode .orb{display:none!important}
 @media(max-height:650px){.approved-screen{min-height:560px}.body-truth-overlay{height:24%;bottom:11%}.body-truth-overlay h2{margin:6px 0}}
 @media(min-width:521px){body.approved-art-mode .app{box-shadow:0 0 100px rgba(5,31,16,.2)}}
 
-</style><link rel="stylesheet" href="sody-structure.css?v=33"></head><body><div class="orb"></div><main class="app">
+</style><link rel="stylesheet" href="sody-structure.css?v=34"></head><body><div class="orb"></div><main class="app">
 <header class="top reference-top sody-premium-header">
  <button class="premium-brand" onclick="setTab('home')" aria-label="SODY — главная">SODY<span class="premium-brand-spark">✦</span></button>
  <div class="premium-header-controls">
@@ -347,17 +347,17 @@ body.approved-art-mode .orb{display:none!important}
   <button class="premium-feature-card" onclick="setTab('calendar');setMode('day')">
    <span class="premium-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.7"/><path d="M7.5 2.5v5M16.5 2.5v5M3 10h18M8 14h.1M12 14h.1M16 14h.1M8 17.5h.1"/></svg></span>
    <span class="premium-card-text"><strong>Мой план</strong><small id="premiumTodaySummary">Приёмы на сегодня</small></span>
-   <span class="premium-card-chevron">›</span>
+   <span class="premium-card-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg></span>
   </button>
   <button class="premium-feature-card" onclick="setTab('calendar');setMode('week')">
    <span class="premium-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V13h3v7M10.5 20V8h3v12M17 20V3h3v17"/></svg></span>
    <span class="premium-card-text"><strong>Прогресс</strong><small id="premiumProgressSummary">Отмеченные приёмы</small></span>
-   <span class="premium-card-chevron">›</span>
+   <span class="premium-card-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg></span>
   </button>
   <button class="premium-feature-card" onclick="setTab('body')">
    <span class="premium-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9M12 16C5 16 3 10 3 5c6 0 9 3 9 8M12 15c0-8 4-11 9-11 0 7-2 12-9 12"/></svg></span>
    <span class="premium-card-text"><strong>Статьи</strong><small>Здоровье и привычки</small></span>
-   <span class="premium-card-chevron">›</span>
+   <span class="premium-card-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg></span>
   </button>
  </div>
  <div class="hide" aria-hidden="true">
@@ -526,59 +526,69 @@ function setupSodySheetSwipe(sheet){
   const scroll=sheet.querySelector('.sheet-scroll');
   const handle=sheet.querySelector('.handle');
   if(!scroll||!handle)return;
-  let initialY=0,initialX=0,offset=0,started=false,dragging=false,fromHandle=false,startedAt=0;
-  const reset=()=>{
-    started=false;dragging=false;offset=0;
+  let startY=0,startX=0,dragY=0,dragActive=false,eligible=false,fromHandle=false;
+  let activeId=null,settleTimer=0;
+  const clearTimer=()=>{if(settleTimer){clearTimeout(settleTimer);settleTimer=0}};
+  const clearDrag=()=>{
+    clearTimer();dragActive=false;eligible=false;activeId=null;dragY=0;
     sheet.classList.remove('sody-sheet-dragging');
     sheet.style.removeProperty('transform');
     sheet.style.removeProperty('transition');
   };
+  const settle=()=>{
+    if(!sheet.isConnected)return;
+    sheet.style.setProperty('transition','transform 220ms cubic-bezier(.22,.8,.26,1)','important');
+    sheet.style.setProperty('transform','translate3d(0,0,0)','important');
+    settleTimer=setTimeout(clearDrag,240);
+    dragActive=false;eligible=false;
+  };
   sheet.addEventListener('touchstart',event=>{
-    if(event.touches.length!==1)return;
+    if(event.touches.length!==1||sheet.classList.contains('sody-sheet-dismissed'))return;
+    clearTimer();
     const target=event.target;
     if(!(target instanceof Element))return;
-    fromHandle=Boolean(target.closest('.handle,.sody-sheet-drag-hint'));
-    if(!fromHandle&&(target.closest('button,input,select,textarea,[contenteditable="true"]')||scroll.scrollTop>2))return;
-    const finger=event.touches[0];
-    initialY=finger.clientY;
-    initialX=finger.clientX;
-    startedAt=performance.now();
-    offset=0;started=true;dragging=false;
+    fromHandle=!!target.closest('.handle');
+    // Only pull the sheet by its grabber. Scrolling form fields must remain native.
+    if(!fromHandle)return;
+    const t=event.touches[0];
+    startY=t.clientY;startX=t.clientX;activeId=t.identifier;
+    dragY=0;dragActive=false;eligible=true;
   },{passive:true});
   sheet.addEventListener('touchmove',event=>{
-    if(!started||event.touches.length!==1)return;
+    if(!eligible||event.touches.length!==1)return;
     const finger=event.touches[0];
-    const dy=finger.clientY-initialY;
-    const dx=finger.clientX-initialX;
-    if(dy<0||Math.abs(dx)>Math.max(30,Math.abs(dy)*1.2)){
-      if(!dragging)started=false;
-      return;
-    }
-    if(!fromHandle&&scroll.scrollTop>2){if(!dragging)started=false;return}
-    if(dy<8&&!dragging)return;
-    dragging=true;
+    if(activeId!==null&&finger.identifier!==activeId)return;
+    const y=finger.clientY-startY,x=finger.clientX-startX;
+    if(!dragActive&&(y<5||Math.abs(x)>Math.max(18,y*.6)))return;
+    if(y<=0){if(dragActive){event.preventDefault();sheet.style.setProperty('transform','translate3d(0,0,0)','important')}return;}
     if(event.cancelable)event.preventDefault();
-    offset=Math.min(dy,window.innerHeight*.82);
+    dragActive=true;
+    dragY=Math.min(y,window.innerHeight*.9);
     sheet.classList.add('sody-sheet-dragging');
-    sheet.style.setProperty('transform','translate3d(0,'+offset+'px,0)','important');
     sheet.style.setProperty('transition','none','important');
+    sheet.style.setProperty('transform','translate3d(0,'+dragY+'px,0)','important');
   },{passive:false});
   sheet.addEventListener('touchend',()=>{
-    if(!started)return;
-    const distance=offset;
-    const elapsed=performance.now()-startedAt;
-    const shouldClose=dragging&&(distance>115||(distance>65&&elapsed<280));
-    if(shouldClose){
-      reset();
-      closeModal();
-    }else if(dragging){
-      sheet.style.setProperty('transition','transform 230ms cubic-bezier(.22,.8,.26,1)','important');
-      sheet.style.setProperty('transform','translate3d(0,0,0)','important');
-      window.setTimeout(()=>{if(sheet.isConnected)reset()},250);
-      started=false;
-    }else{reset()}
+    if(!eligible)return;
+    if(!dragActive){clearDrag();return}
+    if(dragY>=100){
+      // Animate FROM current finger position; never reset to y=0 before dismissing.
+      eligible=false;dragActive=false;
+      sheet.classList.remove('sody-sheet-dragging');
+      sheet.classList.add('sody-sheet-dismissed');
+      sheet.style.setProperty('transition','transform 230ms cubic-bezier(.3,.75,.38,1)','important');
+      sheet.style.setProperty('transform','translate3d(0,110dvh,0)','important');
+      const root=document.getElementById('modalRoot');
+      const shade=root.querySelector('.sheet-bg');
+      if(shade)shade.classList.add('sody-drag-exit');
+      const remove=()=>{if(root.contains(sheet)){root.innerHTML='';document.body.classList.remove('sody-modal-open')}};
+      sheet.addEventListener('transitionend',remove,{once:true});
+      setTimeout(remove,290);
+    }else settle();
   },{passive:true});
-  sheet.addEventListener('touchcancel',reset,{passive:true});
+  sheet.addEventListener('touchcancel',()=>{
+    if(dragActive)settle();else clearDrag();
+  },{passive:true});
 }
 function modal(inner){
   const root=document.getElementById('modalRoot');
@@ -637,7 +647,7 @@ window.addEventListener('appinstalled',()=>{deferredSodyInstall=null;refreshSody
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.querySelector('#modalRoot .sheet-bg'))closeModal()});
 document.body.classList.remove('approved-art-mode');document.body.dataset.sodyTab='home';document.getElementById('fab').classList.add('hide');render();refreshSodyInstall();
 if('serviceWorker' in navigator){
- const release='v33';
+ const release='v34';
  const reloadKey='sody-refreshed-'+release;
  window.addEventListener('load',async()=>{
   try{
