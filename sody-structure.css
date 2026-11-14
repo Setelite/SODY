@@ -1620,3 +1620,43 @@ body.sody-modal-open #fab{display:none!important}
     animation:none!important;transform:none!important;
   }
 }
+
+
+/* SODY V32: full-resolution transparent glass jar with branded capsules */
+#page-home .sody-bottle-stage.sody-bottle-parallax{
+  top:27%!important;
+  right:3%!important;
+  width:61%!important;
+  height:41%!important;
+  max-height:365px!important;
+  z-index:9!important;
+  pointer-events:none!important;
+}
+#page-home .sody-bottle-parallax .sody-bottle-product{
+  width:100%!important;
+  height:100%!important;
+  max-height:none!important;
+  object-fit:contain!important;
+  object-position:center center!important;
+  image-rendering:auto!important;
+  filter:drop-shadow(8px 14px 13px rgba(10,43,25,.30))!important;
+}
+#page-home .sody-bottle-parallax .sody-bottle-groundshadow{
+  left:24%!important;right:13%!important;bottom:-3%!important;
+  opacity:.50!important;
+  filter:blur(13px)!important;
+}
+#page-home .sody-plan-card{z-index:7!important}
+@media(max-width:390px){
+  #page-home .sody-bottle-stage.sody-bottle-parallax{
+    top:27%!important;
+    right:1%!important;
+    width:59%!important;
+    height:40%!important;
+  }
+}
+@media(max-height:740px){
+  #page-home .sody-bottle-stage.sody-bottle-parallax{
+    top:25%!important;height:39%!important;
+  }
+}
