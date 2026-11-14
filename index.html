@@ -324,7 +324,7 @@ body.approved-art-mode .orb{display:none!important}
 @media(max-height:650px){.approved-screen{min-height:560px}.body-truth-overlay{height:24%;bottom:11%}.body-truth-overlay h2{margin:6px 0}}
 @media(min-width:521px){body.approved-art-mode .app{box-shadow:0 0 100px rgba(5,31,16,.2)}}
 
-</style><link rel="stylesheet" href="sody-structure.css?v=30"></head><body><div class="orb"></div><main class="app">
+</style><link rel="stylesheet" href="sody-structure.css?v=31"></head><body><div class="orb"></div><main class="app">
 <header class="top reference-top">
   <div class="ref-profile"><div class="ref-avatar" aria-hidden="true">S</div><div><strong id="headerProgress">Мой прогресс</strong><small>твой личный ритм</small></div></div>
   <div class="ref-brand" aria-hidden="true">SODY</div>
@@ -341,10 +341,11 @@ body.approved-art-mode .orb{display:none!important}
         <div class="sody-metric-line"><span>Завершено</span><strong id="heroCount">0 из 0</strong></div>
       </div>
     </div>
-    <div class="sody-bottle-stage" aria-label="Реалистичная баночка SODY">
-      <svg class="sody-bottle-orbits" viewBox="0 0 540 470" aria-hidden="true" preserveAspectRatio="none"><ellipse cx="271" cy="233" rx="263" ry="43" transform="rotate(-12 271 233)" /><ellipse cx="270" cy="326" rx="270" ry="49" transform="rotate(11 270 326)" /></svg>
-      
-      <img src="assets/sody-bottle-cut.webp?art=19" alt="Зелёная баночка Daily vitamin SODY" class="sody-bottle-img" width="390" height="595" onerror="this.src='assets/sody-bottle.webp'"/>
+    <div class="sody-bottle-stage sody-bottle-parallax" id="sodyBottleParallax" aria-label="Фирменная баночка SODY с плавающими зелёными капсулами">
+      <div class="sody-bottle-aura" aria-hidden="true"></div>
+      <div class="sody-bottle-groundshadow" aria-hidden="true"></div>
+      <svg class="sody-bottle-orbits" viewBox="0 0 540 470" aria-hidden="true" preserveAspectRatio="none"><ellipse cx="271" cy="233" rx="263" ry="43" transform="rotate(-12 271 233)" /></svg>
+      <img src="assets/sody-daily-floating.webp?art=31" class="sody-bottle-img sody-bottle-product" alt="Реалистичная матовая зелёная банка Daily vitamin SODY с серебристой крышкой и тремя зелёными капсулами" width="400" height="438" draggable="false" decoding="async" fetchpriority="high" onerror="this.onerror=null;this.src='assets/sody-bottle-cut.webp?art=19'"/>
     </div>
     <div class="sody-plan-card">
       <span class="sody-chip">60 ДНЕЙ · МОЙ РИТМ</span>
@@ -401,7 +402,41 @@ body.approved-art-mode .orb{display:none!important}
 <script>
 'use strict';const KEY='ritm-pwa-v1';const pad=n=>String(n).padStart(2,'0');const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;const parseDay=s=>new Date(s+'T12:00:00');const addDays=(d,n)=>{let x=new Date(d);x.setDate(x.getDate()+n);return x};const same=(a,b)=>ymd(a)===ymd(b);const isoToday=()=>ymd(new Date());const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);const weekdays=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];const getWeekday=d=>(d.getDay()+6)%7;const fmtLong=d=>d.toLocaleDateString('ru-RU',{day:'numeric',month:'long'});const fmtMonth=d=>d.toLocaleDateString('ru-RU',{month:'long',year:'numeric'});let tab='home',mode='day',selectedDate=parseDay(isoToday()),displayMonth=new Date(selectedDate.getFullYear(),selectedDate.getMonth(),1),editDays=[0,1,2,3,4,5,6],pendingImport=[];
 const starter=[{id:uid(),name:'Креатин',time:'08:00',dose:'',unit:'г',form:'Порошок',purpose:'Спортивное питание',description:'Креатин участвует в быстром восстановлении АТФ при кратковременной интенсивной нагрузке.',norm:'Укажите схему из рекомендации специалиста или инструкции.',how:'Способ приёма и дозу внесите из вашего плана.',emoji:'✳',days:[0,1,2,3,4,5,6],start:'',end:'',image:'',demo:true},{id:uid(),name:'Омега-3',time:'13:00',dose:'',unit:'капс.',form:'Капсулы',purpose:'Пищевые жирные кислоты',description:'Омега-3 — группа полиненасыщенных жирных кислот, включая EPA и DHA.',norm:'На этикетках важно различать массу рыбьего жира и количество EPA+DHA.',how:'Проверьте условия приёма на этикетке.',emoji:'💧',days:[0,1,2,3,4,5,6],start:'',end:'',image:'',demo:true},{id:uid(),name:'Протеин',time:'20:00',dose:'',unit:'г',form:'Порошок',purpose:'Источник белка',description:'Белковые смеси позволяют дополнить питание белком, если это необходимо для рациона.',norm:'Количество белка зависит от общего рациона и индивидуальных потребностей.',how:'Способ приготовления указан на упаковке.',emoji:'◈',days:[0,1,2,3,4,5,6],start:'',end:'',image:'',demo:true}];
-let db;try{db=JSON.parse(localStorage.getItem(KEY)||'null')}catch{}if(!db||!Array.isArray(db.items)){db={items:starter,checks:{}}}function save(){try{localStorage.setItem(KEY,JSON.stringify(db));}catch{toast('Не удалось сохранить: память браузера заполнена')}}const byDate=(date)=>db.items.filter(i=>{let w=getWeekday(date);return (i.days||[0,1,2,3,4,5,6]).includes(w)&&(!i.start||ymd(date)>=i.start)&&(!i.end||ymd(date)<=i.end)}).sort((a,b)=>a.time.localeCompare(b.time));const checkKey=(date,id)=>ymd(date)+'|'+id;const isDone=(date,id)=>!!db.checks[checkKey(date,id)];function toast(s){const t=document.getElementById('toast');t.textContent=s;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2500)}/* SODY organic motion: touch point produces a splitting glass cell. */
+let db;try{db=JSON.parse(localStorage.getItem(KEY)||'null')}catch{}if(!db||!Array.isArray(db.items)){db={items:starter,checks:{}}}function save(){try{localStorage.setItem(KEY,JSON.stringify(db));}catch{toast('Не удалось сохранить: память браузера заполнена')}}const byDate=(date)=>db.items.filter(i=>{let w=getWeekday(date);return (i.days||[0,1,2,3,4,5,6]).includes(w)&&(!i.start||ymd(date)>=i.start)&&(!i.end||ymd(date)<=i.end)}).sort((a,b)=>a.time.localeCompare(b.time));const checkKey=(date,id)=>ymd(date)+'|'+id;const isDone=(date,id)=>!!db.checks[checkKey(date,id)];function toast(s){const t=document.getElementById('toast');t.textContent=s;t.classList.add('show');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>t.classList.remove('show'),2500)}/* SODY bottle: depth follows page scroll and light pointer/tilt motion. */
+(function(){
+  const stage=document.getElementById('sodyBottleParallax');
+  if(!stage)return;
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let pointerX=0,pointerY=0,tiltX=0,tiltY=0,scheduled=false;
+  function draw(){
+    scheduled=false;
+    if(reduce.matches){stage.style.setProperty('--bottle-move-x','0px');stage.style.setProperty('--bottle-move-y','0px');return;}
+    const scroll=Math.max(0,window.scrollY||document.documentElement.scrollTop||0);
+    const y=Math.max(-9,Math.min(9,scroll*.035));
+    const px=Math.max(-7,Math.min(7,pointerX+tiltX));
+    const py=Math.max(-7,Math.min(7,pointerY+tiltY+y));
+    stage.style.setProperty('--bottle-move-x',px.toFixed(2)+'px');
+    stage.style.setProperty('--bottle-move-y',py.toFixed(2)+'px');
+  }
+  function requestDraw(){if(!scheduled){scheduled=true;requestAnimationFrame(draw);}}
+  window.addEventListener('scroll',requestDraw,{passive:true});
+  window.addEventListener('pointermove',e=>{
+    if(e.pointerType==='touch')return;
+    pointerX=((e.clientX/window.innerWidth)-.5)*9;
+    pointerY=((e.clientY/window.innerHeight)-.5)*6;
+    requestDraw();
+  },{passive:true});
+  window.addEventListener('deviceorientation',e=>{
+    if(typeof e.gamma!=='number'||typeof e.beta!=='number')return;
+    tiltX=Math.max(-4,Math.min(4,e.gamma*.12));
+    tiltY=Math.max(-3,Math.min(3,(e.beta-40)*.09));
+    requestDraw();
+  },{passive:true});
+  reduce.addEventListener?.('change',requestDraw);
+  draw();
+})();
+
+/* SODY organic motion: touch point produces a splitting glass cell. */
 let sodyMotionPoint={x:0,y:0,time:0};
 let sodyMotionAt=0;
 const sodyMotionReduced=()=>window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -583,7 +618,7 @@ window.addEventListener('appinstalled',()=>{deferredSodyInstall=null;refreshSody
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.querySelector('#modalRoot .sheet-bg'))closeModal()});
 document.body.classList.remove('approved-art-mode');document.body.dataset.sodyTab='home';document.getElementById('fab').classList.add('hide');render();refreshSodyInstall();
 if('serviceWorker' in navigator){
- const release='v30';
+ const release='v31';
  const reloadKey='sody-refreshed-'+release;
  window.addEventListener('load',async()=>{
   try{
