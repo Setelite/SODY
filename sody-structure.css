@@ -1660,3 +1660,285 @@ body.sody-modal-open #fab{display:none!important}
     top:25%!important;height:39%!important;
   }
 }
+
+
+/* SODY V33 — premium emerald liquid-glass experience (real interactive PWA) */
+:root{--sody-neon:#91ff8d;--sody-emerald:#005333;--sody-glass:rgba(116,218,149,.27)}
+html{background:#003e29!important}
+body,body[data-sody-tab],body[data-sody-tab="home"],body[data-sody-tab="body"]{
+  background:radial-gradient(ellipse 68% 33% at 53% 22%,#078657 0%,transparent 76%),linear-gradient(165deg,#003c29 0%,#005d3c 38%,#003d29 100%)!important;
+  background-attachment:fixed!important;
+  color:#fafffc!important;
+}
+body .app,body[data-sody-tab="home"] .app,body[data-sody-tab="body"] .app{
+  position:relative!important;
+  background:transparent!important;
+  width:min(100%,520px)!important;
+  padding:0 16px calc(120px + env(safe-area-inset-bottom,0px))!important;
+  box-shadow:none!important;
+}
+body .app>.top.sody-premium-header{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  min-height:106px!important;
+  padding:calc(35px + env(safe-area-inset-top,0px)) 9px 12px!important;
+  margin:0!important;
+  position:relative!important;
+  z-index:30!important;
+  border:0!important;
+  background:transparent!important;
+}
+.premium-brand{
+  display:inline-flex;align-items:flex-start;gap:1px;
+  color:#fff;background:transparent;border:0;box-shadow:none;
+  font-family:Manrope,system-ui,sans-serif;font-size:clamp(33px,9vw,46px);
+  letter-spacing:-.075em;font-weight:500;line-height:1;padding:0!important;
+}
+.premium-brand-spark{font-size:15px;color:#b4ffb2;filter:drop-shadow(0 0 6px #a8ff93);transform:translate(-3px,-5px)}
+.premium-header-controls{display:flex;align-items:center;gap:12px}
+.premium-top-icon{
+  display:grid;place-items:center;
+  width:44px;height:44px;border-radius:16px;
+  border:1px solid rgba(239,255,241,.48)!important;
+  background:linear-gradient(150deg,rgba(176,244,194,.29),rgba(18,107,66,.27))!important;
+  box-shadow:inset 0 1px 0 #ffffff50,0 8px 20px #002c213d!important;
+  color:#fff!important;
+  backdrop-filter:blur(15px);
+}
+.premium-top-icon svg{width:25px;height:25px}
+#page-home.sody-premium-home{display:block;padding:0 0 18px!important;max-width:100%!important;overflow:visible!important}
+#page-home.sody-premium-home.hide{display:none!important}
+#page-home .premium-home-stage{
+  position:relative!important;
+  height:clamp(295px,42dvh,430px)!important;
+  min-height:295px!important;
+  max-height:430px!important;
+  overflow:visible!important;
+  isolation:isolate;
+}
+#page-home .premium-hero-glow{
+  position:absolute;z-index:-1;inset:0 -8% -10%;
+  background:radial-gradient(ellipse 55% 54% at 53% 42%,#4cdb69c9,transparent 76%);
+  filter:blur(34px);pointer-events:none;
+}
+#page-home .premium-hero-orbit{
+  position:absolute;inset:4% 0 0;width:100%;height:98%;z-index:4;
+  overflow:visible;pointer-events:none;filter:drop-shadow(0 0 6px #a5ff83a1);
+}
+.premium-hero-orbit ellipse{stroke:#b4ffa1b0;stroke-width:1.1;fill:none}
+.premium-hero-orbit circle{fill:#d6ffc4;filter:drop-shadow(0 0 5px #bbffae)}
+#page-home .premium-hero-bottle.sody-bottle-stage.sody-bottle-parallax{
+  position:absolute!important;
+  z-index:5!important;
+  top:0%!important;
+  left:12%!important;right:auto!important;
+  width:76%!important;height:102%!important;max-height:none!important;
+  overflow:visible!important;
+  transform:translate3d(var(--bottle-move-x,0px),var(--bottle-move-y,0px),0)!important;
+  transition:transform .23s ease-out!important;
+}
+#page-home .premium-hero-bottle .sody-bottle-product{
+  position:absolute!important;inset:0!important;
+  width:100%!important;height:100%!important;
+  object-fit:contain!important;object-position:center center!important;
+  transform:rotate(-16deg)!important;
+  animation:sodyPremiumFloat 6s ease-in-out infinite alternate!important;
+  filter:drop-shadow(12px 21px 15px #001f1577) drop-shadow(0 0 12px #75fb8060)!important;
+  image-rendering:auto!important;
+  max-height:none!important;
+}
+#page-home .premium-hero-bottle .sody-bottle-groundshadow{
+  width:50%;left:27%!important;bottom:1%!important;
+  background:radial-gradient(ellipse,#002718b4,transparent 73%)!important;
+  filter:blur(16px)!important;
+}
+@keyframes sodyPremiumFloat{
+  from{transform:translateY(2px) rotate(-16deg)}
+  to{transform:translateY(-5px) rotate(-14deg)}
+}
+/* Independent green capsule elements: true CSS depth and staggered parallax. */
+#page-home .premium-capsule{
+  position:absolute;z-index:7;
+  width:28px;height:66px;display:block;pointer-events:none;
+  border-radius:99px;
+  border:1px solid #bfff9b8f;
+  background:
+    linear-gradient(100deg,#002c1b 0%,#37bd57 13%,#b6ffaa 25%,#097b3d 38%,#005128 67%,#3de760 89%,#003f24 100%);
+  box-shadow:inset 3px 2px 5px #a8ff9780,inset -4px -3px 9px #001b18c2,
+    11px 17px 12px #001b1599,0 0 13px #95ff6680;
+  transform:translate3d(var(--cap-x,0px),var(--cap-y,0px),0) rotate(var(--cap-angle,30deg));
+  animation:sodyCapsuleDrift 6s ease-in-out infinite alternate;
+}
+#page-home .premium-capsule::after{
+  content:"";position:absolute;left:1px;right:1px;top:48%;height:1px;
+  background:#dcffb080;box-shadow:0 1px 2px #001c1a;
+}
+#page-home .premium-capsule-shine{
+  position:absolute;top:7px;left:6px;width:5px;height:37px;border-radius:20px;
+  background:linear-gradient(#ffffffc2,#ffffff29,transparent);filter:blur(.5px);
+}
+#page-home .premium-cap-1{left:8%;top:4%;--cap-angle:44deg;--cap-x:-4px;--cap-y:3px;filter:blur(2px);opacity:.78}
+#page-home .premium-cap-2{left:7%;top:52%;--cap-angle:-47deg;--cap-x:4px;--cap-y:-4px}
+#page-home .premium-cap-3{right:9%;top:11%;--cap-angle:39deg;--cap-x:4px;--cap-y:2px}
+#page-home .premium-cap-4{right:4%;top:69%;--cap-angle:52deg;--cap-x:-4px;--cap-y:-3px}
+@keyframes sodyCapsuleDrift{
+ from{translate:0 3px}to{translate:4px -8px}
+}
+#page-home .premium-home-cards{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;gap:11px;
+  margin:0 0 12px!important;padding:0!important;
+}
+#page-home .premium-feature-card{
+  display:grid;grid-template-columns:62px minmax(0,1fr) 35px;
+  gap:12px;align-items:center;text-align:left;
+  min-height:98px;width:100%;min-width:0;
+  padding:12px 16px!important;
+  background:linear-gradient(135deg,rgba(121,228,149,.40),rgba(33,148,83,.32))!important;
+  border:1.2px solid rgba(201,255,203,.64)!important;
+  border-radius:24px!important;
+  box-shadow:inset 0 1px 0 #d8ffda73,0 7px 20px #002f213b,0 0 13px #62f17429!important;
+  color:#fff!important;
+  backdrop-filter:blur(22px) saturate(1.3);
+  -webkit-backdrop-filter:blur(22px) saturate(1.3);
+}
+#page-home .premium-feature-card:active{transform:scale(.977)}
+#page-home .premium-card-icon{
+  display:grid;place-items:center;width:59px;height:59px;border-radius:18px;
+  background:linear-gradient(135deg,#a8ffc557,#14744966);
+  border:1px solid #e2ffe17d;
+  box-shadow:inset 0 1px 1px #ffffff6e,0 5px 14px #00342148;
+}
+#page-home .premium-card-icon svg{width:32px;height:32px;color:#f6fff4}
+#page-home .premium-card-text{min-width:0;display:flex;flex-direction:column;gap:3px}
+#page-home .premium-card-text strong{font-size:clamp(19px,5vw,25px);letter-spacing:-.042em;line-height:1.14;font-weight:800;color:#fff}
+#page-home .premium-card-text small{font-size:clamp(11px,3vw,14px);color:#e2fbe8;line-height:1.35;font-weight:500}
+#page-home .premium-card-chevron{
+  display:grid;place-items:center;width:34px;height:34px;border-radius:50%;
+  color:#fff;font-size:39px;font-weight:300;line-height:1;
+  background:#dcffe326;border:1px solid #d2ffd24d;padding-bottom:5px;
+}
+#page-home .premium-home-secondary{padding-top:22px!important;padding-bottom:130px!important}
+#page-home .premium-home-secondary .section-top h2{color:#fff;font-size:20px}
+#page-home .premium-home-secondary .footer-note{color:#d9ebdc}
+#page-calendar,#page-library{
+  padding:16px 3px 115px!important;
+  color:#fff!important;
+}
+#page-calendar .greet,#page-library .greet{
+  color:#fff!important;font-size:clamp(34px,9vw,43px)!important;
+  letter-spacing:-.058em!important;line-height:1.08!important;
+}
+#page-calendar .eyebrow,#page-library .eyebrow{
+  color:#b7fbd0!important;
+}
+#page-calendar .subtitle,#page-library .subtitle{color:#ddf6e6!important;font-size:13px!important}
+#page-calendar .seg{
+  padding:5px!important;
+  border:1px solid #a7f2ad66!important;
+  border-radius:18px!important;
+  background:#006039ab!important;
+}
+#page-calendar .seg button{color:#dbf7dd!important}
+#page-calendar .seg button.selected{
+  color:#083f29!important;background:#c9ffc9!important;
+  border-radius:14px!important;
+}
+#page-calendar .seg-indicator{background:#b9ffb9!important;box-shadow:0 0 13px #96ff9470!important}
+#page-calendar .section-top h2{color:#fff!important}
+#page-calendar .date-pill{
+  border:1px solid #9fffaa80!important;background:#035837a6!important;
+  color:#e7ffed!important;border-radius:15px!important;
+}
+#page-calendar .date-pill.active{
+  color:#083b28!important;background:#caffc6!important;
+  box-shadow:0 0 17px #a4ff9b7b!important;
+}
+#page-calendar .timeline{display:flex;flex-direction:column;gap:10px}
+#page-calendar .dose-card,#page-calendar .summary-row,
+#page-library .lib-card{
+  background:linear-gradient(145deg,#51be858c,#006f48b3)!important;
+  border:1px solid #b1ffb58c!important;
+  border-radius:22px!important;
+  box-shadow:inset 0 1px 0 #e0ffe449,0 8px 18px #002d2038!important;
+  color:#fff!important;
+  backdrop-filter:blur(14px);
+}
+#page-calendar .dose-card *{max-width:100%;min-width:0}
+#page-calendar .dose-card small,#page-calendar .summary-row small{color:#e0f9e3!important}
+#page-library .library{gap:12px!important}
+#page-library .lib-card{padding:12px!important;min-width:0!important}
+#page-library .lib-card h3{color:#fff!important}
+#page-library .lib-card p{color:#d9f1e0!important}
+#page-library .lib-card .pill{background:#b4f8c133!important;color:#ecffeb!important}
+#page-library .lib-card .product-visual{
+  background:linear-gradient(135deg,#89e2a153,#025b3b66)!important;
+  border:1px solid #b8ffc75a!important;
+}
+#modalRoot .sheet,#modalRoot .sheet-scroll{
+ background:linear-gradient(165deg,#08633f,#003d2b)!important;color:#fff!important;
+}
+#modalRoot .ref-product-panel{color:#fff!important}
+#modalRoot .ref-detail-title,#modalRoot .ref-data-section h3{color:#fff!important}
+#modalRoot .ref-detail-subtitle,#modalRoot .ref-data-section p{color:#daf1e2!important}
+#modalRoot .ref-detail-tags span{color:#0c4b30!important;background:#e2ffdd!important}
+#modalRoot .ref-product-cta{background:#7bff82!important;color:#003d29!important}
+/* Clean symmetrical dock based on the three-phone reference. */
+body .dock.ref-dock.premium-dock{
+  position:fixed!important;
+  width:min(100%,520px)!important;left:50%!important;right:auto!important;
+  transform:translateX(-50%)!important;
+  bottom:0!important;z-index:110!important;
+  display:grid!important;grid-template-columns:minmax(0,1fr) 78px minmax(0,1fr)!important;
+  height:calc(86px + env(safe-area-inset-bottom,0px))!important;
+  min-height:86px!important;
+  padding:0 10px max(8px,env(safe-area-inset-bottom,0px))!important;
+  background:transparent!important;box-shadow:none!important;border:0!important;
+}
+body .premium-dock .dock-shape{
+  position:absolute!important;inset:0!important;
+  width:100%!important;height:100%!important;
+  filter:drop-shadow(0 -6px 14px #5cff7d42)!important;
+}
+body .premium-dock .nav-btn{
+  color:#104b34!important;
+  font-size:12px!important;font-weight:750!important;
+  display:flex!important;flex-direction:column!important;
+  align-items:center!important;justify-content:center!important;
+  align-self:center!important;
+  height:67px!important;min-height:67px!important;
+  padding:7px 2px 0!important;
+  gap:3px!important;
+}
+body .premium-dock .nav-btn .tab-icon-outline{
+  width:34px!important;height:31px!important;
+  border:0!important;background:transparent!important;box-shadow:none!important;
+}
+body .premium-dock .nav-btn .tab-icon{width:28px!important;height:28px!important}
+body .premium-dock .ref-center-nav.premium-dock-add{
+  display:grid!important;place-items:center!important;
+  width:65px!important;height:65px!important;
+  top:-9px!important;align-self:start!important;justify-self:center!important;
+  color:#fff!important;
+  background:linear-gradient(155deg,#057443,#003824)!important;
+  border:4px solid #a1ffa1!important;border-radius:50%!important;
+  box-shadow:0 0 0 4px #ffffff50,0 0 20px #9dff899c,0 9px 16px #002a2180!important;
+}
+body .premium-dock .ref-center-nav .tab-icon{width:32px!important;height:32px!important;color:#fff!important}
+body[data-sody-tab="home"] #fab,body[data-sody-tab="library"] #fab,body[data-sody-tab="calendar"] #fab{display:none!important}
+@media(max-width:390px){
+ #page-home .premium-home-stage{height:clamp(265px,39dvh,355px)!important;min-height:265px!important}
+ #page-home .premium-feature-card{min-height:86px;padding:10px 13px!important;grid-template-columns:54px minmax(0,1fr) 30px}
+ #page-home .premium-card-icon{width:51px;height:51px}
+ #page-home .premium-card-icon svg{width:27px;height:27px}
+ #page-home .premium-card-chevron{width:29px;height:29px;font-size:33px}
+ #page-home .premium-home-cards{gap:9px}
+}
+@media(min-height:800px) and (min-width:390px){
+ #page-home .premium-home-stage{height:min(42dvh,420px)!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #page-home .premium-hero-bottle .sody-bottle-product{animation:none!important;transform:rotate(-16deg)!important}
+ #page-home .premium-capsule{animation:none!important}
+}
