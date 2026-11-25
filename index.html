@@ -324,7 +324,7 @@ body.approved-art-mode .orb{display:none!important}
 @media(max-height:650px){.approved-screen{min-height:560px}.body-truth-overlay{height:24%;bottom:11%}.body-truth-overlay h2{margin:6px 0}}
 @media(min-width:521px){body.approved-art-mode .app{box-shadow:0 0 100px rgba(5,31,16,.2)}}
 
-</style><link rel="stylesheet" href="sody-structure.css?v=35"></head><body><div class="orb"></div><main class="app">
+</style><link rel="stylesheet" href="sody-structure.css?v=36"></head><body><div class="orb"></div><main class="app">
 <header class="top reference-top sody-premium-header">
  <button class="premium-brand" onclick="setTab('home')" aria-label="SODY — главная">SODY<span class="premium-brand-spark">✦</span></button>
  <div class="premium-header-controls">
@@ -405,7 +405,7 @@ body.approved-art-mode .orb{display:none!important}
 </section>
 <section class="tab-page hide" id="page-settings"><div class="eyebrow">НАСТРОЙКИ</div><h1 class="greet">Всё под контролем.</h1><p class="subtitle">Управляйте данными и переносите свой план между устройствами.</p><section class="sody-install-card" aria-label="Установка приложения на телефон"><div class="sody-install-head"><img class="sody-install-icon" src="icons/icon-192.png" width="58" height="58" alt="Иконка SODY"><div><h2>SODY на телефоне</h2><p style="margin:0">Ярлык на главном экране, открытие без адресной строки.</p></div></div><button type="button" id="sodyInstallBtn" onclick="installSody()">＋ Установить SODY</button><p class="sody-install-status" id="sodyInstallStatus">Для iPhone и Android</p></section><div class="glass" style="padding:17px"><button class="primary" onclick="openImport()">⇧ Импортировать план</button><button class="primary secondary" onclick="exportData()">↓ Скачать резервную копию JSON</button><label class="filelabel" style="margin-top:12px">Восстановить резервную копию<input type="file" accept=".json,application/json" onchange="restoreData(event)"></label><button class="primary danger" onclick="resetAll()">Сбросить данные</button></div><p class="footer-note">Информация хранится локально в этом браузере. Для переноса используйте резервную копию. Уведомления и синхронизация между устройствами пока не реализованы.</p></section></main>
 <button class="add-floating hide" id="fab" title="Добавить" aria-label="Добавить добавку" onclick="openEdit()"><svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg></button><nav class="dock ref-dock premium-dock" aria-label="Навигация">
- <svg class="dock-shape" viewBox="0 0 520 110" preserveAspectRatio="none" aria-hidden="true"><path d="M0 35 Q0 0 46 0 H164 C209 0 214 36 246 40 Q260 43 274 40 C306 36 311 0 356 0 H474 Q520 0 520 35 V110 H0 Z" fill="#f4fff8"/></svg>
+ <svg class="dock-shape" viewBox="0 0 520 110" preserveAspectRatio="none" aria-hidden="true"><path d="M0 43 C0 21 21 9 52 9 H166 C208 9 218 63 260 63 C302 63 312 9 354 9 H468 C499 9 520 21 520 43 V110 H0 Z" fill="#f5fff7"/></svg>
  <button class="nav-btn active" data-tab="home" onclick="setTab('home')"><span class="tab-icon-outline"><svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v11h-6v-7H9v7H3V10Z"/></svg></span><span>Главная</span></button>
  <button class="ref-center-nav premium-dock-add" data-tab="add" aria-label="Добавить добавку" onclick="openEdit()"><svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 3v18M3 12h18"/></svg></button>
  <button class="nav-btn" data-tab="library" onclick="setTab('library')"><span class="tab-icon-outline"><svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.2" y="3.2" width="7.3" height="7.3" rx="1.5"/><rect x="13.5" y="3.2" width="7.3" height="7.3" rx="1.5"/><rect x="3.2" y="13.5" width="7.3" height="7.3" rx="1.5"/><rect x="13.5" y="13.5" width="7.3" height="7.3" rx="1.5"/></svg></span><span>Каталог</span></button>
@@ -647,7 +647,7 @@ window.addEventListener('appinstalled',()=>{deferredSodyInstall=null;refreshSody
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.querySelector('#modalRoot .sheet-bg'))closeModal()});
 document.body.classList.remove('approved-art-mode');document.body.dataset.sodyTab='home';document.getElementById('fab').classList.add('hide');render();refreshSodyInstall();
 if('serviceWorker' in navigator){
- const release='v35';
+ const release='v36';
  const reloadKey='sody-refreshed-'+release;
  window.addEventListener('load',async()=>{
   try{
