@@ -2488,3 +2488,68 @@ body .dock.ref-dock.premium-dock .nav-btn .tab-icon{
     min-width:60px!important;min-height:60px!important;
   }
 }
+
+
+/* SODY V39 — exact-inspired floating wave bottom dock */
+body .dock.ref-dock.premium-dock{
+  height:calc(89px + env(safe-area-inset-bottom,0px))!important;
+  min-height:89px!important;
+  grid-template-columns:minmax(0,1fr) 86px minmax(0,1fr)!important;
+  padding:0 7px max(4px,env(safe-area-inset-bottom,0px))!important;
+  border:0!important;background:transparent!important;
+  box-shadow:none!important;overflow:visible!important;
+}
+body .dock.ref-dock.premium-dock .dock-shape{
+  width:100%!important;height:100%!important;
+  filter:drop-shadow(0 -4px 12px rgba(113,241,155,.22))!important;
+  overflow:visible!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn{
+  z-index:2!important;position:relative!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  flex-direction:column!important;
+  padding:24px 3px 5px!important;
+  gap:5px!important;
+  font-size:12px!important;
+  line-height:1.12!important;
+  color:#084a33!important;
+  text-align:center!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon-outline{
+  width:35px!important;height:35px!important;
+  display:grid!important;place-items:center!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon{
+  width:29px!important;height:29px!important;stroke-width:1.9!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add,
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add.active{
+  position:relative!important;
+  justify-self:center!important;align-self:start!important;
+  top:-15px!important;
+  width:76px!important;height:76px!important;
+  min-width:76px!important;min-height:76px!important;
+  border:5px solid #c5ffdb!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 34% 22%,#197e59,#00593b 63%,#003b2a 100%)!important;
+  box-shadow:
+    0 0 0 3px rgba(239,255,239,.83),
+    0 0 17px 6px rgba(95,255,138,.36),
+    0 9px 20px rgba(2,60,36,.40),
+    inset 0 2px 4px rgba(226,255,229,.28)!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add .tab-icon{
+  width:34px!important;height:34px!important;
+  color:#fff!important;stroke-width:2.15!important;
+}
+@media(max-width:390px){
+  body .dock.ref-dock.premium-dock{
+    grid-template-columns:minmax(0,1fr) 82px minmax(0,1fr)!important;
+  }
+  body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add,
+  body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add.active{
+    width:72px!important;height:72px!important;
+    min-width:72px!important;min-height:72px!important;top:-14px!important;
+  }
+}
