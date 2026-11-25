@@ -2553,3 +2553,113 @@ body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add .tab-icon{
     min-width:72px!important;min-height:72px!important;top:-14px!important;
   }
 }
+
+
+/* SODY V40 — reference layout, full integration in the live app */
+body .dock.ref-dock.premium-dock {
+  position: fixed!important;
+  left: 50%!important;
+  bottom: 0!important;
+  width: min(100%,520px)!important;
+  height: calc(92px + env(safe-area-inset-bottom,0px))!important;
+  min-height: 92px!important;
+  transform: translateX(-50%)!important;
+  display: grid!important;
+  grid-template-columns: minmax(0,1fr) 88px minmax(0,1fr)!important;
+  padding: 0 9px max(2px,env(safe-area-inset-bottom,0px))!important;
+  background: transparent!important;
+  border: 0!important;
+  box-shadow: none!important;
+  overflow: visible!important;
+}
+body .dock.ref-dock.premium-dock .dock-shape {
+  inset: 0!important;
+  width:100%!important;
+  height:100%!important;
+  filter:drop-shadow(0 -5px 12px rgba(112,255,164,.27))!important;
+  z-index:0!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add,
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add.active {
+  top:-13px!important;
+  width:77px!important;
+  height:77px!important;
+  min-width:77px!important;
+  min-height:77px!important;
+  justify-self:center!important;
+  align-self:start!important;
+  border:5px solid #c7ffe1!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 35% 21%,#0d7955 0%,#005b3d 52%,#003923 100%)!important;
+  box-shadow:
+    0 0 0 3px rgba(246,255,247,.94),
+    0 0 0 6px rgba(167,255,196,.20),
+    0 0 25px 9px rgba(69,255,114,.50),
+    0 8px 20px rgba(0,54,29,.38),
+    inset 0 3px 6px rgba(209,255,217,.30)!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add .tab-icon {
+  width:35px!important;
+  height:35px!important;
+  stroke-width:2.15!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn {
+  position:relative!important;
+  z-index:2!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  align-self:stretch!important;
+  gap:4px!important;
+  padding:25px 3px 3px!important;
+  color:#064830!important;
+  font-size:12px!important;
+  font-weight:700!important;
+  text-align:center!important;
+  white-space:nowrap!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon-outline {
+  display:grid!important;
+  place-items:center!important;
+  width:34px!important;
+  height:34px!important;
+  border:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon {
+  width:29px!important;
+  height:29px!important;
+  stroke-width:1.9!important;
+}
+/* The main screen in the selected reference has three hero shortcuts, no demo strip underneath. */
+body[data-sody-tab="home"] #page-home .premium-home-secondary {
+  display:none!important;
+}
+body[data-sody-tab="home"] #page-home .premium-home-cards {
+  padding-bottom:20px!important;
+}
+#page-home .premium-feature-card {
+  border-color:rgba(195,255,209,.77)!important;
+  background:linear-gradient(130deg,rgba(77,203,125,.42),rgba(3,143,81,.49))!important;
+  box-shadow:inset 0 1px 0 rgba(238,255,241,.67),0 8px 22px rgba(0,31,20,.18)!important;
+}
+@media(max-width:390px) {
+  body .dock.ref-dock.premium-dock{
+    grid-template-columns:minmax(0,1fr) 82px minmax(0,1fr)!important;
+  }
+  body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add,
+  body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add.active {
+    width:72px!important;
+    height:72px!important;
+    min-width:72px!important;
+    min-height:72px!important;
+    top:-11px!important;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add {
+    transition:none!important;
+  }
+}
