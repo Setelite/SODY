@@ -1,0 +1,61 @@
+name: Install SODY approved bottle icon for iOS and Android
+on:
+  push:
+    paths:
+      - '.github/workflows/sody-approved-icon.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install image support
+        run: python -m pip install pillow
+      - name: Render approved SODY icons and update references
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          import json
+          src=Image.open('icons/sody-bottle-approved.webp').convert('RGBA')
+          icons=Path('icons')
+          for name,size in [('apple-touch-icon.png',180),('icon-192.png',192),('icon-512.png',512)]:
+              src.resize((size,size),Image.Resampling.LANCZOS).save(icons/name,'PNG',optimize=True)
+          # Android adaptive launcher: opaque dark turquoise background and centered safe-area artwork
+          maskable=Image.new('RGBA',(512,512),'#073e35')
+          inset=410
+          item=src.resize((inset,inset),Image.Resampling.LANCZOS)
+          maskable.alpha_composite(item,((512-inset)//2,(512-inset)//2))
+          maskable.convert('RGB').save(icons/'icon-maskable-512.png','PNG',optimize=True)
+          manifest_file=Path('manifest.webmanifest')
+          manifest=json.loads(manifest_file.read_text(encoding='utf-8'))
+          manifest['icons']=[
+              {'src':'icons/icon-192.png?v=43','sizes':'192x192','type':'image/png','purpose':'any'},
+              {'src':'icons/icon-512.png?v=43','sizes':'512x512','type':'image/png','purpose':'any'},
+              {'src':'icons/icon-maskable-512.png?v=43','sizes':'512x512','type':'image/png','purpose':'maskable'}]
+          manifest_file.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          html_file=Path('index.html')
+          html=html_file.read_text(encoding='utf-8')
+          html=html.replace('manifest.webmanifest?v=42','manifest.webmanifest?v=43')
+          html=html.replace('icons/sody-matte.png?v=41','icons/apple-touch-icon.png?v=43')
+          html_file.write_text(html,encoding='utf-8')
+          sw_file=Path('sw.js')
+          sw=sw_file.read_text(encoding='utf-8')
+          sw=sw.replace("const CACHE='sody-v42'","const CACHE='sody-v43'")
+          sw=sw.replace('manifest.webmanifest?v=42','manifest.webmanifest?v=43')
+          sw=sw.replace('./icons/sody-matte.png?v=41','./icons/apple-touch-icon.png?v=43')
+          sw_file.write_text(sw,encoding='utf-8')
+          PY
+      - name: Commit updated icons
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add icons/apple-touch-icon.png icons/icon-192.png icons/icon-512.png icons/icon-maskable-512.png manifest.webmanifest index.html sw.js
+          git diff --cached --quiet || (git commit -m "Install approved SODY bottle icon on iOS and Android" && git push)
