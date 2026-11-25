@@ -1,0 +1,58 @@
+name: Install SODY Android icon
+on:
+  push:
+    paths:
+      - '.github/workflows/sody-android-icon.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  update-icons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pillow
+      - name: Generate Android adaptive and PWA assets
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          import json
+          src=Image.open("icons/sody-matte.png").convert("RGBA")
+          for size in (192, 512):
+              img=src.resize((size,size),Image.Resampling.LANCZOS)
+              img.save(f"icons/icon-{size}.png",optimize=True)
+          # Maskable Android icons need safe area: content within central 80%.
+          size=512
+          canvas=Image.new("RGBA",(size,size),(22,80,58,255))
+          symbol=src.resize((410,410),Image.Resampling.LANCZOS)
+          canvas.alpha_composite(symbol,((size-410)//2,(size-410)//2))
+          canvas.convert("RGB").save("icons/icon-maskable-512.png",optimize=True)
+          path=Path("manifest.webmanifest")
+          manifest=json.loads(path.read_text())
+          manifest["icons"]=[
+            {"src":"icons/icon-192.png?v=42","sizes":"192x192","type":"image/png","purpose":"any"},
+            {"src":"icons/icon-512.png?v=42","sizes":"512x512","type":"image/png","purpose":"any"},
+            {"src":"icons/icon-maskable-512.png?v=42","sizes":"512x512","type":"image/png","purpose":"maskable"}
+          ]
+          path.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+"\n")
+          html=Path("index.html")
+          content=html.read_text()
+          content=content.replace('manifest.webmanifest?v=21','manifest.webmanifest?v=42')
+          html.write_text(content)
+          sw=Path("sw.js")
+          content=sw.read_text().replace("const CACHE='sody-v41'","const CACHE='sody-v42'").replace("manifest.webmanifest?v=21","manifest.webmanifest?v=42")
+          content=content.replace("'./icons/icon-512.png',","'./icons/icon-512.png','./icons/icon-maskable-512.png',")
+          sw.write_text(content)
+          PY
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add icons/icon-192.png icons/icon-512.png icons/icon-maskable-512.png manifest.webmanifest index.html sw.js
+          git diff --cached --quiet || (git commit -m "Install matte SODY icon for Android PWA" && git push)
