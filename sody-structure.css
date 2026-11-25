@@ -2279,3 +2279,106 @@ body[data-sody-tab="home"] #fab,body[data-sody-tab="library"] #fab,body[data-sod
 #page-calendar .dose-card .tick.done{
   color:#fff!important;background:#2d9c61!important;
 }
+
+
+/* SODY V36 — luminous green action button in a slim, flowing white dock */
+body .dock.ref-dock.premium-dock{
+  box-sizing:border-box!important;
+  position:fixed!important;
+  left:50%!important;right:auto!important;bottom:0!important;
+  width:min(100%,520px)!important;
+  transform:translateX(-50%)!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 82px minmax(0,1fr)!important;
+  height:calc(88px + env(safe-area-inset-bottom,0px))!important;
+  min-height:88px!important;
+  padding:0 6px max(4px,env(safe-area-inset-bottom,0px))!important;
+  overflow:visible!important;
+  isolation:isolate!important;
+  z-index:110!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+}
+body .dock.ref-dock.premium-dock .dock-shape{
+  position:absolute!important;
+  left:0!important;right:0!important;bottom:0!important;top:0!important;
+  width:100%!important;height:100%!important;
+  pointer-events:none!important;overflow:visible!important;
+  filter:drop-shadow(0 -4px 12px rgba(65,254,115,.21))!important;
+  z-index:0!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn{
+  position:relative!important;
+  z-index:2!important;
+  align-self:stretch!important;justify-self:stretch!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  flex-direction:column!important;
+  min-width:0!important;
+  width:100%!important;height:100%!important;
+  min-height:0!important;
+  padding:21px 3px 2px!important;
+  margin:0!important;gap:4px!important;
+  background:transparent!important;
+  border:0!important;box-shadow:none!important;
+  color:#365e48!important;
+  font-size:11px!important;
+  line-height:1.15!important;
+  font-weight:700!important;
+  text-align:center!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon-outline{
+  display:grid!important;place-items:center!important;
+  width:34px!important;height:34px!important;
+  padding:0!important;
+  border:none!important;background:transparent!important;
+  box-shadow:none!important;border-radius:14px!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon{
+  display:block!important;
+  width:25px!important;height:25px!important;
+  stroke-width:1.9!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn.active{
+  color:#064e2c!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add{
+  position:relative!important;
+  z-index:3!important;
+  display:grid!important;place-items:center!important;
+  justify-self:center!important;align-self:start!important;
+  top:-18px!important;
+  margin:0!important;
+  padding:0!important;
+  width:72px!important;height:72px!important;
+  min-width:72px!important;min-height:72px!important;
+  border-radius:50%!important;
+  color:#fff!important;
+  border:5px solid #8cff9a!important;
+  background:radial-gradient(circle at 30% 21%,#067c49 0%,#006037 43%,#003f29 100%)!important;
+  box-shadow:
+    0 0 0 6px rgba(234,255,229,.57),
+    0 0 0 10px rgba(101,255,111,.11),
+    0 0 20px 5px rgba(83,255,103,.46),
+    0 11px 20px rgba(0,47,24,.38),
+    inset 0 2px 5px rgba(151,255,155,.27)!important;
+  transition:transform .2s ease,box-shadow .2s ease!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add .tab-icon{
+  width:31px!important;height:31px!important;
+  color:#fff!important;stroke-width:2.2!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add:active{
+  transform:scale(.94)!important;
+}
+@media(max-width:360px){
+  body .dock.ref-dock.premium-dock{
+    grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr)!important;
+  }
+  body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add{
+    width:65px!important;height:65px!important;
+    min-width:65px!important;min-height:65px!important;
+    top:-14px!important;
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add{transition:none!important}
+}
