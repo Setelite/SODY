@@ -2382,3 +2382,63 @@ body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add:active{
 @media(prefers-reduced-motion:reduce){
   body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add{transition:none!important}
 }
+
+
+/* SODY V37 — iPhone dock geometry: circular well, no green pointed tail */
+body .dock.ref-dock.premium-dock{
+  height:calc(82px + env(safe-area-inset-bottom,0px))!important;
+  min-height:82px!important;
+  grid-template-columns:minmax(0,1fr) 74px minmax(0,1fr)!important;
+  padding:0 4px max(3px,env(safe-area-inset-bottom,0px))!important;
+}
+body .dock.ref-dock.premium-dock .dock-shape{
+  filter:drop-shadow(0 -2px 8px rgba(42,159,85,.13))!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add{
+  top:-8px!important;
+  width:64px!important;height:64px!important;
+  min-width:64px!important;min-height:64px!important;
+  border:4px solid #9afe9f!important;
+  box-shadow:
+    0 0 0 3px rgba(229,255,227,.60),
+    0 0 13px 2px rgba(103,255,112,.35),
+    0 7px 13px rgba(0,47,24,.24),
+    inset 0 2px 4px rgba(170,255,175,.25)!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add .tab-icon{
+  width:29px!important;height:29px!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn{
+  padding:14px 3px 4px!important;
+  gap:3px!important;
+  font-size:11px!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon-outline{
+  width:32px!important;height:30px!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon{
+  width:24px!important;height:24px!important;
+}
+@media(max-width:390px){
+  body .dock.ref-dock.premium-dock{
+    grid-template-columns:minmax(0,1fr) 70px minmax(0,1fr)!important;
+  }
+  body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add{
+    top:-7px!important;
+    width:61px!important;height:61px!important;
+    min-width:61px!important;min-height:61px!important;
+  }
+}
+/* Keep third shortcut legible above fixed dock on ordinary iPhone viewports. */
+@media(max-width:520px) and (max-height:920px){
+  #page-home .premium-home-stage{
+    height:clamp(265px,35dvh,340px)!important;
+    min-height:265px!important;
+  }
+  #page-home .premium-feature-card{
+    min-height:87px!important;
+  }
+  #page-home .premium-home-cards{
+    gap:9px!important;
+  }
+}
