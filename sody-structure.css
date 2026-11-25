@@ -2442,3 +2442,49 @@ body .dock.ref-dock.premium-dock .nav-btn .tab-icon{
     gap:9px!important;
   }
 }
+
+
+/* SODY V38 — unified rounded white cradle, no V-notch or dangling green tip */
+body .dock.ref-dock.premium-dock{
+  height:calc(76px + env(safe-area-inset-bottom,0px))!important;
+  min-height:76px!important;
+  grid-template-columns:minmax(0,1fr) 76px minmax(0,1fr)!important;
+  padding:0 8px max(3px,env(safe-area-inset-bottom,0px))!important;
+  overflow:visible!important;
+}
+body .dock.ref-dock.premium-dock .dock-shape{
+  filter:drop-shadow(0 -3px 9px rgba(0,50,28,.15))!important;
+}
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add,
+body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add.active{
+  top:-10px!important;
+  width:62px!important;height:62px!important;
+  min-width:62px!important;min-height:62px!important;
+  border:4px solid #99ff9a!important;
+  box-shadow:0 0 0 5px #f5fff7,0 0 13px 3px rgba(94,255,112,.37),0 7px 13px rgba(0,44,25,.26),inset 0 2px 5px rgba(183,255,184,.26)!important;
+  background:radial-gradient(circle at 35% 24%,#067b4d 0%,#005735 55%,#003c27 100%)!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn{
+  padding:18px 4px 4px!important;
+  min-height:0!important;
+  gap:3px!important;
+  font-size:11px!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon-outline{
+  width:32px!important;height:29px!important;
+  display:grid!important;place-items:center!important;
+}
+body .dock.ref-dock.premium-dock .nav-btn .tab-icon{
+  width:24px!important;height:24px!important;
+}
+@media(max-width:390px){
+  body .dock.ref-dock.premium-dock{
+    grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr)!important;
+  }
+  body .dock.ref-dock.premium-dock .ref-center-nav.premium-dock-add{
+    top:-9px!important;width:60px!important;height:60px!important;
+    min-width:60px!important;min-height:60px!important;
+  }
+}
